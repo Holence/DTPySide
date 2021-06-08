@@ -18,8 +18,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Hack</family>
-    <pointsize>11</pointsize>
+    <family>1529 Champ Fleury Pro</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -31,13 +30,16 @@
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionSettings">
+  <action name="actionSetting">
    <property name="icon">
     <iconset resource="../DongliTeahouse.qrc">
      <normaloff>:/white/white_settings.svg</normaloff>:/white/white_settings.svg</iconset>
    </property>
    <property name="text">
-    <string>Settings</string>
+    <string>Setting</string>
+   </property>
+   <property name="toolTip">
+    <string>Setting</string>
    </property>
   </action>
   <action name="actionExit">

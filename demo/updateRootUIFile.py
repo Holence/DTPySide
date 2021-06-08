@@ -1,7 +1,8 @@
 import os
 
 base=os.getcwd()
-uiPath=base+"/ui"
+
+uiPath=base
 
 os.chdir(uiPath)
 for i in os.listdir("./"):

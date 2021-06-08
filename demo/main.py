@@ -2,13 +2,14 @@ from DongliTeahousePySideWheel.demo.MyComponent import *
 
 def run():
 
-	app=QApplication(sys.argv)
+	app=DongliTeahouseAPP([])
+	app.setAuthor("Holence")
+	app.setApplicationName("Demo")
 
-	app.setStyle("Fusion")
-	app.setPalette(DongliTeahousePalette.MyDarkPalette())
-	app.setQuitOnLastWindowClosed(False)
+	window=MainWindow(app)
+	app.setMainWindow(window)
 
-	window=MainWindow()
-	window.quitApp.connect(app.quit)
+	app.run()
 
-	sys.exit(app.exec_())
+if __name__=="__main__":
+	run()

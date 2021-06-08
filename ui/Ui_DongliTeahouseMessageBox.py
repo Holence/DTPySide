@@ -20,11 +20,7 @@ class Ui_DongliTeahouseMessageBox(object):
     def setupUi(self, DongliTeahouseMessageBox):
         if not DongliTeahouseMessageBox.objectName():
             DongliTeahouseMessageBox.setObjectName(u"DongliTeahouseMessageBox")
-        DongliTeahouseMessageBox.resize(478, 270)
-        font = QFont()
-        font.setFamily(u"Hack")
-        font.setPointSize(11)
-        DongliTeahouseMessageBox.setFont(font)
+        DongliTeahouseMessageBox.resize(558, 357)
         self.verticalLayout = QVBoxLayout(DongliTeahouseMessageBox)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -74,12 +70,12 @@ class Ui_DongliTeahouseMessageBox(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.label_message.sizePolicy().hasHeightForWidth())
         self.label_message.setSizePolicy(sizePolicy2)
-        self.label_message.setMinimumSize(QSize(320, 0))
+        self.label_message.setMinimumSize(QSize(400, 0))
         self.label_message.setTextFormat(Qt.AutoText)
         self.label_message.setScaledContents(False)
         self.label_message.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.label_message.setWordWrap(True)
-        self.label_message.setMargin(5)
+        self.label_message.setMargin(0)
         self.label_message.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
 
         self.horizontalLayout.addWidget(self.label_message)
@@ -87,38 +83,27 @@ class Ui_DongliTeahouseMessageBox(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.SizeGrip = QFrame(DongliTeahouseMessageBox)
-        self.SizeGrip.setObjectName(u"SizeGrip")
-        sizePolicy1.setHeightForWidth(self.SizeGrip.sizePolicy().hasHeightForWidth())
-        self.SizeGrip.setSizePolicy(sizePolicy1)
-        self.SizeGrip.setMinimumSize(QSize(16, 16))
-        self.SizeGrip.setFrameShape(QFrame.NoFrame)
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(-1, -1, 32, 25)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.gridLayout.addWidget(self.SizeGrip, 1, 2, 1, 1)
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
         self.buttonBox = QDialogButtonBox(DongliTeahouseMessageBox)
         self.buttonBox.setObjectName(u"buttonBox")
         sizePolicy1.setHeightForWidth(self.buttonBox.sizePolicy().hasHeightForWidth())
         self.buttonBox.setSizePolicy(sizePolicy1)
-        font1 = QFont()
-        font1.setFamily(u"Hack")
-        font1.setPointSize(9)
-        self.buttonBox.setFont(font1)
         self.buttonBox.setLayoutDirection(Qt.RightToLeft)
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Ok)
         self.buttonBox.setCenterButtons(False)
 
-        self.gridLayout.addWidget(self.buttonBox, 0, 1, 1, 1)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout.addItem(self.horizontalSpacer, 0, 0, 1, 1)
+        self.horizontalLayout_2.addWidget(self.buttonBox)
 
 
-        self.verticalLayout.addLayout(self.gridLayout)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
 
 
         self.retranslateUi(DongliTeahouseMessageBox)

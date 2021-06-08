@@ -9,6 +9,19 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
+def Font_Resize(font,resize_ratio):
+	new_font=QFont(font)
+	fontsize=font.pointSize()
+	fontsize=int(fontsize*resize_ratio)
+	new_font.setPointSize(fontsize)
+	return new_font
+
+def Delay_Msecs(msecs):
+	"传入int类型的延迟毫秒数msecs"
+	dieTime= QTime.currentTime().addMSecs(msecs)
+	while QTime.currentTime() < dieTime:
+		QCoreApplication.processEvents(QEventLoop.AllEvents, 100)
+
 def QDate_to_Str(date):
 	return "%04d%02d%02d"%(date.year(),date.month(),date.day())
 

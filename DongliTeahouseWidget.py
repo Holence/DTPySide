@@ -2,6 +2,14 @@ from DongliTeahousePySideWheel import DongliTeahouseMessageIcon
 from DongliTeahousePySideWheel import DongliTeahousePalette
 from DongliTeahousePySideWheel.DongliTeahouseFunction import *
 
+class DongliTeahouseSettingButton(QPushButton):
+	def __init__(self,icon):
+		super().__init__()
+		self.setFixedSize(36,36)
+		self.setIcon(icon)
+		self.setIconSize(QSize(36,36))
+		self.setFlat(True)
+
 class DongliTeahouseTitleLabel(QLabel):
 	def  __init__(self,parent):
 		super(DongliTeahouseTitleLabel,self).__init__(parent)

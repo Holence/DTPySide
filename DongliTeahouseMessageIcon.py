@@ -23,3 +23,9 @@ def Heart():
 
 def Holo():
     return QIcon(":/icon/holoico_trans.ico")
+
+def Lock():
+    return QIcon(":/white/white_lock.svg")
+
+def Unlock():
+    return QIcon(":/white/white_unlock.svg")

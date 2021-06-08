@@ -1,26 +1,42 @@
 from DongliTeahousePySideWheel.DongliTeahouseTemplate import *
 
-from DongliTeahousePySideWheel.demo.Ui_ModuleSetting import Ui_ModuleSetting
-class ModuleSetting(Ui_ModuleSetting,QWidget):
-	def __init__(self):
+from DongliTeahousePySideWheel.demo.Ui_ModuleStackedWidgetSettingPage import Ui_ModuleStackedWidgetSettingPage
+class ModuleStackedWidgetSettingPage(Ui_ModuleStackedWidgetSettingPage,QStackedWidget):
+	def __init__(self,parent):
 		super().__init__()
 		self.setupUi(self)
+		self.parent=parent
+		self.initializeWindow()
+		self.initializeSignal()
+	
+	def initializeWindow(self):
+		self.lineEdit_homelabel.setText(self.parent.homelabel.text())
+	
+	def initializeSignal(self):
+		self.lineEdit_homelabel.editingFinished.connect(self.setHomeLabel)
+	
+	def setHomeLabel(self):
+		s=self.lineEdit_homelabel.text()
+		self.parent.homelabel.setText(s)
+		self.parent.UserSetting.setValue("HomePage/HomeLabel",s)
+		
 
-		self.pushButton_page1.clicked.connect(lambda:self.stackedWidget.setCurrentIndex(0))
-		self.pushButton_page2.clicked.connect(lambda:self.stackedWidget.setCurrentIndex(1))
-
-class DialogSetting(DongliTeahouseDialog):
+class MySettingDialog(DongliTeahouseSettingDialog):
 	def __init__(self, parent):
-		super().__init__(parent, "Settings")
-		self.setting=ModuleSetting()
-		self.centralWidget.addWidget(self.setting)
+		super().__init__(parent)
+		self.SettingPages=ModuleStackedWidgetSettingPage(parent)
+		
+		MenuButton1=DongliTeahouseSettingButton(QIcon(":/white/white_at-sign.svg"))
+		self.addButtonAndPage(MenuButton1,self.SettingPages.page_1)
+		
+		MenuButton2=DongliTeahouseSettingButton(QIcon(":/white/white_anchor.svg"))
+		self.addButtonAndPage(MenuButton2,self.SettingPages.page_2)
+
 
 
 class MainWindow(DongliTeahouseMainWindow):
-	def __init__(self):
-		super().__init__()
-		self.setWindowTitle("DongliTeahouse Demo")
-		self.setMetaData("DongliTeahouse Demo","0.0.0.1","Holence")
+	def __init__(self,app):
+		super().__init__(app)
 
 	def initializeWindow(self):
 		super().initializeWindow()
@@ -33,13 +49,13 @@ class MainWindow(DongliTeahouseMainWindow):
 		font.setBold(True)
 		font.setWeight(75)
 
-		self.label=QLabel("Home")
-		self.label.setFont(font)
+		self.homelabel=QLabel(self.UserSetting.value("HomePage/HomeLabel"))
+		self.homelabel.setFont(font)
 
-		self.label.setAlignment(Qt.AlignCenter)
+		self.homelabel.setAlignment(Qt.AlignCenter)
 
 		self.horizontalLayout=QHBoxLayout(self.Form)
-		self.horizontalLayout.addWidget(self.label)
+		self.horizontalLayout.addWidget(self.homelabel)
 		
 		self.setCentralWidget(self.Form)
 
@@ -56,6 +72,5 @@ class MainWindow(DongliTeahouseMainWindow):
 		self.addAction(self.actionHelloWorld)
 
 	def setting(self):
-		dlg=DialogSetting(self)
-		if dlg.exec_():
-			print(dlg.setting.lineEdit.text())
+		dlg=MySettingDialog(self)
+		dlg.exec_()

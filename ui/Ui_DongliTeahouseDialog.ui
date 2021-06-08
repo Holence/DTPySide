@@ -6,21 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
-    <height>500</height>
+    <width>490</width>
+    <height>316</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
-    <height>500</height>
+    <width>0</width>
+    <height>0</height>
    </size>
-  </property>
-  <property name="font">
-   <font>
-    <family>Hack</family>
-    <pointsize>11</pointsize>
-   </font>
   </property>
   <property name="windowTitle">
    <string>DongliTeahouseDialog</string>
@@ -54,41 +48,44 @@
    <item>
     <layout class="QVBoxLayout" name="centralWidget">
      <property name="leftMargin">
-      <number>50</number>
+      <number>8</number>
      </property>
      <property name="topMargin">
-      <number>20</number>
+      <number>10</number>
      </property>
      <property name="rightMargin">
       <number>32</number>
      </property>
      <property name="bottomMargin">
-      <number>30</number>
+      <number>25</number>
      </property>
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="2">
-      <widget class="QFrame" name="SizeGrip">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>32</number>
+     </property>
+     <property name="bottomMargin">
+      <number>25</number>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="minimumSize">
+       <property name="sizeHint" stdset="0">
         <size>
-         <width>16</width>
-         <height>16</height>
+         <width>40</width>
+         <height>20</height>
         </size>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-      </widget>
+      </spacer>
      </item>
-     <item row="0" column="1">
+     <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -115,19 +112,6 @@
         <bool>false</bool>
        </property>
       </widget>
-     </item>
-     <item row="0" column="0">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>

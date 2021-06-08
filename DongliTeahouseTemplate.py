@@ -1,4 +1,4 @@
-from DongliTeahousePySideWheel.DongliTeahouseWidget import *
+from DongliTeahousePySideWheel.DongliTeahouseModule import *
 
 # MainWindow用的TitleBar
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseTitleBarFull import Ui_DongliTeahouseTitleBarFull
@@ -20,6 +20,7 @@ class DongliTeahouseTitleBarFull(Ui_DongliTeahouseTitleBarFull,QWidget):
 		super().setWindowTitle(title)
 		self.label_titlebar.setText(title)
 
+
 # 其他窗口用的TitleBar
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseTitleBarCut import Ui_DongliTeahouseTitleBarCut
 class DongliTeahouseTitleBarCut(Ui_DongliTeahouseTitleBarCut,QWidget):
@@ -37,16 +38,29 @@ class DongliTeahouseTitleBarCut(Ui_DongliTeahouseTitleBarCut,QWidget):
 		super().setWindowTitle(title)
 		self.label_titlebar.setText(title)
 
+
 # Dialog
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseDialog import Ui_DongliTeahouseDialog
 class DongliTeahouseDialog(Ui_DongliTeahouseDialog,QDialog):
 	def __init__(self,parent,title):
-		super().__init__(parent)
-		self.setupUi(self)
-		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
-		QSizeGrip(self.SizeGrip)
+		if parent==None:
+			super().__init__()
+		else:
+			super().__init__(parent)
 		
+		self.setupUi(self)
+		
+		# 无边框
+		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
+		
+		# 继承字体
+		self.setAttribute(Qt.WA_WindowPropagation)
+		
+		# 缩放角
+		self.setSizeGripEnabled(True)
+
 		self.TitleBar.setWindowTitle(title)
+
 
 # MessageBox
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseMessageBox import Ui_DongliTeahouseMessageBox
@@ -56,8 +70,15 @@ class DongliTeahouseMessageBox(Ui_DongliTeahouseMessageBox,QDialog):
 	def __init__(self,parent,title,messageText,icon=None):
 		super().__init__(parent)
 		self.setupUi(self)
+		
+		# 无边框
 		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
-		QSizeGrip(self.SizeGrip)
+		
+		# 继承字体
+		self.setAttribute(Qt.WA_WindowPropagation)
+		
+		# 缩放角
+		self.setSizeGripEnabled(True)
 		
 		self.TitleBar.setWindowTitle(title)
 		self.label_message.setText(messageText)
@@ -71,6 +92,101 @@ class DongliTeahouseMessageBox(Ui_DongliTeahouseMessageBox,QDialog):
 		self.adjustSize()
 		self.exec_()
 
+
+# APP
+class DongliTeahouseAPP(QApplication):
+	def __init__(self,args):
+
+		self.setAttribute(Qt.AA_UseOpenGLES)
+		self.setAttribute(Qt.AA_EnableHighDpiScaling)
+		self.setAttribute(Qt.AA_UseHighDpiPixmaps)
+
+		super().__init__(args)
+
+		self.setStyle("Fusion")
+		self.setPalette(DongliTeahousePalette.MyDarkPalette())
+		self.setQuitOnLastWindowClosed(False)
+		
+		self.setApplicationName("DongliTeahouse's Project")
+		self.setApplicationVersion("0.0.0.0")
+		self.setOrganizationName("Dongli Teahouse")
+		self.setOrganizationDomain("dongliteahouse.com")
+		self.__author="鍵山狐"
+		self.__contact="Holence08@gmail.com"
+
+		self.checkIn()
+
+	def setAuthor(self,author):
+		self.__author=author
+	
+	def author(self):
+		return self.__author
+	
+	def setContact(self,contact):
+		self.__contact=contact
+	
+	def contact(self):
+		return self.__contact
+	
+	def setMainWindow(self,mainwindow):
+		self.mainwindow=mainwindow
+		self.mainwindow.quitApp.connect(self.quit)
+	
+	def checkIn(self):
+		self.password=None
+		dlg=DongliTeahouseLogin()
+		if dlg.exec_()==0:
+			self.quit()
+			exit()
+		else:
+			self.password=dlg.input_password
+	
+	def run(self):
+		self.mainwindow.show()
+		sys.exit(self.exec_())
+
+
+# Login 
+class DongliTeahouseLogin(DongliTeahouseDialog):
+	def __init__(self):
+		super().__init__(None,"Login")
+		
+		self.login=ModuleDongliTeahouseLogin()
+		self.centralWidget.addWidget(self.login)
+		self.adjustSize()
+		self.setFocus()
+		self.login.lineEdit.setFocus()
+		
+		# 获取UserSetting.ini中的加密密码
+		self.UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
+		self.lock_password=self.UserSetting.value("BasicInfo/Password")
+		#欢迎新用户
+		if self.lock_password==None:
+			self.login.label.setPixmap(DongliTeahouseMessageIcon.Happy().pixmap(QSize(28,28)))
+	
+	def accept(self):
+		self.input_password=self.login.lineEdit.text()
+		
+		#新用户
+		if self.lock_password==None:
+			self.login.label.setPixmap(DongliTeahouseMessageIcon.Lock().pixmap(QSize(28,28)))
+			Delay_Msecs(400)
+			self.login.label.setPixmap(DongliTeahouseMessageIcon.Unlock().pixmap(QSize(28,28)))
+			Delay_Msecs(600)
+			super().accept()
+		
+		elif Fernet_Decrypt(self.input_password,self.lock_password)==self.input_password:
+			self.login.label.setPixmap(DongliTeahouseMessageIcon.Lock().pixmap(QSize(28,28)))
+			Delay_Msecs(400)
+			self.login.label.setPixmap(DongliTeahouseMessageIcon.Unlock().pixmap(QSize(28,28)))
+			Delay_Msecs(600)
+			super().accept()
+		else:
+			self.login.label.setPixmap(DongliTeahouseMessageIcon.Unhappy().pixmap(QSize(28,28)))
+	
+	def reject(self):
+		super().reject()
+
 # Mainwindow
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseMainWindow import Ui_DongliTeahouseMainWindow
 class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
@@ -83,28 +199,30 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 		self.dataSave()
 		self.quitApp.emit()
 
-	def __init__(self):
+	def __init__(self,app):
 		super().__init__()
-
 		self.__MainMenu=QMenu(self)
-		self.__MetaData={}
+		self.UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
+		self.setPassword(app.password)
 
-		self.initializeMetaData()
+		self.initializeMetaData(app)
 		self.initializeData()
 		self.initializeWindow()
 		self.initializeSignal()
 		self.initializeMenu()
 		self.initializeTrayIcon()
-		self.show()
 
-	def initializeMetaData(self):
-		self.__MetaData={
-			"ProjectName":"DongliTeahouse's Project",
-			"Version":"0.0.0.0",
-			"Author":"鍵山狐",
-			"Contact":"Holence08@gmail.com",
-		}
-	
+	def initializeMetaData(self,app):
+
+		self.UserSetting.beginGroup("MetaData")
+		self.UserSetting.setValue("ApplicationName",app.applicationName())
+		self.UserSetting.setValue("Author",app.author())
+		self.UserSetting.setValue("ApplicationVersion",app.applicationVersion())
+		self.UserSetting.setValue("OrganizationName",app.organizationName())
+		self.UserSetting.setValue("OrganizationDomain",app.organizationDomain())
+		self.UserSetting.setValue("Contact",app.contact())
+		self.UserSetting.endGroup()
+		
 	def initializeData(self):
 		if self.dataValidityCheck():
 			self.dataLoad()
@@ -117,6 +235,8 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 		self.setMenuWidget(self.TitleBar)
 		
 		self.setupUi(self)
+		self.updateFont()
+		self.setWindowTitle(self.UserSetting.value("MetaData/ApplicationName"))
 		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
 
 	def initializeSignal(self):
@@ -125,7 +245,7 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 		注意：需要拥有全局快捷键的action，需要addAction
 		"""
 
-		self.actionSettings.triggered.connect(self.setting)
+		self.actionSetting.triggered.connect(self.setting)
 		self.actionAbout.triggered.connect(self.about)
 		
 		self.actionWindow_Toggle_Fullscreen.triggered.connect(self.windowToggleFullscreen)
@@ -142,7 +262,7 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 	def initializeMenu(self):
 		"制定menu"
 		
-		self.__MainMenu.addAction(self.actionSettings)
+		self.__MainMenu.addAction(self.actionSetting)
 		self.__MainMenu.addAction(self.actionAbout)
 		self.__MainMenu.addSeparator()
 		
@@ -218,7 +338,6 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 	
 	def dataValidityCheck(self):
 		return True
-		# return False
 
 	def dataLoad(self):
 		pass
@@ -229,14 +348,6 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 	def setWindowTitle(self,title):
 		super().setWindowTitle(title)
 		self.TitleBar.setWindowTitle(title)
-
-	def setMetaData(self,ProjectName="DongliTeahouse's Project",Version="0.0.0.0",Author="鍵山狐",Contact="Holence08@gmail.com"):
-		self.__MetaData={
-			"ProjectName":ProjectName,
-			"Version":Version,
-			"Author":Author,
-			"Contact":Contact
-		}
 
 	def MainMenu(self):
 		return self.__MainMenu
@@ -256,12 +367,47 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 	def insertMenuToMainMenu(self,fore_action,menu):
 		self.__MainMenu.insertMenu(fore_action,menu)
 
+	def password(self):
+		return self.__Password
+	
+	def setPassword(self,password):
+		self.__Password=password
+		self.UserSetting.setValue("BasicInfo/Password",Fernet_Encrypt(self.__Password,self.__Password))
+	
+	def updateFont(self):
+		self.setFont(self.UserSetting.value("BasicInfo/Font"))
+
 	def about(self):
 		about_text=""
-		for metadata_key in self.__MetaData.keys():
-			about_text+="%s: %s\n"%(metadata_key,self.__MetaData[metadata_key])
 		
+		self.UserSetting.beginGroup("MetaData")
+		for key in self.UserSetting.allKeys():
+			about_text+="%s: %s\n"%(key,self.UserSetting.value(key))
+		self.UserSetting.endGroup()
+
 		DongliTeahouseMessageBox(self,"About",about_text[:-1])
 	
 	def setting(self):
+		"请在继承的DongliTeahouseSettingDialog中做到实时保存设定"
+		
+		# dlg=DongliTeahouseSettingDialog(self)
+		# dlg.exec_()
 		pass
+
+
+# Setting
+class DongliTeahouseSettingDialog(DongliTeahouseDialog):
+	def __init__(self,parent):
+		super().__init__(parent,"Setting")
+		
+		# 不要按钮了，实时保存设置
+		# self.buttonBox.removeButton(self.buttonBox.button(QDialogButtonBox.Cancel))
+		self.buttonBox.clear()
+
+		self.__settingModule=Module_DongliTeahouseSetting(parent)
+		self.centralWidget.addWidget(self.__settingModule)
+	
+	def addButtonAndPage(self,button,qwidget):
+		"传入一个button和stackwidget page中的QWidget，button将自动加入到ButtonMenu列表的队尾，并链接好跳转到该stackwidget page的信号"
+		index=self.__settingModule.appendStackPage(qwidget)
+		self.__settingModule.addPageButton(button,index)
