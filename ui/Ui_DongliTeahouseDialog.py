@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from DongliTeahousePySideWheel.DongliTeahouseTemplate import DongliTeahouseTitleBarCut
+from DongliTeahousePySideWheel.DongliTeahouseModule import DongliTeahouseTitleBarCut
 
 
 class Ui_DongliTeahouseDialog(object):

@@ -5,20 +5,20 @@ class ModuleStackedWidgetSettingPage(Ui_ModuleStackedWidgetSettingPage,QStackedW
 	def __init__(self,parent):
 		super().__init__()
 		self.setupUi(self)
-		self.parent=parent
+		self.PAPA=parent
 		self.initializeWindow()
 		self.initializeSignal()
 	
 	def initializeWindow(self):
-		self.lineEdit_homelabel.setText(self.parent.homelabel.text())
+		self.lineEdit_homelabel.setText(self.PAPA.homelabel.text())
 	
 	def initializeSignal(self):
 		self.lineEdit_homelabel.editingFinished.connect(self.setHomeLabel)
 	
 	def setHomeLabel(self):
 		s=self.lineEdit_homelabel.text()
-		self.parent.homelabel.setText(s)
-		self.parent.UserSetting.setValue("HomePage/HomeLabel",s)
+		self.PAPA.homelabel.setText(s)
+		self.PAPA.UserSetting.setValue("HomePage/HomeLabel",s)
 		
 
 class MySettingDialog(DongliTeahouseSettingDialog):

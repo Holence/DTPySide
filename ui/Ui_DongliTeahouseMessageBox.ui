@@ -197,7 +197,7 @@
   <customwidget>
    <class>DongliTeahouseTitleBarCut</class>
    <extends>QWidget</extends>
-   <header>DongliTeahouseTemplate</header>
+   <header>DongliTeahouseModule</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

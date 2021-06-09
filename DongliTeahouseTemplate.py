@@ -1,98 +1,5 @@
 from DongliTeahousePySideWheel.DongliTeahouseModule import *
 
-# MainWindow用的TitleBar
-from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseTitleBarFull import Ui_DongliTeahouseTitleBarFull
-class DongliTeahouseTitleBarFull(Ui_DongliTeahouseTitleBarFull,QWidget):
-	def __init__(self,parent):
-		super().__init__(parent)
-		self.setupUi(self)
-		self.parent=parent
-		self.label_titlebar.setPapa(parent)
-		self.initializeSignal()
-	
-	def initializeSignal(self):
-		self.btn_close.clicked.connect(self.parent.close)
-		self.btn_maximize.clicked.connect(self.parent.windowToggleMaximized)
-		self.btn_minimize.clicked.connect(self.parent.showMinimized)
-		self.btn_menu.clicked.connect(lambda:show_ContextMenu_Beneath(self.parent.MainMenu(),self.btn_menu))
-
-	def setWindowTitle(self,title):
-		super().setWindowTitle(title)
-		self.label_titlebar.setText(title)
-
-
-# 其他窗口用的TitleBar
-from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseTitleBarCut import Ui_DongliTeahouseTitleBarCut
-class DongliTeahouseTitleBarCut(Ui_DongliTeahouseTitleBarCut,QWidget):
-	def __init__(self,parent):
-		super().__init__(parent)
-		self.setupUi(self)
-		self.parent=parent
-		self.label_titlebar.setPapa(parent)
-		self.initializeSignal()
-	
-	def initializeSignal(self):
-		self.btn_close.clicked.connect(self.parent.close)
-	
-	def setWindowTitle(self,title):
-		super().setWindowTitle(title)
-		self.label_titlebar.setText(title)
-
-
-# Dialog
-from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseDialog import Ui_DongliTeahouseDialog
-class DongliTeahouseDialog(Ui_DongliTeahouseDialog,QDialog):
-	def __init__(self,parent,title):
-		if parent==None:
-			super().__init__()
-		else:
-			super().__init__(parent)
-		
-		self.setupUi(self)
-		
-		# 无边框
-		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
-		
-		# 继承字体
-		self.setAttribute(Qt.WA_WindowPropagation)
-		
-		# 缩放角
-		self.setSizeGripEnabled(True)
-
-		self.TitleBar.setWindowTitle(title)
-
-
-# MessageBox
-from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseMessageBox import Ui_DongliTeahouseMessageBox
-class DongliTeahouseMessageBox(Ui_DongliTeahouseMessageBox,QDialog):
-	"传入title、messageText和icon的地址（建议使用DongliTeahouseMessageIcon的内置Icon）"
-
-	def __init__(self,parent,title,messageText,icon=None):
-		super().__init__(parent)
-		self.setupUi(self)
-		
-		# 无边框
-		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
-		
-		# 继承字体
-		self.setAttribute(Qt.WA_WindowPropagation)
-		
-		# 缩放角
-		self.setSizeGripEnabled(True)
-		
-		self.TitleBar.setWindowTitle(title)
-		self.label_message.setText(messageText)
-		
-		if icon!=None:
-			icon_pic=icon.pixmap(QSize(64,64))
-			self.label_icon.setPixmap(icon_pic)
-		else:
-			self.label_icon.hide()
-
-		self.adjustSize()
-		self.exec_()
-
-
 # APP
 class DongliTeahouseAPP(QApplication):
 	def __init__(self,args):
@@ -105,6 +12,7 @@ class DongliTeahouseAPP(QApplication):
 
 		self.setStyle("Fusion")
 		self.setPalette(DongliTeahousePalette.MyDarkPalette())
+		self.setWindowIcon(DongliTeahouseMessageIcon.Holo())
 		self.setQuitOnLastWindowClosed(False)
 		
 		self.setApplicationName("DongliTeahouse's Project")
@@ -134,7 +42,7 @@ class DongliTeahouseAPP(QApplication):
 	
 	def checkIn(self):
 		self.password=None
-		dlg=DongliTeahouseLogin()
+		dlg=DongliTeahouseLogin(self)
 		if dlg.exec_()==0:
 			self.quit()
 			exit()
@@ -148,11 +56,12 @@ class DongliTeahouseAPP(QApplication):
 
 # Login 
 class DongliTeahouseLogin(DongliTeahouseDialog):
-	def __init__(self):
+	def __init__(self,parent):
 		super().__init__(None,"Login")
 		
-		self.login=ModuleDongliTeahouseLogin()
+		self.login=ModuleDongliTeahouseLogin(self)
 		self.centralWidget.addWidget(self.login)
+		self.setWindowTitle("Login")
 		self.adjustSize()
 		self.setFocus()
 		self.login.lineEdit.setFocus()
@@ -186,6 +95,7 @@ class DongliTeahouseLogin(DongliTeahouseDialog):
 	
 	def reject(self):
 		super().reject()
+
 
 # Mainwindow
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseMainWindow import Ui_DongliTeahouseMainWindow
@@ -256,6 +166,9 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 		self.actionMaximize_Window.triggered.connect(self.showMaximized)
 		self.actionMinimize_Window.triggered.connect(self.showMinimized)
 		
+		self.actionBoss_Key.triggered.connect(self.bossComing)
+		self.addAction(self.actionBoss_Key)
+
 		self.actionExit.triggered.connect(self.close)
 		self.addAction(self.actionExit)
 	
@@ -277,6 +190,7 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 
 		################################################################
 		
+		self.__MainMenu.addAction(self.actionBoss_Key)
 		self.__MainMenu.addAction(self.actionExit)
 		
 	def initializeTrayIcon(self):
@@ -307,9 +221,23 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 	
 	def windowResurrection(self,reason):
 		"双击TrayIcon还原主窗体"
-
 		if reason==QSystemTrayIcon.DoubleClick:
-			self.showNormal()
+			if self.isHidden():
+				if not hasattr(self,"ResurrectionDlg"):
+					self.ResurrectionDlg=DongliTeahouseLogin(self)
+					
+					#成功登回
+					if self.ResurrectionDlg.exec_():
+						self.showNormal()
+						# 恢复self.__MainMenu里的其他action
+						for action in self.__MainMenu.actions()[:-1]:
+							action.setVisible(True)
+					
+					del self.ResurrectionDlg
+				else:
+					pass
+			else:
+				self.showNormal()
 	
 	def windowToggleStayonTop(self):
 		"切换主窗体的置顶与否"
@@ -336,6 +264,13 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 			self.TitleBar.btn_maximize.hide()
 			self.TitleBar.btn_minimize.hide()
 	
+	def bossComing(self):
+		self.hide()
+		
+		# Boss键后只显示退出键，self.__MainMenu里的其他action隐藏掉
+		for action in self.__MainMenu.actions()[:-1]:
+			action.setVisible(False)
+
 	def dataValidityCheck(self):
 		return True
 
@@ -374,6 +309,10 @@ class DongliTeahouseMainWindow(Ui_DongliTeahouseMainWindow,QMainWindow):
 		self.__Password=password
 		self.UserSetting.setValue("BasicInfo/Password",Fernet_Encrypt(self.__Password,self.__Password))
 	
+	def SaveAllEncryptData(self):
+		"设置密码后将调用这个函数，对所有加密文件的内容覆写，比如dataSave或者UserSetting中有加密的保存项目就要放到这里（除了对密码的加密已经操作过了）"
+		pass
+
 	def updateFont(self):
 		self.setFont(self.UserSetting.value("BasicInfo/Font"))
 
@@ -403,6 +342,8 @@ class DongliTeahouseSettingDialog(DongliTeahouseDialog):
 		# 不要按钮了，实时保存设置
 		# self.buttonBox.removeButton(self.buttonBox.button(QDialogButtonBox.Cancel))
 		self.buttonBox.clear()
+		self.centralWidget.setContentsMargins(QMargins(8,10,32,0))
+		self.horizontalLayout.setContentsMargins(QMargins(0,0,32,0))
 
 		self.__settingModule=Module_DongliTeahouseSetting(parent)
 		self.centralWidget.addWidget(self.__settingModule)

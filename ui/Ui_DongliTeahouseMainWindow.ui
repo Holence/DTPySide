@@ -24,10 +24,6 @@
   <property name="windowTitle">
    <string>DongliTeahouseMainWindow</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="../DongliTeahouse.qrc">
-    <normaloff>:/icon/holoico_trans.ico</normaloff>:/icon/holoico_trans.ico</iconset>
-  </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionSetting">
@@ -109,6 +105,18 @@
    </property>
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionBoss_Key">
+   <property name="icon">
+    <iconset resource="../DongliTeahouse.qrc">
+     <normaloff>:/white/white_users.svg</normaloff>:/white/white_users.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Boss Key</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
  </widget>
