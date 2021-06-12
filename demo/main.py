@@ -5,6 +5,7 @@ def run():
 	app=DongliTeahouseAPP([])
 	app.setAuthor("Holence")
 	app.setApplicationName("Demo")
+	# app.setLoginEnable(False)
 
 	window=MainWindow(app)
 	app.setMainWindow(window)

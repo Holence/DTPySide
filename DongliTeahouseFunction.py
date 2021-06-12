@@ -9,6 +9,10 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
+def Clear_Layout(layout):
+	for i in reversed(range(layout.count())): 
+		layout.takeAt(i).widget().deleteLater()
+
 def Font_Resize(font,resize_ratio):
 	new_font=QFont(font)
 	fontsize=font.pointSize()
@@ -22,13 +26,27 @@ def Delay_Msecs(msecs):
 	while QTime.currentTime() < dieTime:
 		QCoreApplication.processEvents(QEventLoop.AllEvents, 100)
 
-def QDate_to_Str(date):
-	return "%04d%02d%02d"%(date.year(),date.month(),date.day())
+def QDate_to_Str(date,mode="0"):
+	"""
+	mode="0" : 20210101
+	mode="0." : 2021.01.01
+	mode="." : 2021.1.1
+
+	"""
+	if mode=="0":
+		return "%04d%02d%02d"%(date.year(),date.month(),date.day())
+	elif mode=="0.":
+		return "%04d.%02d.%02d"%(date.year(),date.month(),date.day())
+	elif mode==".":
+		return "%d.%d.%d"%(date.year(),date.month(),date.day())
+
+def Str_To_QDate(s):
+	return QDate(int(s[:4]),int(s[4:6]),int(s[6:8]))
 
 def Generate_ConicalGradientColor(colorList):
 	n=len(colorList)
 	if n==0:
-		return QColor("#FF6265")
+		return QColor("#5B1803")
 	
 	angle=0
 	delta=1/n

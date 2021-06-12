@@ -1,7 +1,7 @@
 from DongliTeahousePySideWheel.DongliTeahouseWidget import *
 
 
-# MainWindow用的TitleBar
+# MainWindow用的TitleBar Module
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseTitleBarFull import Ui_DongliTeahouseTitleBarFull
 class DongliTeahouseTitleBarFull(Ui_DongliTeahouseTitleBarFull,QWidget):
 	def __init__(self,parent):
@@ -22,7 +22,7 @@ class DongliTeahouseTitleBarFull(Ui_DongliTeahouseTitleBarFull,QWidget):
 		self.label_titlebar.setText(title)
 
 
-# 其他窗口用的TitleBar
+# 其他窗口用的TitleBar Module
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseTitleBarCut import Ui_DongliTeahouseTitleBarCut
 class DongliTeahouseTitleBarCut(Ui_DongliTeahouseTitleBarCut,QWidget):
 	def __init__(self,parent):
@@ -39,7 +39,7 @@ class DongliTeahouseTitleBarCut(Ui_DongliTeahouseTitleBarCut,QWidget):
 		super().setWindowTitle(title)
 		self.label_titlebar.setText(title)
 
-# Dialog
+# Dialog Module
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseDialog import Ui_DongliTeahouseDialog
 class DongliTeahouseDialog(Ui_DongliTeahouseDialog,QDialog):
 	def __init__(self,parent,title):
@@ -55,6 +55,8 @@ class DongliTeahouseDialog(Ui_DongliTeahouseDialog,QDialog):
 		
 		# 继承字体
 		self.setAttribute(Qt.WA_WindowPropagation)
+		if 0.7*self.font().pointSize()>=9:
+			self.buttonBox.setFont(Font_Resize(self.font(),0.7))
 		
 		# 缩放角
 		self.setSizeGripEnabled(True)
@@ -62,10 +64,10 @@ class DongliTeahouseDialog(Ui_DongliTeahouseDialog,QDialog):
 		self.TitleBar.setWindowTitle(title)
 
 
-# MessageBox
+# MessageBox Module
 from DongliTeahousePySideWheel.ui.Ui_DongliTeahouseMessageBox import Ui_DongliTeahouseMessageBox
 class DongliTeahouseMessageBox(Ui_DongliTeahouseMessageBox,QDialog):
-	"传入title、messageText和icon的地址（建议使用DongliTeahouseMessageIcon的内置Icon）"
+	"传入title、messageText和icon的地址（建议使用DongliTeahouseIcon的内置Icon）"
 
 	def __init__(self,parent,title,messageText,icon=None):
 		super().__init__(parent)
@@ -76,11 +78,14 @@ class DongliTeahouseMessageBox(Ui_DongliTeahouseMessageBox,QDialog):
 		
 		# 继承字体
 		self.setAttribute(Qt.WA_WindowPropagation)
+		if 0.7*self.font().pointSize()>=9:
+			self.buttonBox.setFont(Font_Resize(self.font(),0.7))
 		
 		# 缩放角
 		self.setSizeGripEnabled(True)
 		
 		self.TitleBar.setWindowTitle(title)
+
 		self.label_message.setText(messageText)
 		
 		if icon!=None:
@@ -93,16 +98,16 @@ class DongliTeahouseMessageBox(Ui_DongliTeahouseMessageBox,QDialog):
 		self.exec_()
 
 # Login Module
-from DongliTeahousePySideWheel.ui.Ui_Module_DongliTeahouseLogin import Ui_Module_DongliTeahouseLogin
-class ModuleDongliTeahouseLogin(Ui_Module_DongliTeahouseLogin,QWidget):
+from DongliTeahousePySideWheel.ui.Ui_ModuleDongliTeahouseLogin import Ui_ModuleDongliTeahouseLogin
+class ModuleDongliTeahouseLogin(Ui_ModuleDongliTeahouseLogin,QWidget):
 	def __init__(self,parent):
 		super().__init__(parent)
 		self.setupUi(self)
 
 
 # Setting Module
-from DongliTeahousePySideWheel.ui.Ui_ModuleDongliTeahouseSetting import Ui_Module_DongliTeahouseSetting
-class Module_DongliTeahouseSetting(Ui_Module_DongliTeahouseSetting,QWidget):
+from DongliTeahousePySideWheel.ui.Ui_ModuleDongliTeahouseSetting import Ui_ModuleDongliTeahouseSetting
+class ModuleDongliTeahouseSetting(Ui_ModuleDongliTeahouseSetting,QWidget):
 	def __init__(self,parent):
 		super().__init__()
 		self.setupUi(self)
@@ -116,30 +121,37 @@ class Module_DongliTeahouseSetting(Ui_Module_DongliTeahouseSetting,QWidget):
 		#加入第一页的menu button
 		BasicInfoPageButton=DongliTeahouseSettingButton(QIcon(":/white/white_settings.svg"))
 		self.addPageButton(BasicInfoPageButton,0)
-
-		self.setFont(Font_Resize(self.PAPA.font(),0.8))
-		self.lineEdit_password.setText(self.PAPA.password())
-		self.lineEdit_font.setText(self.PAPA.font().key().split(",")[0])
-
-	def initializeSignal(self):
 		
-		self.pushButton_password.clicked.connect(self.PasswordSetting)
+		self.setFont(Font_Resize(self.PAPA.font(),0.8))
+		self.lineEdit_font.setText(self.PAPA.font().key().split(",")[0])
+		
+		if self.PAPA.isLoginEnable():
+			self.lineEdit_password.setText(self.PAPA.password())
+		else:
+			self.lineEdit_password.hide()
+			self.label_password.hide()
+			self.pushButton_password.hide()
+		
+	def initializeSignal(self):
 		self.pushButton_font.clicked.connect(self.FontSetting)
+	
+		if self.PAPA.isLoginEnable():
+			self.pushButton_password.clicked.connect(self.PasswordSetting)
 	
 	def PasswordSetting(self):
 		try:
 			self.PAPA.setPassword(self.lineEdit_password.text())
 			self.PAPA.SaveAllEncryptData()
-			DongliTeahouseMessageBox(self,"Information","Password reseted successfully!",DongliTeahouseMessageIcon.Information())
+			DongliTeahouseMessageBox(self,"Information","Password reseted successfully!",DongliTeahouseIcon.Information())
 		except:
-			DongliTeahouseMessageBox(self,"Warning","Error occur during password reseting!",DongliTeahouseMessageIcon.Error())
+			DongliTeahouseMessageBox(self,"Warning","Error occur during password reseting!",DongliTeahouseIcon.Error())
 
 	def FontSetting(self):
 		ok, font = QFontDialog.getFont(QFont(self.PAPA.font()), self)
 		if ok:
 			self.lineEdit_font.setText(font.key().split(",")[0])
 			self.setFont(Font_Resize(font,0.8))
-			self.PAPA.UserSetting.setValue("BasicInfo/Font",font)
+			self.PAPA.UserSetting().setValue("BasicInfo/Font",font)
 			self.PAPA.updateFont()
 
 	def appendStackPage(self,page):

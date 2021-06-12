@@ -14,15 +14,15 @@ from PySide2.QtWidgets import *
 
 import DongliTeahousePySideWheel.DongliTeahouse_rc
 
-class Ui_Module_DongliTeahouseSetting(object):
-    def setupUi(self, Module_DongliTeahouseSetting):
-        if not Module_DongliTeahouseSetting.objectName():
-            Module_DongliTeahouseSetting.setObjectName(u"Module_DongliTeahouseSetting")
-        Module_DongliTeahouseSetting.resize(538, 383)
-        self.horizontalLayout = QHBoxLayout(Module_DongliTeahouseSetting)
+class Ui_ModuleDongliTeahouseSetting(object):
+    def setupUi(self, ModuleDongliTeahouseSetting):
+        if not ModuleDongliTeahouseSetting.objectName():
+            ModuleDongliTeahouseSetting.setObjectName(u"ModuleDongliTeahouseSetting")
+        ModuleDongliTeahouseSetting.resize(538, 383)
+        self.horizontalLayout = QHBoxLayout(ModuleDongliTeahouseSetting)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.listWidget_buttons = QListWidget(Module_DongliTeahouseSetting)
+        self.listWidget_buttons = QListWidget(ModuleDongliTeahouseSetting)
         self.listWidget_buttons.setObjectName(u"listWidget_buttons")
         self.listWidget_buttons.setMinimumSize(QSize(36, 0))
         self.listWidget_buttons.setMaximumSize(QSize(36, 16777215))
@@ -39,7 +39,7 @@ class Ui_Module_DongliTeahouseSetting(object):
 
         self.horizontalLayout.addWidget(self.listWidget_buttons)
 
-        self.stackedWidget = QStackedWidget(Module_DongliTeahouseSetting)
+        self.stackedWidget = QStackedWidget(ModuleDongliTeahouseSetting)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.page_basicinfo = QWidget()
         self.page_basicinfo.setObjectName(u"page_basicinfo")
@@ -87,19 +87,19 @@ class Ui_Module_DongliTeahouseSetting(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
 
 
-        self.retranslateUi(Module_DongliTeahouseSetting)
+        self.retranslateUi(ModuleDongliTeahouseSetting)
 
         self.stackedWidget.setCurrentIndex(0)
 
 
-        QMetaObject.connectSlotsByName(Module_DongliTeahouseSetting)
+        QMetaObject.connectSlotsByName(ModuleDongliTeahouseSetting)
     # setupUi
 
-    def retranslateUi(self, Module_DongliTeahouseSetting):
-        Module_DongliTeahouseSetting.setWindowTitle(QCoreApplication.translate("Module_DongliTeahouseSetting", u"Module_DongliTeahouseSetting", None))
-        self.pushButton_password.setText(QCoreApplication.translate("Module_DongliTeahouseSetting", u"Apply", None))
-        self.label_font.setText(QCoreApplication.translate("Module_DongliTeahouseSetting", u"Font", None))
-        self.label_password.setText(QCoreApplication.translate("Module_DongliTeahouseSetting", u"Password", None))
-        self.pushButton_font.setText(QCoreApplication.translate("Module_DongliTeahouseSetting", u"Font", None))
+    def retranslateUi(self, ModuleDongliTeahouseSetting):
+        ModuleDongliTeahouseSetting.setWindowTitle(QCoreApplication.translate("ModuleDongliTeahouseSetting", u"ModuleDongliTeahouseSetting", None))
+        self.pushButton_password.setText(QCoreApplication.translate("ModuleDongliTeahouseSetting", u"Apply", None))
+        self.label_font.setText(QCoreApplication.translate("ModuleDongliTeahouseSetting", u"Font", None))
+        self.label_password.setText(QCoreApplication.translate("ModuleDongliTeahouseSetting", u"Password", None))
+        self.pushButton_font.setText(QCoreApplication.translate("ModuleDongliTeahouseSetting", u"Font", None))
     # retranslateUi
 

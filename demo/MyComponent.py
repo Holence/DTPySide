@@ -18,7 +18,7 @@ class ModuleStackedWidgetSettingPage(Ui_ModuleStackedWidgetSettingPage,QStackedW
 	def setHomeLabel(self):
 		s=self.lineEdit_homelabel.text()
 		self.PAPA.homelabel.setText(s)
-		self.PAPA.UserSetting.setValue("HomePage/HomeLabel",s)
+		self.PAPA.UserSetting().setValue("HomePage/HomeLabel",s)
 		
 
 class MySettingDialog(DongliTeahouseSettingDialog):
@@ -49,7 +49,7 @@ class MainWindow(DongliTeahouseMainWindow):
 		font.setBold(True)
 		font.setWeight(75)
 
-		self.homelabel=QLabel(self.UserSetting.value("HomePage/HomeLabel"))
+		self.homelabel=QLabel(self.UserSetting().value("HomePage/HomeLabel"))
 		self.homelabel.setFont(font)
 
 		self.homelabel.setAlignment(Qt.AlignCenter)
@@ -63,8 +63,8 @@ class MainWindow(DongliTeahouseMainWindow):
 		super().initializeSignal()
 
 		self.actionHelloWorld=QAction("Hello World")
-		self.actionHelloWorld.setIcon(DongliTeahouseMessageIcon.Holo())
-		self.actionHelloWorld.triggered.connect(lambda:DongliTeahouseMessageBox(self,"Hello World","Hello! Welcome to DongliTeahouse.",DongliTeahouseMessageIcon.Heart()))
+		self.actionHelloWorld.setIcon(DongliTeahouseIcon.Holo())
+		self.actionHelloWorld.triggered.connect(lambda:DongliTeahouseMessageBox(self,"Hello World","Hello! Welcome to DongliTeahouse.",DongliTeahouseIcon.Heart()))
 		self.addActionToMainMenu(self.actionHelloWorld)
 		
 		# 下面两句添加全局快捷键
