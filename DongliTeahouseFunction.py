@@ -3,6 +3,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 import sys,os
 import pickle
+from functools import partial
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
@@ -43,7 +44,7 @@ def QDate_to_Str(date,mode="0"):
 def Str_To_QDate(s):
 	return QDate(int(s[:4]),int(s[4:6]),int(s[6:8]))
 
-def Generate_ConicalGradientColor(colorList):
+def Generate_ConicalGradientColor(colorList,cube_width):
 	n=len(colorList)
 	if n==0:
 		return QColor("#5B1803")
@@ -56,7 +57,7 @@ def Generate_ConicalGradientColor(colorList):
 		colors.append((angle+delta-0.01,colorList[i]))
 		angle+=delta
 
-	color=QConicalGradient(5,5,90)
+	color=QConicalGradient(cube_width/2,cube_width/2,90)
 	color.setStops(colors)
 	return color
 

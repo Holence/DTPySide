@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DemoCentralWidget2</class>
+ <widget class="QWidget" name="DemoCentralWidget2">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>DemoCentralWidget2</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QLabel" name="homelabel">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionHello_World">
+   <property name="icon">
+    <iconset resource="../../DongliTeahouse.qrc">
+     <normaloff>:/icon/holoico_trans.ico</normaloff>:/icon/holoico_trans.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Hello World</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../DongliTeahouse.qrc"/>
+ </resources>
+ <connections/>
+</ui>
