@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-import DongliTeahousePySideWheel.DongliTeahouse_rc
+import DTPySide.DT_rc
 
 class Ui_DemoCentralWidget2(object):
     def setupUi(self, DemoCentralWidget2):
@@ -22,7 +22,7 @@ class Ui_DemoCentralWidget2(object):
         self.actionHello_World = QAction(DemoCentralWidget2)
         self.actionHello_World.setObjectName(u"actionHello_World")
         icon = QIcon()
-        icon.addFile(u":/icon/holoico_trans.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icon/holoicon1.ico", QSize(), QIcon.Normal, QIcon.Off)
         self.actionHello_World.setIcon(icon)
         self.horizontalLayout = QHBoxLayout(DemoCentralWidget2)
         self.horizontalLayout.setObjectName(u"horizontalLayout")

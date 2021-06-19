@@ -5,7 +5,7 @@
 Put the whole folder into your "site-packages" and run python:
 
 ```python
-from DongliTeahousePySideWheel.demo import main
+from DTPySide.demo import main
 
 main.run()
 ```

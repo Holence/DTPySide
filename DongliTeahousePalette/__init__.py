@@ -1,2 +1,0 @@
-from DongliTeahousePySideWheel.DongliTeahousePalette.DongliTeahouseBrightPalette import DongliTeahouseBrightPalette
-from DongliTeahousePySideWheel.DongliTeahousePalette.DongliTeahouseDarkPalette import DongliTeahouseDarkPalette

@@ -27,8 +27,8 @@
   </layout>
   <action name="actionHello_World">
    <property name="icon">
-    <iconset resource="../../DongliTeahouse.qrc">
-     <normaloff>:/icon/holoico_trans.ico</normaloff>:/icon/holoico_trans.ico</iconset>
+    <iconset resource="../../DT.qrc">
+     <normaloff>:/icon/holoicon1.ico</normaloff>:/icon/holoicon1.ico</iconset>
    </property>
    <property name="text">
     <string>Hello World</string>
@@ -36,7 +36,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../../DongliTeahouse.qrc"/>
+  <include location="../../DT.qrc"/>
  </resources>
  <connections/>
 </ui>

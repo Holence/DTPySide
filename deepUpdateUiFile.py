@@ -21,8 +21,8 @@ def deepin(base):
 				os.system("pyside2-uic %s.ui -o %s.py"%(name,name))
 				with open("%s.py"%name,"r+",encoding="utf-8") as f:
 					s=f.read()
-					s=s.replace("import DongliTeahouse_rc","import DongliTeahousePySideWheel.DongliTeahouse_rc")
-					s=s.replace("from DongliTeahouse","from DongliTeahousePySideWheel.DongliTeahouse")
+					s=s.replace("import DT_rc","import DTPySide.DT_rc")
+					s=s.replace("from DT","from DTPySide.DT")
 					f.seek(0)
 					f.write(s)
 

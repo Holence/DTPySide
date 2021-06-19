@@ -1,10 +1,13 @@
-from DongliTeahousePySideWheel.DongliTeahouseFunction import *
+from DTPySide.DTFunction import *
 
-from DongliTeahousePySideWheel.demo.demoModule.Ui_DemoSettingPage import Ui_DemoSettingPage
+from DTPySide.demo.demoModule.Ui_DemoSettingPage import Ui_DemoSettingPage
 class DemoSettingPage(Ui_DemoSettingPage,QStackedWidget):
 	def __init__(self,Headquarter):
-		super().__init__()
+		super().__init__(Headquarter)
 		self.setupUi(self)
+		# 继承字体
+		self.setAttribute(Qt.WA_WindowPropagation)
+
 		self.Headquarter=Headquarter
 		self.initializeWindow()
 		self.initializeSignal()

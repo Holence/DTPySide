@@ -1,3 +1,2 @@
-from DongliTeahousePySideWheel.demo.demoModule.DemoSettingPage import DemoSettingPage
-from DongliTeahousePySideWheel.demo.demoModule.DemoCentralWidget1 import DemoCentralWidget1
-from DongliTeahousePySideWheel.demo.demoModule.DemoMainWindow2 import DemoMainWindow2
+from DTPySide.demo.demoModule.DemoSettingPage import DemoSettingPage
+from DTPySide.demo.demoModule.DemoCentralWidget1 import DemoCentralWidget1
