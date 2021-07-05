@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'Ui_DTTitleBarFull.ui'
+## Form generated from reading UI file 'Ui_DTTitleBar.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -12,21 +12,19 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from DTPySide.DTWidget.DTTitleLabel import DTTitleLabel
-
 import DTPySide.DT_rc
 
-class Ui_DTTitleBarFull(object):
-    def setupUi(self, DTTitleBarFull):
-        if not DTTitleBarFull.objectName():
-            DTTitleBarFull.setObjectName(u"DTTitleBarFull")
-        DTTitleBarFull.resize(362, 40)
-        DTTitleBarFull.setStyleSheet(u"")
-        self.horizontalLayout = QHBoxLayout(DTTitleBarFull)
+class Ui_DTTitleBar(object):
+    def setupUi(self, DTTitleBar):
+        if not DTTitleBar.objectName():
+            DTTitleBar.setObjectName(u"DTTitleBar")
+        DTTitleBar.resize(356, 42)
+        DTTitleBar.setStyleSheet(u"")
+        self.horizontalLayout = QHBoxLayout(DTTitleBar)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.TitleBarFrame = QFrame(DTTitleBarFull)
+        self.TitleBarFrame = QFrame(DTTitleBar)
         self.TitleBarFrame.setObjectName(u"TitleBarFrame")
         self.TitleBarFrame.setStyleSheet(u"")
         self.horizontalLayout_2 = QHBoxLayout(self.TitleBarFrame)
@@ -42,12 +40,7 @@ class Ui_DTTitleBarFull(object):
         self.title_icon.setSizePolicy(sizePolicy)
         self.title_icon.setMinimumSize(QSize(36, 36))
         self.title_icon.setMaximumSize(QSize(36, 36))
-        self.title_icon.setStyleSheet(u"QPushButton:hover{\n"
-"	background-color: rgba(255, 255, 255, 0);\n"
-"}\n"
-"QPushButton:pressed {	\n"
-"	background-color: rgba(255, 255, 255, 0);\n"
-"}")
+        self.title_icon.setStyleSheet(u"")
         icon = QIcon()
         icon.addFile(u":/icon/holoicon1.ico", QSize(), QIcon.Normal, QIcon.Off)
         self.title_icon.setIcon(icon)
@@ -55,7 +48,7 @@ class Ui_DTTitleBarFull(object):
 
         self.horizontalLayout_2.addWidget(self.title_icon)
 
-        self.label_titlebar = DTTitleLabel(self.TitleBarFrame)
+        self.label_titlebar = QLabel(self.TitleBarFrame)
         self.label_titlebar.setObjectName(u"label_titlebar")
         sizePolicy1 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
@@ -95,9 +88,6 @@ class Ui_DTTitleBarFull(object):
         self.btn_maximize.setMinimumSize(QSize(24, 24))
         self.btn_maximize.setMaximumSize(QSize(24, 24))
         self.btn_maximize.setStyleSheet(u"")
-        icon2 = QIcon()
-        icon2.addFile(u":/icon/white/white_window-maximize.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_maximize.setIcon(icon2)
         self.btn_maximize.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_2.addWidget(self.btn_maximize)
@@ -109,9 +99,9 @@ class Ui_DTTitleBarFull(object):
         self.btn_close.setMinimumSize(QSize(24, 24))
         self.btn_close.setMaximumSize(QSize(24, 24))
         self.btn_close.setStyleSheet(u"")
-        icon3 = QIcon()
-        icon3.addFile(u":/icon/white/white_x.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_close.setIcon(icon3)
+        icon2 = QIcon()
+        icon2.addFile(u":/icon/white/white_x.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_close.setIcon(icon2)
         self.btn_close.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_2.addWidget(self.btn_close)
@@ -120,15 +110,15 @@ class Ui_DTTitleBarFull(object):
         self.horizontalLayout.addWidget(self.TitleBarFrame)
 
 
-        self.retranslateUi(DTTitleBarFull)
+        self.retranslateUi(DTTitleBar)
 
-        QMetaObject.connectSlotsByName(DTTitleBarFull)
+        QMetaObject.connectSlotsByName(DTTitleBar)
     # setupUi
 
-    def retranslateUi(self, DTTitleBarFull):
-        DTTitleBarFull.setWindowTitle(QCoreApplication.translate("DTTitleBarFull", u"Form", None))
+    def retranslateUi(self, DTTitleBar):
+        DTTitleBar.setWindowTitle(QCoreApplication.translate("DTTitleBar", u"DTTitleBar", None))
         self.title_icon.setText("")
-        self.label_titlebar.setText(QCoreApplication.translate("DTTitleBarFull", u"DT", None))
+        self.label_titlebar.setText(QCoreApplication.translate("DTTitleBar", u"DT", None))
         self.btn_minimize.setText("")
         self.btn_maximize.setText("")
         self.btn_close.setText("")

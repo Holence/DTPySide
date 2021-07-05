@@ -1,7 +1,7 @@
 from DTPySide.DTFunction import *
 from DTPySide.DTPalette import DTDraculaPalette
 from DTPySide.DTStyle import DTDraculaStyle
-from DTPySide.DTSession import DTLoginSession
+from DTPySide.DTSession import DTLoginSession,DTMainSession
 from DTPySide import DTIcon
 
 # APP
@@ -47,6 +47,19 @@ class DTAPP(QApplication):
 		
 		self.setLoginEnable(True)
 		self.__password=None
+		self.__mainwindow=None
+
+	def setWindowEffect(self,type:str):
+		"""设置Aero或者Acrylic效果
+
+		Args:
+			type (str): "Areo"或者"Acrylic"
+		"""
+		try:
+			return self.__mainwindow.setWindowEffect(type)
+		except:
+			print("setWindowEffect MUST be called after setMainSession (you have to own a window before you can set window effect)!")
+			exit()
 	
 	def setApplicationName(self,str):
 		super().setApplicationName(str)
@@ -91,9 +104,9 @@ class DTAPP(QApplication):
 		self.__contact=contact
 		self.UserSetting.setValue("MetaData/Contact",self.contact())
 	
-	def setMainSession(self,mainwindow):
-		self.mainwindow=mainwindow
-		self.mainwindow.quitApp.connect(self.quit)
+	def setMainSession(self,mainwindow:DTMainSession):
+		self.__mainwindow=mainwindow
+		self.__mainwindow.quitApp.connect(self.quit)
 	
 	def __loginIn(self):
 		dlg=DTLoginSession(self.UserSetting.value("BasicInfo/Password"))
@@ -106,14 +119,14 @@ class DTAPP(QApplication):
 	def debugRun(self,password,loginEnable):
 		self.setLoginEnable(loginEnable)
 		self.setPassword(password)
-		self.mainwindow.initialize()
-		self.mainwindow.show()
+		self.__mainwindow.initialize()
+		self.__mainwindow.show()
 		sys.exit(self.exec_())
 
 	def run(self):
 		if self.__LoginEnable==True:
 			self.__loginIn()
 		
-		self.mainwindow.initialize()
-		self.mainwindow.show()
+		self.__mainwindow.initialize()
+		self.__mainwindow.show()
 		sys.exit(self.exec_())

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DTTitleBarCut</class>
- <widget class="QWidget" name="DTTitleBarCut">
+ <class>DTTitleBar</class>
+ <widget class="QWidget" name="DTTitleBar">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>405</width>
-    <height>40</height>
+    <width>356</width>
+    <height>42</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>DTTitleBar</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -74,12 +74,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton:hover{
-	background-color: rgba(255, 255, 255, 0);
-}
-QPushButton:pressed {	
-	background-color: rgba(255, 255, 255, 0);
-}</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string/>
@@ -97,7 +92,7 @@ QPushButton:pressed {
        </widget>
       </item>
       <item>
-       <widget class="DTTitleLabel" name="label_titlebar">
+       <widget class="QLabel" name="label_titlebar">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -117,6 +112,78 @@ QPushButton:pressed {
         </property>
         <property name="text">
          <string>DT</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_minimize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../DT.qrc">
+          <normaloff>:/icon/white/white_window-minimize.svg</normaloff>:/icon/white/white_window-minimize.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_maximize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -163,13 +230,6 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>DTTitleLabel</class>
-   <extends>QLabel</extends>
-   <header>DTWidget.DTTitleLabel</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../DT.qrc"/>
  </resources>

@@ -12,19 +12,15 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from DTPySide.DTWidget.DTTitleBar import DTTitleBar
+
 import DTPySide.DT_rc
 
 class Ui_DTMainWindow(object):
     def setupUi(self, DTMainWindow):
         if not DTMainWindow.objectName():
             DTMainWindow.setObjectName(u"DTMainWindow")
-        DTMainWindow.resize(881, 713)
-        DTMainWindow.setMinimumSize(QSize(800, 600))
-        font = QFont()
-        font.setFamily(u"1529 Champ Fleury Pro")
-        font.setPointSize(14)
-        DTMainWindow.setFont(font)
-        DTMainWindow.setStyleSheet(u"")
+        DTMainWindow.resize(1413, 1001)
         self.actionSetting = QAction(DTMainWindow)
         self.actionSetting.setObjectName(u"actionSetting")
         icon = QIcon()
@@ -70,15 +66,47 @@ class Ui_DTMainWindow(object):
         icon8 = QIcon()
         icon8.addFile(u":/icon/white/white_users.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.actionBoss_Key.setIcon(icon8)
-        self.centralwidget = QWidget(DTMainWindow)
+        self.verticalLayout = QVBoxLayout(DTMainWindow)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.TitleBar = DTTitleBar(DTMainWindow)
+        self.TitleBar.setObjectName(u"TitleBar")
+
+        self.verticalLayout.addWidget(self.TitleBar)
+
+        self.centralWidget = QFrame(DTMainWindow)
+        self.centralWidget.setObjectName(u"centralWidget")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralWidget.sizePolicy().hasHeightForWidth())
+        self.centralWidget.setSizePolicy(sizePolicy)
+        self.centralwidget = QVBoxLayout(self.centralWidget)
+        self.centralwidget.setSpacing(0)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.centralwidget.setStyleSheet(u"")
-        DTMainWindow.setCentralWidget(self.centralwidget)
-        self.statusBar = QStatusBar(DTMainWindow)
+        self.centralwidget.setContentsMargins(0, 0, 0, 0)
+
+        self.verticalLayout.addWidget(self.centralWidget)
+
+        self.statusBar = QLabel(DTMainWindow)
         self.statusBar.setObjectName(u"statusBar")
-        self.statusBar.setMaximumSize(QSize(16777215, 18))
-        self.statusBar.setSizeGripEnabled(False)
-        DTMainWindow.setStatusBar(self.statusBar)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.statusBar.sizePolicy().hasHeightForWidth())
+        self.statusBar.setSizePolicy(sizePolicy1)
+        self.statusBar.setMaximumSize(QSize(16777215, 20))
+        font = QFont()
+        font.setFamily(u"Segoe UI")
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.statusBar.setFont(font)
+        self.statusBar.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.verticalLayout.addWidget(self.statusBar)
+
 
         self.retranslateUi(DTMainWindow)
 
@@ -108,5 +136,6 @@ class Ui_DTMainWindow(object):
 #if QT_CONFIG(shortcut)
         self.actionBoss_Key.setShortcut(QCoreApplication.translate("DTMainWindow", u"F1", None))
 #endif // QT_CONFIG(shortcut)
+        self.statusBar.setText("")
     # retranslateUi
 

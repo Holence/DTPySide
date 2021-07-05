@@ -39,7 +39,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="DTTitleBarCut" name="TitleBar" native="true">
+    <widget class="DTTitleBar" name="TitleBar" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
@@ -122,9 +122,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DTTitleBarCut</class>
+   <class>DTTitleBar</class>
    <extends>QWidget</extends>
-   <header>DTWidget.DTTitleBarCut</header>
+   <header>DTWidget.DTTitleBar</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

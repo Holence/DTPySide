@@ -12,7 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from DTPySide.DTWidget.DTTitleBarCut import DTTitleBarCut
+from DTPySide.DTWidget.DTTitleBar import DTTitleBar
 
 
 class Ui_DTDialog(object):
@@ -26,7 +26,7 @@ class Ui_DTDialog(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.TitleBar = DTTitleBarCut(DTDialog)
+        self.TitleBar = DTTitleBar(DTDialog)
         self.TitleBar.setObjectName(u"TitleBar")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)

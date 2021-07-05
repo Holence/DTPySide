@@ -32,13 +32,11 @@ class DTMainSession(DTMainWindow):
 		"""
 		
 		super().__init__(app)
-		
 	
 	def initialize(self):
 		self.initializeData()
 		self.initializeWindow() 
 		self.restoreWindowStatus()
-		self.initializeEdge()
 
 		self.initializeSignal()
 		self.initializeMenu()
@@ -67,8 +65,6 @@ class DTMainSession(DTMainWindow):
 		self.updateFont()
 		
 		try:
-			self.restoreGeometry(self.UserSetting().value("WindowStatus/Geometry"))
-			self.restoreState(self.UserSetting().value("WindowStatus/WindowState"))
 			self.resize(self.UserSetting().value("WindowStatus/Size"))
 			self.move(self.UserSetting().value("WindowStatus/Pos"))
 		except:
@@ -179,8 +175,6 @@ class DTMainSession(DTMainWindow):
 		pass
 	
 	def saveWindowStatus(self):
-		self.UserSetting().setValue("WindowStatus/Geometry",self.saveGeometry())
-		self.UserSetting().setValue("WindowStatus/WindowState",self.saveState())
 		self.UserSetting().setValue("WindowStatus/Size",self.size())
 		self.UserSetting().setValue("WindowStatus/Pos",self.pos())
 	
