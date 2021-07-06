@@ -1,21 +1,21 @@
-DTDraculaNormalStyle="""
+DTDarkNormalStyle="""
 
 #TitleBarFrame * {	
-	background-color: #21252B;
+	background-color: rgb(35, 35, 35);
 }
 #TitleBarFrame {	
-	background-color: #21252B;
+	background-color: rgb(35, 35, 35);
 }
 #TitleBarFrame #label_titlebar {
-	color: #EBEBEB;
+	color: white;
 }
 
 #DTMainWindow #centralWidget {	
-	background-color: #282C34;
+	background-color: rgb(53, 53, 53);
 }
 
 #DTMainWindow #statusBar{
-	background-color: #30353F;
+	background-color: rgb(42, 42, 42);
 }
 
 
@@ -33,25 +33,25 @@ QPushButton {
 
 ###############################################################################################
 
-DTDraculaEffectStyle="""
+DTDarkEffectStyle="""
 
 * {
 	background-color: transparent;
 }
 
 #TitleBarFrame * {	
-	background-color: #21252B;
+	background-color: rgb(35, 35, 35);
 }
 #TitleBarFrame {	
-	background-color: #21252B;
+	background-color: rgb(35, 35, 35);
 }
 #TitleBarFrame #label_titlebar {
-	color: #EBEBEB;
+	color: white;
 }
 
 
 #DTMainWindow #statusBar{
-	background-color: #30353F;
+	background-color: rgb(42, 42, 42);
 }
 
 
@@ -59,26 +59,26 @@ DTDraculaEffectStyle="""
 /* 设置Window Effect后有些Palette会失效，得用stylesheet补足 */
 
 QMenu {
-	background-color: #282C34;
-	color: #EBEBEB;
+	background-color: rgb(53, 53, 53);
+	color: white;
 }
 QMenu::item:selected {
-	background-color: #BD93F9;
+	background-color: rgb(42, 130, 218);
 }
 
 QLineEdit {
-	background-color: #21252B;
+	background-color: rgb(35, 35, 35);
 }
 
 QDialog {
-	background-color: #282C34;
+	background-color: rgb(53, 53, 53);
 	border: 2px solid #21252B;
 	border-radius: 1px;
 }
 
 QPushButton {
 	font-family: "Hack";
-	background-color: #282C34;
+	background-color: rgb(53, 53, 53);
 }
 
 

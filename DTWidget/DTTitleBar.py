@@ -1,15 +1,12 @@
 from DTPySide.DTFunction import *
 
-# MainWindow用的TitleBar Widget
+
 from DTPySide.DTWidget.Ui_DTTitleBar import Ui_DTTitleBar
 class DTTitleBar(Ui_DTTitleBar,QWidget):
 	def __init__(self,parent):
 		super().__init__(parent)
 		self.setupUi(self)
 		self.full=True
-		
-		# windowIcon是自动继承的，直接设置就好了
-		self.title_icon.setIcon(self.windowIcon())
 
 		self.btn_close.clicked.connect(self.window().close)
 
@@ -24,10 +21,6 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 
 
 		self.setStyleSheet("""
-
-			#TitleBarFrame {	
-				background-color: #21252B;
-			}
 			
 			#TitleBarFrame QPushButton {	
 				border: none;
@@ -66,10 +59,12 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 	
 	def setFull(self,full:bool):
 		
-		if full==False:
+		self.full=full
+		
+		if self.full==False:
 			self.btn_maximize.hide()
 			self.btn_minimize.hide()
-		if full==True:
+		if self.full==True:
 			self.btn_maximize.clicked.connect(lambda:self.mouseDoubleClickEvent(None,True))
 			self.btn_minimize.clicked.connect(self.window().showMinimized)
 			self.title_icon.clicked.connect(lambda:show_ContextMenu_Beneath(self.window().MainMenu(),self.title_icon))
@@ -78,6 +73,10 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 		super().setWindowTitle(title)
 		self.label_titlebar.setText(title)
 	
+	def updateWindowIcon(self):
+		# windowIcon是自动继承的，直接设置就好了
+		self.title_icon.setIcon(self.windowIcon())
+
 	def mouseDoubleClickEvent(self, event, ignore_event=False):
 		"""最大化最小化切换
 

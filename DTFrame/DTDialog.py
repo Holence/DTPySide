@@ -15,7 +15,7 @@ class DTDialog(Ui_DTDialog,QDialog):
 		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
 		
 		# 继承字体
-		self.setAttribute(Qt.WA_WindowPropagation)
+		self.setAttribute(Qt.WA_WindowPropagation,True)
 		if 0.7*self.font().pointSize()>=9:
 			self.buttonBox.setFont(Font_Resize(self.font(),0.7))
 		
@@ -26,5 +26,7 @@ class DTDialog(Ui_DTDialog,QDialog):
 		self.buttonBox.button(QDialogButtonBox.Cancel).setDefault(True)
 
 		self.TitleBar.setWindowTitle(title)
+		self.TitleBar.setFull(False)
+		self.TitleBar.updateWindowIcon()
 		
 		self.adjustSize()

@@ -8,28 +8,21 @@ class DTMainWindow(Ui_DTMainWindow,DTWindow):
 	"DTMainWindow骨架，通过setCentralWidget来放入主功能区"
 	
 	def __init__(self,app):
-		super().__init__()
+		super().__init__(app)
+		self.setupUi(self)
 		self.app=app
 		self._MainMenu=QMenu(self)
-
-		self.setupUi(self)
 		
-		self.TitleBar.setFull(True)
-		self.setWindowTitle(self.UserSetting().value("MetaData/ApplicationName"))
-
 	def initialize(self):
 		self.initializeWindow()
-		self.restoreWindowStatus()
-
 		self.initializeSignal()
 		self.initializeMenu()
 
 	def initializeWindow(self):
-		
-		pass
-	
-	def restoreWindowStatus(self):
-		pass
+		self.setWindowEffect()
+		self.TitleBar.setFull(True)
+		self.TitleBar.updateWindowIcon()
+		self.setWindowTitle(self.UserSetting().value("MetaData/ApplicationName"))
 	
 	def initializeSignal(self):	
 		"""主窗体的action向function链接

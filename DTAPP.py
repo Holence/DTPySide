@@ -1,6 +1,6 @@
 from DTPySide.DTFunction import *
-from DTPySide.DTPalette import DTDraculaPalette
-from DTPySide.DTStyle import DTDraculaStyle
+from DTPySide.DTPalette import *
+from DTPySide.DTStyle import *
 from DTPySide.DTSession import DTLoginSession,DTMainSession
 from DTPySide import DTIcon
 
@@ -20,23 +20,22 @@ class DTAPP(QApplication):
 			args (asd): asddas
 		"""
 
-		self.setAttribute(Qt.AA_UseOpenGLES)
-		self.setAttribute(Qt.AA_EnableHighDpiScaling)
-		self.setAttribute(Qt.AA_UseHighDpiPixmaps)
+		self.setAttribute(Qt.AA_UseOpenGLES,True)
+		self.setAttribute(Qt.AA_EnableHighDpiScaling,True)
+		self.setAttribute(Qt.AA_UseHighDpiPixmaps,True)
 
 		# 继承字体
-		self.setAttribute(Qt.AA_UseStyleSheetPropagationInWidgetStyles)
+		self.setAttribute(Qt.AA_UseStyleSheetPropagationInWidgetStyles,True)
+		self.setQuitOnLastWindowClosed(False)
 		
 
 		super().__init__(args)
 		self.UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
 
 		self.setStyle("Fusion")
-		self.setStyleSheet(DTDraculaStyle)
-		self.setPalette(DTDraculaPalette())
-
+		# self.setWindowStyle((0,0))
 		self.setWindowIcon(DTIcon.Holo1())
-		self.setQuitOnLastWindowClosed(False)
+
 		
 		self.setApplicationName("DT's Project")
 		self.setApplicationVersion("0.0.0.0")
@@ -49,17 +48,38 @@ class DTAPP(QApplication):
 		self.__password=None
 		self.__mainwindow=None
 
-	def setWindowEffect(self,type:str):
-		"""设置Aero或者Acrylic效果
+
+	def setWindowStyle(self,type:tuple):
+		"""设置MainwWindow的Window Effect和Theme
 
 		Args:
-			type (str): "Areo"或者"Acrylic"
+			type (tuple): (Window Effect : int, Theme : int)
+			
+			Window Effect : 0-Only shadow | 1-Areo | 2-Acrylic
+			
+			Theme ：0-Dracula | 1-Dark
 		"""
-		try:
-			return self.__mainwindow.setWindowEffect(type)
-		except:
-			print("setWindowEffect MUST be called after setMainSession (you have to own a window before you can set window effect)!")
-			exit()
+		self.__WindowEffect=type[0]
+		Theme=type[1]
+		print(self.__WindowEffect,Theme)
+		if Theme==0:
+			if self.__WindowEffect==0:
+				self.setPalette(DTDraculaPalette())
+				self.setStyleSheet(DTDraculaNormalStyle)
+			elif self.__WindowEffect==1 or self.__WindowEffect==2:
+				self.setPalette(DTDraculaPalette())
+				self.setStyleSheet(DTDraculaEffectStyle)
+		if Theme==1:
+			if self.__WindowEffect==0:
+				self.setPalette(DTDarkPalette())
+				self.setStyleSheet(DTDarkNormalStyle)
+			elif self.__WindowEffect==1 or self.__WindowEffect==2:
+				self.setPalette(DTDarkPalette())
+				self.setStyleSheet(DTDarkEffectStyle)
+
+	
+	def getWindowEffect(self):
+		return self.__WindowEffect
 	
 	def setApplicationName(self,str):
 		super().setApplicationName(str)
@@ -124,6 +144,8 @@ class DTAPP(QApplication):
 		sys.exit(self.exec_())
 
 	def run(self):
+		"""如果没有密码加密，需要setLoginEnable(False)
+		"""		
 		if self.__LoginEnable==True:
 			self.__loginIn()
 		

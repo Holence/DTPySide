@@ -10,7 +10,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 		super().__init__(Headquarter)
 		self.setupUi(self)
 		# 继承字体
-		self.setAttribute(Qt.WA_WindowPropagation)
+		self.setAttribute(Qt.WA_WindowPropagation,True)
 		
 		self.Headquarter=Headquarter
 		self.initializeWindow()

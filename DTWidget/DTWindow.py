@@ -1,4 +1,6 @@
 from DTPySide.DTFunction import *
+from DTPySide import DTAPP
+
 
 class DTWindow(QWidget):
 	BORDER_WIDTH = 5
@@ -7,33 +9,42 @@ class DTWindow(QWidget):
 		super().closeEvent(event)
 		self.deleteLater()
 	
-	def __init__(self, parent=None):
+	def __init__(self, app:DTAPP, parent=None):
 		super().__init__(parent=parent)
+		self.app=app
+		
 		self.__monitor_info = None
 
 		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 		
-		self.windowEffect = WindowEffect()
-		self.windowEffect.addWindowAnimation(self.winId())
 	
-	def setWindowEffect(self,type:str):
-		"""设置Aero或者Acrylic效果
+	def setWindowEffect(self):
+		"""设置窗口效果，Normal 或 Aero 或 Acrylic
 
 		Args:
-			type (str): "Areo"或者"Acrylic"
-		"""		
-		if type=="Aero":
+			type (int): 0-Only shadow | 1-Areo | 2-Acrylic
+		"""
+		self.windowEffect = WindowEffect()
+		self.windowEffect.addWindowAnimation(self.winId())
+		
+		type=self.app.getWindowEffect()
+
+		if type==0:
+			# Normal
+			self.windowEffect.addShadowEffect(self.winId())
+		
+		elif type==1:
 			# Aero
-			self.setStyleSheet('background:transparent')
 			self.windowEffect.setAeroEffect(self.winId())
 			self.windowEffect.addShadowEffect(self.winId())
-			pass
-		elif type=="Acrylic":
+			
+		elif type==2:
 			# Acrylic
-			self.setStyleSheet('background:transparent')
 			self.windowEffect.setAcrylicEffect(self.winId(),"34374620")
+			
 		else:
 			print("Window Effect Type dose not match!")
+			exit()
 	
 	
 	def isWindowMaximized(self, hWnd) -> bool:

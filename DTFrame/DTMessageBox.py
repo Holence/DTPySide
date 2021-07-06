@@ -21,6 +21,8 @@ class DTMessageBox(Ui_DTMessageBox,QDialog):
 		self.setSizeGripEnabled(True)
 		
 		self.TitleBar.setWindowTitle(title)
+		self.TitleBar.setFull(False)
+		self.TitleBar.updateWindowIcon()
 
 		self.label_message.setText(messageText)
 		
