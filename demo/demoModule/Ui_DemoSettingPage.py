@@ -34,7 +34,12 @@ class Ui_DemoSettingPage(object):
         self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 483, 369))
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setContentsMargins(0, 0, 15, 0)
+        self.lineEdit_homelabel = QLineEdit(self.scrollAreaWidgetContents)
+        self.lineEdit_homelabel.setObjectName(u"lineEdit_homelabel")
+
+        self.gridLayout.addWidget(self.lineEdit_homelabel, 1, 0, 1, 1)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.gridLayout.addItem(self.verticalSpacer, 2, 0, 1, 1)
@@ -43,11 +48,6 @@ class Ui_DemoSettingPage(object):
         self.label_homelabel.setObjectName(u"label_homelabel")
 
         self.gridLayout.addWidget(self.label_homelabel, 0, 0, 1, 1)
-
-        self.lineEdit_homelabel = QLineEdit(self.scrollAreaWidgetContents)
-        self.lineEdit_homelabel.setObjectName(u"lineEdit_homelabel")
-
-        self.gridLayout.addWidget(self.lineEdit_homelabel, 1, 0, 1, 1)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 

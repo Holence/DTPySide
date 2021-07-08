@@ -1,26 +1,24 @@
-from DTPySide.DTFunction import *
-from DTPySide.DTSession import DTMainSession
-from DTPySide import DTIcon
+from DTPySide import *
 
-from DTPySide.demo.demoSession.DemoSettingSession import DemoSettingSession
-from DTPySide.demo.demoModule import DemoCentralWidget1
 from DTPySide.demo.demoSession.DemoMainSession2 import DemoMainSession2
+from DTPySide.demo.demoSession.DemoSettingSession import DemoSettingSession
+from DTPySide.demo.demoModule import DemoCentralWidget1,WidgetGallery
 
-class DemoMainSession(DTMainSession):
+class DemoMainSession(DTSession.DTMainSession):
 	def __init__(self,app):
 		super().__init__(app)
 		
 	def initializeWindow(self):
 		super().initializeWindow()
 
-		self.CentralWidget=DemoCentralWidget1(self)
-		
+		self.Widget=DemoCentralWidget1(self)
+		# self.Widget=WidgetGallery(self)
 
-		self.setCentralWidget(self.CentralWidget)
+		self.setCentralWidget(self.Widget)
 	
 
 	def initializeMenu(self):
-		self.addActionToMainMenu(self.CentralWidget.actionHello_World)
+		self.addActionToMainMenu(self.Widget.actionHello_World)
 		
 		self.actionSummonMainWindow2=QAction("MainWindow 2")
 		self.actionSummonMainWindow2.setIcon(DTIcon.Happy())
@@ -35,5 +33,5 @@ class DemoMainSession(DTMainSession):
 		self.MainWindow2.show()
 
 	def setting(self):
-		dlg=DemoSettingSession(self)
+		dlg=DemoSettingSession(self, self.app)
 		dlg.exec_()

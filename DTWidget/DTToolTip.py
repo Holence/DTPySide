@@ -1,4 +1,5 @@
-from DTPySide.DTFunction import *
+from __future__ import annotations
+from DTPySide import *
 
 class DTToolTip(QLabel):
 	def __init__(self, parent, tooltip):

@@ -1,13 +1,12 @@
-from DTPySide.DTFunction import *
-
-from DTPySide.DTWidget import DTWindow
+from __future__ import annotations
+from DTPySide import *
 
 # Mainwindow
 from DTPySide.DTFrame.Ui_DTMainWindow import Ui_DTMainWindow
-class DTMainWindow(Ui_DTMainWindow,DTWindow):
+class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 	"DTMainWindow骨架，通过setCentralWidget来放入主功能区"
 	
-	def __init__(self,app):
+	def __init__(self, app:DTAPP):
 		super().__init__(app)
 		self.setupUi(self)
 		self.app=app
@@ -114,7 +113,7 @@ class DTMainWindow(Ui_DTMainWindow,DTWindow):
 		self.app.setPassword(password)
 	
 	def UserSetting(self):
-		return self.app.UserSetting
+		return self.app.UserSetting()
 
 
 

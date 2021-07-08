@@ -1,7 +1,8 @@
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
-import sys,os
+import sys, os
+import re
 import pickle
 from functools import partial
 import base64

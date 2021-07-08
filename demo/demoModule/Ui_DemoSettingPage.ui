@@ -58,11 +58,14 @@
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>0</number>
+         <number>15</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
         </property>
+        <item row="1" column="0">
+         <widget class="QLineEdit" name="lineEdit_homelabel"/>
+        </item>
         <item row="2" column="0">
          <spacer name="verticalSpacer">
           <property name="orientation">
@@ -82,9 +85,6 @@
            <string>Home Label</string>
           </property>
          </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLineEdit" name="lineEdit_homelabel"/>
         </item>
        </layout>
       </widget>

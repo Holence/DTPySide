@@ -1,7 +1,7 @@
-from DTPySide.demo.demoModule.DemoCentralWidget2 import DemoCentralWidget2
+from DTPySide import *
 
-from DTPySide.DTFrame import DTMainWindow
-class DemoMainSession2(DTMainWindow):
+from DTPySide.demo.demoModule import DemoCentralWidget2
+class DemoMainSession2(DTFrame.DTMainWindow):
     def __init__(self,Headquarter):
         super().__init__(Headquarter.app)
         self.CentralWidget=DemoCentralWidget2(Headquarter)

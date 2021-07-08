@@ -1,4 +1,5 @@
-from DTPySide.DTFunction import *
+from __future__ import annotations
+from DTPySide import *
 
 class DTCapsuleButton(QLabel):
 	clicked=Signal()

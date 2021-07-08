@@ -1,4 +1,5 @@
-from DTPySide.DTFunction import *
+from __future__ import annotations
+from DTPySide import *
 
 # MessageBox Module
 from DTPySide.DTFrame.Ui_DTMessageBox import Ui_DTMessageBox

@@ -1,9 +1,7 @@
-from DTPySide.DTFunction import *
-from DTPySide.DTFrame import DTMainWindow, DTMessageBox
-from DTPySide.DTSession import DTLoginSession, DTSettingSession
+from __future__ import annotations
+from DTPySide import *
 
-
-class DTMainSession(DTMainWindow):
+class DTMainSession(DTFrame.DTMainWindow):
 	"""DTAPP的主程序
 	通过DTAPP.setMainSession(DTMainSession)传入DTAPP
 	相当于Qt程序最初的QMainWindow
@@ -49,7 +47,7 @@ class DTMainSession(DTMainWindow):
 		if self.dataValidityCheck():
 			self.loadData()
 		else:
-			DTMessageBox(self,"Error","Data Error!")
+			DTFrame.DTMessageBox(self,"Error","Data Error!")
 			exit()
 	
 	def initializeWindow(self):
@@ -126,15 +124,18 @@ class DTMainSession(DTMainWindow):
 	
 	def windowResurrection(self,reason):
 		"双击TrayIcon还原主窗体"
+		
+		from DTPySide import DTSession
+		# 必须在这里再调用一次，如果不写的话，下面会说name 'DTSession' is not defined。不知道为什么啊啊啊，明明都在DTPySide的__init__中导入过了呀？！难道又是同级包内互相调用的问题，还是__feature__的annotation暂时还有bug？
 
 		if reason==QSystemTrayIcon.DoubleClick:
 			if self.isHidden():
 				# 有Login选项
-				if self.isLoginEnable():
+				if self.app.isLoginEnable():
 
 					# 还未出现Login界面
 					if not hasattr(self,"ResurrectionDlg"):
-						self.ResurrectionDlg=DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
+						self.ResurrectionDlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
 
 						#成功登回
 						if self.ResurrectionDlg.exec_():
@@ -160,13 +161,10 @@ class DTMainSession(DTMainWindow):
 	def bossComing(self):
 		self.hide()
 		
-		if self.isLoginEnable():
+		if self.app.isLoginEnable():
 			# Boss键后只显示退出键，self._MainMenu里的其他action隐藏掉
 			for action in self._MainMenu.actions()[:-1]:
 				action.setVisible(False)
-
-	def isLoginEnable(self):
-		return self.app.isLoginEnable()
 	
 	def loadData(self):
 		pass
@@ -183,7 +181,21 @@ class DTMainSession(DTMainWindow):
 		pass
 
 	def updateFont(self):
+		"""使用了AA_UseStyleSheetPropagationInWidgetStyles继承字体与stylesheet，用主窗体控制全局的字体
+		"""
+
 		self.setFont(self.UserSetting().value("BasicInfo/Font"))
+
+		# 全部的PushButton的font-size为全局字体的0.7倍，用stylesheet动态设置
+		size=self.font().pointSize()
+		stylesheet=self.app.styleSheet()
+		if re.findall("(?<=QPushButton).*?font-size.*?(?=;)",stylesheet)==[]:
+			stylesheet=re.sub("(?<=QPushButton)[\W\w]*?(?=\w)"," {\n\tfont-size: %dpt;\n\theight: %dpx;"%(int(size)*0.7,int(size*1.8)),stylesheet)
+		else:
+			stylesheet=re.sub("(?<=QPushButton)[\W\w]*?font-size[\W\w]*?;[\W\w]*?;"," {\n\tfont-size: %dpt;\n\theight: %dpx;"%(int(size)*0.7,int(size*1.8)),stylesheet)
+		
+		self.app.setStyleSheet(stylesheet)
+			
 
 	def about(self):
 		about_text=""
@@ -193,11 +205,13 @@ class DTMainSession(DTMainWindow):
 			about_text+="%s: %s\n"%(key,self.UserSetting().value(key))
 		self.UserSetting().endGroup()
 
-		DTMessageBox(self,"About",about_text[:-1])
+		DTFrame.DTMessageBox(self,"About",about_text[:-1])
 	
 	def setting(self):
 		"请在继承的DTSettingSession中做到实时保存设定"
 		
-
-		dlg=DTSettingSession(self)
+		from DTPySide import DTSession 
+		# 必须在这里再调用一次，如果不写的话，下面会说name 'DTSession' is not defined。不知道为什么啊啊啊，明明都在DTPySide的__init__中导入过了呀？！难道又是同级包内互相调用的问题，还是__feature__的annotation暂时还有bug？
+		
+		dlg=DTSession.DTSettingSession(self, self.app)
 		dlg.exec_()

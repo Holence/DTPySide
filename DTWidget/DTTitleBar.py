@@ -1,5 +1,5 @@
-from DTPySide.DTFunction import *
-
+from __future__ import annotations
+from DTPySide import *
 
 from DTPySide.DTWidget.Ui_DTTitleBar import Ui_DTTitleBar
 class DTTitleBar(Ui_DTTitleBar,QWidget):

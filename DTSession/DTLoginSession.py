@@ -1,13 +1,11 @@
-from DTPySide.DTFunction import *
-from DTPySide.DTFrame import DTDialog
-from DTPySide.DTModule import DTLogin
-from DTPySide import DTIcon
+from __future__ import annotations
+from DTPySide import *
 
 # Login 
-class DTLoginSession(DTDialog):
+class DTLoginSession(DTFrame.DTDialog):
 	def __init__(self,locked_password):
 		super().__init__(None,"Login")
-		self.login=DTLogin(self)
+		self.login=DTModule.DTLogin(self)
 		self.centralWidget.addWidget(self.login)
 		self.setWindowTitle("Login")
 		self.adjustSize()

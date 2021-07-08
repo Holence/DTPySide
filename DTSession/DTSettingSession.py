@@ -1,11 +1,10 @@
-from DTPySide.DTFunction import *
-from DTPySide.DTFrame import DTDialog
-from DTPySide.DTModule import DTSetting
+from __future__ import annotations
+from DTPySide import *
 
 # Setting
-class DTSettingSession(DTDialog):
-	def __init__(self,parent):
-		super().__init__(parent,"Setting")
+class DTSettingSession(DTFrame.DTDialog):
+	def __init__(self, Headquarter, app):
+		super().__init__(Headquarter,"Setting")
 		
 		# 不要按钮了，实时保存设置
 		# self.buttonBox.removeButton(self.buttonBox.button(QDialogButtonBox.Cancel))
@@ -13,7 +12,7 @@ class DTSettingSession(DTDialog):
 		self.centralWidget.setContentsMargins(QMargins(8,10,32,0))
 		self.horizontalLayout.setContentsMargins(QMargins(0,0,32,0))
 		
-		self.__settingModule=DTSetting(parent)
+		self.__settingModule=DTModule.DTSetting(Headquarter, app)
 		self.centralWidget.addWidget(self.__settingModule)
 	
 	def addButtonAndPage(self,button,qwidget):

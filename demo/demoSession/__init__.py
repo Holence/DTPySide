@@ -1,3 +1,3 @@
 from DTPySide.demo.demoSession.DemoMainSession import DemoMainSession
-from DTPySide.demo.demoSession.DemoSettingSession import DemoSettingSession
 from DTPySide.demo.demoSession.DemoMainSession2 import DemoMainSession2
+from DTPySide.demo.demoSession.DemoSettingSession import DemoSettingSession

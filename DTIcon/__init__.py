@@ -1,4 +1,4 @@
-from PySide2.QtGui import QIcon
+from DTPySide import *
 
 def Information():
 	return QIcon(":/icon/white/white_info.svg")

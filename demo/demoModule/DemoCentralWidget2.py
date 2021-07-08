@@ -1,5 +1,4 @@
-from DTPySide.DTFunction import *
-
+from DTPySide import *
 
 from DTPySide.demo.demoModule.Ui_DemoCentralWidget2 import Ui_DemoCentralWidget2
 class DemoCentralWidget2(Ui_DemoCentralWidget2,QWidget):

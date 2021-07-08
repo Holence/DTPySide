@@ -1,4 +1,5 @@
-from DTPySide.DTFunction import *
+from __future__ import annotations
+from DTPySide import *
 
 # Login 
 from DTPySide.DTModule.Ui_DTLogin import Ui_DTLogin

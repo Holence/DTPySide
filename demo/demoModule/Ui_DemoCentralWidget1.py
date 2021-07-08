@@ -28,6 +28,9 @@ class Ui_DemoCentralWidget1(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.homelabel = QLabel(DemoCentralWidget1)
         self.homelabel.setObjectName(u"homelabel")
+        font = QFont()
+        font.setPointSize(24)
+        self.homelabel.setFont(font)
         self.homelabel.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout.addWidget(self.homelabel)

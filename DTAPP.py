@@ -1,8 +1,6 @@
-from DTPySide.DTFunction import *
-from DTPySide.DTPalette import *
-from DTPySide.DTStyle import *
-from DTPySide.DTSession import DTLoginSession,DTMainSession
-from DTPySide import DTIcon
+from __future__ import annotations
+from DTPySide import *
+
 
 # APP
 class DTAPP(QApplication):
@@ -19,7 +17,7 @@ class DTAPP(QApplication):
 		Args:
 			args (asd): asddas
 		"""
-
+		
 		self.setAttribute(Qt.AA_UseOpenGLES,True)
 		self.setAttribute(Qt.AA_EnableHighDpiScaling,True)
 		self.setAttribute(Qt.AA_UseHighDpiPixmaps,True)
@@ -30,10 +28,10 @@ class DTAPP(QApplication):
 		
 
 		super().__init__(args)
-		self.UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
+		self.__UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
 
 		self.setStyle("Fusion")
-		# self.setWindowStyle((0,0))
+		self.setWindowStyle()
 		self.setWindowIcon(DTIcon.Holo1())
 
 		
@@ -49,53 +47,72 @@ class DTAPP(QApplication):
 		self.__mainwindow=None
 
 
-	def setWindowStyle(self,type:tuple):
+	def setWindowStyle(self):
 		"""设置MainwWindow的Window Effect和Theme
 
 		Args:
-			type (tuple): (Window Effect : int, Theme : int)
-			
-			Window Effect : 0-Only shadow | 1-Areo | 2-Acrylic
-			
-			Theme ：0-Dracula | 1-Dark
+			WindowEffect: Normal (only shadow) | Areo | Acrylic
+			Theme: Dracula | Dark | Light
 		"""
-		self.__WindowEffect=type[0]
-		Theme=type[1]
-		print(self.__WindowEffect,Theme)
-		if Theme==0:
-			if self.__WindowEffect==0:
-				self.setPalette(DTDraculaPalette())
-				self.setStyleSheet(DTDraculaNormalStyle)
-			elif self.__WindowEffect==1 or self.__WindowEffect==2:
-				self.setPalette(DTDraculaPalette())
-				self.setStyleSheet(DTDraculaEffectStyle)
-		if Theme==1:
-			if self.__WindowEffect==0:
-				self.setPalette(DTDarkPalette())
-				self.setStyleSheet(DTDarkNormalStyle)
-			elif self.__WindowEffect==1 or self.__WindowEffect==2:
-				self.setPalette(DTDarkPalette())
-				self.setStyleSheet(DTDarkEffectStyle)
+		
+		WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
+		
+		if WindowEffect!="Normal" and WindowEffect!="Areo" and WindowEffect!="Acrylic":
+			self.__UserSetting.setValue("BasicInfo/WindowEffect","Normal")
+			WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
 
+		Theme=self.__UserSetting.value("BasicInfo/Theme")
+		if Theme!="Dracula" and Theme!="Dark" and Theme!="Light":
+			self.__UserSetting.setValue("BasicInfo/Theme","Dracula")
+			Theme=self.__UserSetting.value("BasicInfo/Theme")
+
+		if Theme=="Dracula":
+			if WindowEffect=="Normal":
+				self.setPalette(DTPalette.DTDraculaPalette())
+				self.setStyleSheet(DTStyle.DTDraculaNormalStyle)
+			else:
+				self.setPalette(DTPalette.DTDraculaPalette())
+				self.setStyleSheet(DTStyle.DTDraculaEffectStyle)
+
+		elif Theme=="Dark":
+			if WindowEffect=="Normal":
+				self.setPalette(DTPalette.DTDarkPalette())
+				self.setStyleSheet(DTStyle.DTDarkNormalStyle)
+			else:
+				self.setPalette(DTPalette.DTDarkPalette())
+				self.setStyleSheet(DTStyle.DTDarkEffectStyle)
+		
 	
-	def getWindowEffect(self):
-		return self.__WindowEffect
+	def WindowEffect(self):
+		return self.__UserSetting.value("BasicInfo/WindowEffect")
 	
+	def setWindowEffect(self, WindowEffect:str):
+		self.__UserSetting.setValue("BasicInfo/WindowEffect",WindowEffect)
+	
+	def Theme(self):
+		return self.__UserSetting.value("BasicInfo/Theme")
+	
+	def setTheme(self,Theme:str):
+		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
+
 	def setApplicationName(self,str):
 		super().setApplicationName(str)
-		self.UserSetting.setValue("MetaData/ApplicationName",self.applicationName())
+		self.__UserSetting.setValue("MetaData/ApplicationName",self.applicationName())
 	
 	def setApplicationVersion(self,str):
 		super().setApplicationVersion(str)
-		self.UserSetting.setValue("MetaData/ApplicationVersion",self.applicationVersion())
+		self.__UserSetting.setValue("MetaData/ApplicationVersion",self.applicationVersion())
 	
 	def setOrganizationName(self,str):
 		super().setOrganizationName(str)
-		self.UserSetting.setValue("MetaData/OrganizationName",self.organizationName())
+		self.__UserSetting.setValue("MetaData/OrganizationName",self.organizationName())
 	
 	def setOrganizationDomain(self,str):
 		super().setOrganizationDomain(str)
-		self.UserSetting.setValue("MetaData/OrganizationDomain",self.organizationDomain())
+		self.__UserSetting.setValue("MetaData/OrganizationDomain",self.organizationDomain())
+
+	def UserSetting(self):
+		return self.__UserSetting
 
 	def isLoginEnable(self):
 		return self.__LoginEnable
@@ -108,28 +125,26 @@ class DTAPP(QApplication):
 	
 	def setPassword(self,password):
 		self.__password=password
-		self.UserSetting.setValue("BasicInfo/Password",Fernet_Encrypt(self.__password,self.__password))
+		self.__UserSetting.setValue("BasicInfo/Password",Fernet_Encrypt(self.__password,self.__password))
 
 	def author(self):
-		return self.__author
+		return self.__UserSetting.value("MetaData/Author")
 
 	def setAuthor(self,author):
-		self.__author=author
-		self.UserSetting.setValue("MetaData/Author",self.author())
+		self.__UserSetting.setValue("MetaData/Author",author)
 	
 	def contact(self):
-		return self.__contact
+		return self.__UserSetting.value("MetaData/Contact")
 
 	def setContact(self,contact):
-		self.__contact=contact
-		self.UserSetting.setValue("MetaData/Contact",self.contact())
+		self.__UserSetting.setValue("MetaData/Contact",contact)
 	
-	def setMainSession(self,mainwindow:DTMainSession):
+	def setMainSession(self,mainwindow: DTSession.DTMainSession):
 		self.__mainwindow=mainwindow
 		self.__mainwindow.quitApp.connect(self.quit)
 	
 	def __loginIn(self):
-		dlg=DTLoginSession(self.UserSetting.value("BasicInfo/Password"))
+		dlg=DTSession.DTLoginSession(self.__UserSetting.value("BasicInfo/Password"))
 		if dlg.exec_()==0:
 			self.quit()
 			exit()

@@ -1,4 +1,4 @@
-from DTPySide.DTFunction import *
+from DTPySide import *
 
 from DTPySide.demo.demoModule.Ui_DemoSettingPage import Ui_DemoSettingPage
 class DemoSettingPage(Ui_DemoSettingPage,QStackedWidget):

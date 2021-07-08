@@ -1,2 +1,4 @@
 from DTPySide.demo.demoModule.DemoSettingPage import DemoSettingPage
 from DTPySide.demo.demoModule.DemoCentralWidget1 import DemoCentralWidget1
+from DTPySide.demo.demoModule.DemoCentralWidget2 import DemoCentralWidget2
+from DTPySide.demo.demoModule.widgetgallery import WidgetGallery

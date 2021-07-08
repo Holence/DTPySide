@@ -1,5 +1,5 @@
-from PySide2.QtGui import QPalette,QColor
-from PySide2.QtCore import Qt
+from __future__ import annotations
+from DTPySide import *
 
 class DTDarkPalette(QPalette):
 	"""Dark palette for a Qt application meant to be used with the Fusion theme."""

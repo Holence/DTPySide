@@ -1,6 +1,5 @@
-from DTPySide.DTFunction import *
-from DTPySide import DTAPP
-
+from __future__ import annotations
+from DTPySide import *
 
 class DTWindow(QWidget):
 	BORDER_WIDTH = 5
@@ -27,24 +26,20 @@ class DTWindow(QWidget):
 		self.windowEffect = WindowEffect()
 		self.windowEffect.addWindowAnimation(self.winId())
 		
-		type=self.app.getWindowEffect()
+		window_effect=self.app.WindowEffect()
 
-		if type==0:
+		if window_effect=="Normal":
 			# Normal
 			self.windowEffect.addShadowEffect(self.winId())
 		
-		elif type==1:
+		elif window_effect=="Areo":
 			# Aero
 			self.windowEffect.setAeroEffect(self.winId())
 			self.windowEffect.addShadowEffect(self.winId())
 			
-		elif type==2:
+		elif window_effect=="Acrylic":
 			# Acrylic
 			self.windowEffect.setAcrylicEffect(self.winId(),"34374620")
-			
-		else:
-			print("Window Effect Type dose not match!")
-			exit()
 	
 	
 	def isWindowMaximized(self, hWnd) -> bool:
