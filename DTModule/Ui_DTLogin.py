@@ -18,26 +18,31 @@ class Ui_DTLogin(object):
     def setupUi(self, DTLogin):
         if not DTLogin.objectName():
             DTLogin.setObjectName(u"DTLogin")
-        DTLogin.resize(207, 38)
+        DTLogin.resize(322, 38)
         self.horizontalLayout = QHBoxLayout(DTLogin)
         self.horizontalLayout.setSpacing(7)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(7, 10, 0, 0)
-        self.label = QLabel(DTLogin)
-        self.label.setObjectName(u"label")
+        self.label_lock = QLabel(DTLogin)
+        self.label_lock.setObjectName(u"label_lock")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy)
-        self.label.setMinimumSize(QSize(28, 28))
-        self.label.setPixmap(QPixmap(u":/icon/white/white_lock.svg"))
-        self.label.setScaledContents(True)
+        sizePolicy.setHeightForWidth(self.label_lock.sizePolicy().hasHeightForWidth())
+        self.label_lock.setSizePolicy(sizePolicy)
+        self.label_lock.setMinimumSize(QSize(28, 28))
+        self.label_lock.setPixmap(QPixmap(u":/icon/white/white_lock.svg"))
+        self.label_lock.setScaledContents(True)
 
-        self.horizontalLayout.addWidget(self.label)
+        self.horizontalLayout.addWidget(self.label_lock)
 
         self.lineEdit = QLineEdit(DTLogin)
         self.lineEdit.setObjectName(u"lineEdit")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
+        self.lineEdit.setSizePolicy(sizePolicy1)
         self.lineEdit.setMinimumSize(QSize(165, 24))
         font = QFont()
         font.setPointSize(9)
@@ -54,6 +59,6 @@ class Ui_DTLogin(object):
 
     def retranslateUi(self, DTLogin):
         DTLogin.setWindowTitle(QCoreApplication.translate("DTLogin", u"DTLogin", None))
-        self.label.setText("")
+        self.label_lock.setText("")
     # retranslateUi
 

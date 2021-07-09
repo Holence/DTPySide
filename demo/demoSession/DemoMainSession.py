@@ -11,14 +11,14 @@ class DemoMainSession(DTSession.DTMainSession):
 	def initializeWindow(self):
 		super().initializeWindow()
 
-		self.Widget=DemoCentralWidget1(self)
-		# self.Widget=WidgetGallery(self)
+		# self.Widget=DemoCentralWidget1(self)
+		self.Widget=WidgetGallery(self)
 
 		self.setCentralWidget(self.Widget)
 	
 
 	def initializeMenu(self):
-		self.addActionToMainMenu(self.Widget.actionHello_World)
+		# self.addActionToMainMenu(self.Widget.actionHello_World)
 		
 		self.actionSummonMainWindow2=QAction("MainWindow 2")
 		self.actionSummonMainWindow2.setIcon(DTIcon.Happy())

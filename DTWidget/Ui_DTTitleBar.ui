@@ -56,22 +56,10 @@
       <item>
        <widget class="QPushButton" name="title_icon">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -83,32 +71,15 @@
          <iconset resource="../DT.qrc">
           <normaloff>:/icon/holoicon1.ico</normaloff>:/icon/holoicon1.ico</iconset>
         </property>
-        <property name="iconSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_titlebar">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>16</pointsize>
-          <weight>75</weight>
-          <italic>false</italic>
-          <bold>true</bold>
-          <stylestrategy>PreferDefault</stylestrategy>
-          <kerning>true</kerning>
-         </font>
         </property>
         <property name="text">
          <string>DT</string>
@@ -118,22 +89,10 @@
       <item>
        <widget class="QPushButton" name="btn_minimize">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -145,33 +104,15 @@
          <iconset resource="../DT.qrc">
           <normaloff>:/icon/white/white_window-minimize.svg</normaloff>:/icon/white/white_window-minimize.svg</iconset>
         </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn_maximize">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -179,33 +120,19 @@
         <property name="text">
          <string/>
         </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
+        <property name="icon">
+         <iconset resource="../DT.qrc">
+          <normaloff>:/icon/white/white_window-maximize.svg</normaloff>:/icon/white/white_window-maximize.svg</iconset>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn_close">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -216,12 +143,6 @@
         <property name="icon">
          <iconset resource="../DT.qrc">
           <normaloff>:/icon/white/white_x.svg</normaloff>:/icon/white/white_x.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
         </property>
        </widget>
       </item>

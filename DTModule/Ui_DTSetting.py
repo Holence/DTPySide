@@ -24,8 +24,6 @@ class Ui_DTSetting(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.listWidget_buttons = QListWidget(DTSetting)
         self.listWidget_buttons.setObjectName(u"listWidget_buttons")
-        self.listWidget_buttons.setMinimumSize(QSize(36, 0))
-        self.listWidget_buttons.setMaximumSize(QSize(36, 16777215))
         self.listWidget_buttons.setStyleSheet(u"QListWidget {background: transparent;}")
         self.listWidget_buttons.setFrameShape(QFrame.NoFrame)
         self.listWidget_buttons.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -35,7 +33,7 @@ class Ui_DTSetting(object):
         self.listWidget_buttons.setSelectionMode(QAbstractItemView.NoSelection)
         self.listWidget_buttons.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.listWidget_buttons.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.listWidget_buttons.setSpacing(3)
+        self.listWidget_buttons.setSpacing(2)
 
         self.horizontalLayout.addWidget(self.listWidget_buttons)
 
@@ -53,7 +51,7 @@ class Ui_DTSetting(object):
         self.scrollAreaBasicInfo.setWidgetResizable(True)
         self.scrollAreaWidgetContentsBasicInfo = QWidget()
         self.scrollAreaWidgetContentsBasicInfo.setObjectName(u"scrollAreaWidgetContentsBasicInfo")
-        self.scrollAreaWidgetContentsBasicInfo.setGeometry(QRect(0, 0, 692, 449))
+        self.scrollAreaWidgetContentsBasicInfo.setGeometry(QRect(0, 0, 364, 449))
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContentsBasicInfo)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setHorizontalSpacing(6)
@@ -70,6 +68,11 @@ class Ui_DTSetting(object):
 
         self.pushButton_password = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_password.setObjectName(u"pushButton_password")
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_password.sizePolicy().hasHeightForWidth())
+        self.pushButton_password.setSizePolicy(sizePolicy)
 
         self.gridLayout.addWidget(self.pushButton_password, 1, 1, 1, 1)
 
@@ -86,6 +89,8 @@ class Ui_DTSetting(object):
 
         self.pushButton_font = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_font.setObjectName(u"pushButton_font")
+        sizePolicy.setHeightForWidth(self.pushButton_font.sizePolicy().hasHeightForWidth())
+        self.pushButton_font.setSizePolicy(sizePolicy)
 
         self.gridLayout.addWidget(self.pushButton_font, 3, 1, 1, 1)
 
@@ -104,6 +109,8 @@ class Ui_DTSetting(object):
 
         self.pushButton_window_effect = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_window_effect.setObjectName(u"pushButton_window_effect")
+        sizePolicy.setHeightForWidth(self.pushButton_window_effect.sizePolicy().hasHeightForWidth())
+        self.pushButton_window_effect.setSizePolicy(sizePolicy)
 
         self.gridLayout.addWidget(self.pushButton_window_effect, 5, 1, 1, 1)
 
@@ -122,6 +129,8 @@ class Ui_DTSetting(object):
 
         self.pushButton_theme = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_theme.setObjectName(u"pushButton_theme")
+        sizePolicy.setHeightForWidth(self.pushButton_theme.sizePolicy().hasHeightForWidth())
+        self.pushButton_theme.setSizePolicy(sizePolicy)
 
         self.gridLayout.addWidget(self.pushButton_theme, 7, 1, 1, 1)
 
@@ -154,7 +163,7 @@ class Ui_DTSetting(object):
         self.pushButton_font.setText(QCoreApplication.translate("DTSetting", u"Font", None))
         self.label_window_effect.setText(QCoreApplication.translate("DTSetting", u"Window Effect", None))
         self.comboBox_window_effect.setItemText(0, QCoreApplication.translate("DTSetting", u"Normal", None))
-        self.comboBox_window_effect.setItemText(1, QCoreApplication.translate("DTSetting", u"Areo", None))
+        self.comboBox_window_effect.setItemText(1, QCoreApplication.translate("DTSetting", u"Aero", None))
         self.comboBox_window_effect.setItemText(2, QCoreApplication.translate("DTSetting", u"Acrylic", None))
 
         self.pushButton_window_effect.setText(QCoreApplication.translate("DTSetting", u"Apply", None))

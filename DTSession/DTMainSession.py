@@ -49,12 +49,6 @@ class DTMainSession(DTFrame.DTMainWindow):
 		else:
 			DTFrame.DTMessageBox(self,"Error","Data Error!")
 			exit()
-	
-	def initializeWindow(self):
-		"""放入centralWidget
-		"""		
-		super().initializeWindow()
-		
 
 	def restoreWindowStatus(self):
 		"""MainSession中在这里恢复WindowStatu
@@ -135,7 +129,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 
 					# 还未出现Login界面
 					if not hasattr(self,"ResurrectionDlg"):
-						self.ResurrectionDlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
+						self.ResurrectionDlg=DTSession.DTLoginSession(self.app,self.UserSetting().value("BasicInfo/Password"))
 
 						#成功登回
 						if self.ResurrectionDlg.exec_():
@@ -185,16 +179,6 @@ class DTMainSession(DTFrame.DTMainWindow):
 		"""
 
 		self.setFont(self.UserSetting().value("BasicInfo/Font"))
-
-		# 全部的PushButton的font-size为全局字体的0.7倍，用stylesheet动态设置
-		size=self.font().pointSize()
-		stylesheet=self.app.styleSheet()
-		if re.findall("(?<=QPushButton).*?font-size.*?(?=;)",stylesheet)==[]:
-			stylesheet=re.sub("(?<=QPushButton)[\W\w]*?(?=\w)"," {\n\tfont-size: %dpt;\n\theight: %dpx;"%(int(size)*0.7,int(size*1.8)),stylesheet)
-		else:
-			stylesheet=re.sub("(?<=QPushButton)[\W\w]*?font-size[\W\w]*?;[\W\w]*?;"," {\n\tfont-size: %dpt;\n\theight: %dpx;"%(int(size)*0.7,int(size*1.8)),stylesheet)
-		
-		self.app.setStyleSheet(stylesheet)
 			
 
 	def about(self):

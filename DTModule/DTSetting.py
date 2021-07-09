@@ -15,12 +15,15 @@ class DTSetting(Ui_DTSetting,QWidget):
 
 		self.initializeWindow()
 		self.initializeSignal()
+
+		self.listWidget_buttons.setFixedWidth(int(self.font().pointSize()*2.4))
 		
 		
 
 	def initializeWindow(self):
+		
 		#加入第一页的menu button
-		BasicInfoPageButton=DTWidget.DTSettingButton(QIcon(":/icon/white/white_settings.svg"))
+		BasicInfoPageButton=DTWidget.DTSettingButton(QIcon(":/icon/white/white_settings.svg"),self.font().pointSize())
 		self.addPageButton(BasicInfoPageButton,0)
 		
 		self.lineEdit_font.setText(self.Headquarter.font().key().split(",")[0])
@@ -33,8 +36,9 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.pushButton_password.hide()
 		
 
-		self.comboBox_window_effect.setCurrentIndex(["Normal","Areo","Acrylic"].index(self.app.WindowEffect()))
+		self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
 		self.comboBox_theme.setCurrentIndex(["Dracula","Dark","Light"].index(self.app.Theme()))
+
 
 		self.setMinimumSize(500,350)
 		
@@ -86,7 +90,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 		button.clicked.connect(lambda:self.stackedWidget.setCurrentIndex(index))
 		item=QListWidgetItem()
 		
-		item.setSizeHint(QSize(30,30))
+		font_size=self.font().pointSize()*2
+		item.setSizeHint(QSize(font_size,font_size))
 
 		# 就是这个鬼头东西
 		# 如果不设置一下

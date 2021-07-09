@@ -1,2 +1,0 @@
-from DTPySide.DTStyle.DTDraculaStyle import DTDraculaNormalStyle,DTDraculaEffectStyle
-from DTPySide.DTStyle.DTDarkStyle import DTDarkEffectStyle,DTDarkNormalStyle

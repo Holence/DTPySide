@@ -18,44 +18,7 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 			self.btn_maximize.setIcon(self.restore_icon)
 		else:
 			self.btn_maximize.setIcon(self.maximize_icon)
-
-
-		self.setStyleSheet("""
-			
-			#TitleBarFrame QPushButton {	
-				border: none;
-				background-color: transparent;
-			}
-
-			#TitleBarFrame QPushButton:hover{
-				background-color: #30353F;
-				border-style: solid; 
-				border-radius: 4px;
-			}
-			#TitleBarFrame QPushButton:pressed {	
-				background-color: #49505F;
-				border-style: solid;
-				border-radius: 4px;
-			}
-
-			#TitleBarFrame #title_icon:hover{
-				background-color: rgba(0, 0, 0, 0);
-			}
-			#TitleBarFrame #title_icon:pressed {	
-				background-color: rgba(0, 0, 0, 0);
-			}
-			
-			#TitleBarFrame #btn_close:hover{
-				background-color: rgb(232, 17, 35);
-				border-style: solid;
-				border-radius: 4px;
-			}
-			#TitleBarFrame #btn_close:pressed {	
-				background-color: rgb(241, 112, 122);
-				border-style: solid;
-				border-radius: 4px;
-			}
-		""")
+		
 	
 	def setFull(self,full:bool):
 		

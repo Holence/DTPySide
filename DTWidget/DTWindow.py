@@ -21,7 +21,7 @@ class DTWindow(QWidget):
 		"""设置窗口效果，Normal 或 Aero 或 Acrylic
 
 		Args:
-			type (int): 0-Only shadow | 1-Areo | 2-Acrylic
+			type (int): 0-Only shadow | 1-Aero | 2-Acrylic
 		"""
 		self.windowEffect = WindowEffect()
 		self.windowEffect.addWindowAnimation(self.winId())
@@ -32,7 +32,7 @@ class DTWindow(QWidget):
 			# Normal
 			self.windowEffect.addShadowEffect(self.winId())
 		
-		elif window_effect=="Areo":
+		elif window_effect=="Aero":
 			# Aero
 			self.windowEffect.setAeroEffect(self.winId())
 			self.windowEffect.addShadowEffect(self.winId())

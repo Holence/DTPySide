@@ -9,7 +9,7 @@ def run():
 	app.setAuthor("Holence")
 	app.setApplicationName("Dongli Teahouse PySide Demo")
 	app.setApplicationVersion("1.0.0.0")
-	app.setWindowIcon(DTIcon.Holo2())
+	app.setWindowIcon(DTIcon.Holo1())
 
 
 	mainsession=DemoMainSession(app)

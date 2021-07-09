@@ -1,3 +1,0 @@
-from DTPySide.DTPalette.DTBrightPalette import DTBrightPalette
-from DTPySide.DTPalette.DTDarkPalette import DTDarkPalette
-from DTPySide.DTPalette.DTDraculaPalette import DTDraculaPalette

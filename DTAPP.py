@@ -44,20 +44,20 @@ class DTAPP(QApplication):
 		
 		self.setLoginEnable(True)
 		self.__password=None
-		self.__mainwindow=None
+		self.__mainsession=None
 
 
 	def setWindowStyle(self):
 		"""设置MainwWindow的Window Effect和Theme
 
 		Args:
-			WindowEffect: Normal (only shadow) | Areo | Acrylic
+			WindowEffect: Normal (only shadow) | Aero | Acrylic
 			Theme: Dracula | Dark | Light
 		"""
 		
 		WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
 		
-		if WindowEffect!="Normal" and WindowEffect!="Areo" and WindowEffect!="Acrylic":
+		if WindowEffect!="Normal" and WindowEffect!="Aero" and WindowEffect!="Acrylic":
 			self.__UserSetting.setValue("BasicInfo/WindowEffect","Normal")
 			WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
 
@@ -66,21 +66,9 @@ class DTAPP(QApplication):
 			self.__UserSetting.setValue("BasicInfo/Theme","Dracula")
 			Theme=self.__UserSetting.value("BasicInfo/Theme")
 
-		if Theme=="Dracula":
-			if WindowEffect=="Normal":
-				self.setPalette(DTPalette.DTDraculaPalette())
-				self.setStyleSheet(DTStyle.DTDraculaNormalStyle)
-			else:
-				self.setPalette(DTPalette.DTDraculaPalette())
-				self.setStyleSheet(DTStyle.DTDraculaEffectStyle)
-
-		elif Theme=="Dark":
-			if WindowEffect=="Normal":
-				self.setPalette(DTPalette.DTDarkPalette())
-				self.setStyleSheet(DTStyle.DTDarkNormalStyle)
-			else:
-				self.setPalette(DTPalette.DTDarkPalette())
-				self.setStyleSheet(DTStyle.DTDarkEffectStyle)
+		
+		font=self.UserSetting().value("BasicInfo/Font")
+		self.setStyleSheet(Generate_StyleSheet(Theme, WindowEffect, font))
 		
 	
 	def WindowEffect(self):
@@ -139,12 +127,12 @@ class DTAPP(QApplication):
 	def setContact(self,contact):
 		self.__UserSetting.setValue("MetaData/Contact",contact)
 	
-	def setMainSession(self,mainwindow: DTSession.DTMainSession):
-		self.__mainwindow=mainwindow
-		self.__mainwindow.quitApp.connect(self.quit)
+	def setMainSession(self,mainsession: DTSession.DTMainSession):
+		self.__mainsession=mainsession
+		self.__mainsession.quitApp.connect(self.quit)
 	
 	def __loginIn(self):
-		dlg=DTSession.DTLoginSession(self.__UserSetting.value("BasicInfo/Password"))
+		dlg=DTSession.DTLoginSession(self,self.__UserSetting.value("BasicInfo/Password"))
 		if dlg.exec_()==0:
 			self.quit()
 			exit()
@@ -154,8 +142,8 @@ class DTAPP(QApplication):
 	def debugRun(self,password,loginEnable):
 		self.setLoginEnable(loginEnable)
 		self.setPassword(password)
-		self.__mainwindow.initialize()
-		self.__mainwindow.show()
+		self.__mainsession.initialize()
+		self.__mainsession.show()
 		sys.exit(self.exec_())
 
 	def run(self):
@@ -164,6 +152,6 @@ class DTAPP(QApplication):
 		if self.__LoginEnable==True:
 			self.__loginIn()
 		
-		self.__mainwindow.initialize()
-		self.__mainwindow.show()
+		self.__mainsession.initialize()
+		self.__mainsession.show()
 		sys.exit(self.exec_())
