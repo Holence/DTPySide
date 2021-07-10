@@ -18,10 +18,9 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		self.initializeMenu()
 
 	def initializeWindow(self):
-		self.setWindowEffect()
 		self.TitleBar.setFull(True)
 		self.TitleBar.updateWindowIcon()
-		self.setWindowTitle(self.UserSetting().value("MetaData/ApplicationName"))
+		self.setWindowTitle(self.app.applicationName())
 	
 	def initializeSignal(self):	
 		"""主窗体的action向function链接

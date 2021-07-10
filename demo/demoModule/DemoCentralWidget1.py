@@ -6,6 +6,9 @@ class DemoCentralWidget1(Ui_DemoCentralWidget1,QWidget):
         super().__init__(Headquarter)
         self.setupUi(self)
         
-        self.homelabel.setText("HomeLabel's Text is: "+Headquarter.UserSetting().value("HomePage/HomeLabel"))
+        try:
+            self.homelabel.setText("HomeLabel's Text is: "+Headquarter.UserSetting().value("HomePage/HomeLabel"))
+        except:
+            pass
 
-        self.actionHello_World.triggered.connect(lambda:DTFrame.DTMessageBox(Headquarter,"Hello World","Hello! Welcome to Dongli Teahouse PySide.",DTIcon.Heart()))
+        self.actionHello_World.triggered.connect(lambda:DTFrame.DTMessageBox(Headquarter,"Hello World","Hello! Welcome to Dongli Teahouse PySide.",DTIcon.Holo2()))

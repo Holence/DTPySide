@@ -26,7 +26,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 		"""DTMainSession的构造函数
 
 		Args:
-			app (DTAPP): 保存传入的app指针，用于调用app的UserSetting和Password
+			app (DTAPP): 保存传入的app指针
 		"""
 		
 		super().__init__(app)
@@ -48,13 +48,11 @@ class DTMainSession(DTFrame.DTMainWindow):
 			self.loadData()
 		else:
 			DTFrame.DTMessageBox(self,"Error","Data Error!")
-			exit()
+			self.app.quit()
 
 	def restoreWindowStatus(self):
 		"""MainSession中在这里恢复WindowStatu
 		"""	
-
-		self.updateFont()
 		
 		try:
 			self.resize(self.UserSetting().value("WindowStatus/Size"))
@@ -129,7 +127,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 
 					# 还未出现Login界面
 					if not hasattr(self,"ResurrectionDlg"):
-						self.ResurrectionDlg=DTSession.DTLoginSession(self.app,self.UserSetting().value("BasicInfo/Password"))
+						self.ResurrectionDlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
 
 						#成功登回
 						if self.ResurrectionDlg.exec_():
@@ -173,12 +171,6 @@ class DTMainSession(DTFrame.DTMainWindow):
 	def SaveAllEncryptData(self):
 		"saveData或者UserSetting中有加密的保存项目就要放到这里（除了对密码的加密已经操作过了）"
 		pass
-
-	def updateFont(self):
-		"""使用了AA_UseStyleSheetPropagationInWidgetStyles继承字体与stylesheet，用主窗体控制全局的字体
-		"""
-
-		self.setFont(self.UserSetting().value("BasicInfo/Font"))
 			
 
 	def about(self):

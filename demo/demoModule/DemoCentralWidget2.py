@@ -7,4 +7,3 @@ class DemoCentralWidget2(Ui_DemoCentralWidget2,QWidget):
         self.setupUi(self)
         
         self.homelabel.setText("Your password is "+Headquarter.password())
-        self.setFont(Headquarter.font())

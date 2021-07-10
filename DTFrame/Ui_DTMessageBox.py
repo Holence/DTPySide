@@ -51,6 +51,7 @@ class Ui_DTMessageBox(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label_icon.sizePolicy().hasHeightForWidth())
         self.label_icon.setSizePolicy(sizePolicy1)
+        self.label_icon.setMinimumSize(QSize(64, 64))
         self.label_icon.setMaximumSize(QSize(64, 64))
         self.label_icon.setPixmap(QPixmap(u":/icon/holoicon1.ico"))
         self.label_icon.setScaledContents(True)

@@ -7,18 +7,18 @@ from DTPySide.demo.demoModule import DemoCentralWidget1,WidgetGallery
 class DemoMainSession(DTSession.DTMainSession):
 	def __init__(self,app):
 		super().__init__(app)
-		
+
 	def initializeWindow(self):
 		super().initializeWindow()
 
-		# self.Widget=DemoCentralWidget1(self)
-		self.Widget=WidgetGallery(self)
+		self.Widget=DemoCentralWidget1(self)
+		self.CentralWidget=WidgetGallery(self)
+		self.CentralWidget.main_layout.addWidget(self.Widget)
 
-		self.setCentralWidget(self.Widget)
-	
+		self.setCentralWidget(self.CentralWidget)
 
 	def initializeMenu(self):
-		# self.addActionToMainMenu(self.Widget.actionHello_World)
+		self.addActionToMainMenu(self.Widget.actionHello_World)
 		
 		self.actionSummonMainWindow2=QAction("MainWindow 2")
 		self.actionSummonMainWindow2.setIcon(DTIcon.Happy())

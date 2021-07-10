@@ -3,18 +3,13 @@ from DTPySide import *
 
 # Login 
 class DTLoginSession(DTFrame.DTDialog):
-	def __init__(self,app:DTAPP,locked_password):
+	def __init__(self,locked_password):
 		super().__init__(None,"Login")
 		self.login=DTModule.DTLogin(self)
 		self.centralWidget.addWidget(self.login)
 		self.setWindowTitle("Login")
-		self.adjustSize()
-		self.setFocus()
-		self.login.lineEdit.setFocus()
 
 		self.buttonBox.button(QDialogButtonBox.Ok).setDefault(True)
-
-		self.setStyleSheet(app.styleSheet())
 
 		# 获取UserSetting.ini中的加密密码
 		self.locked_password=locked_password
@@ -22,6 +17,9 @@ class DTLoginSession(DTFrame.DTDialog):
 		#欢迎新用户
 		if not self.locked_password:
 			self.login.label_lock.setPixmap(DTIcon.Happy().pixmap(QSize(64,64)))
+		
+		self.setFocus()
+		self.login.lineEdit.setFocus()
 	
 	def accept(self):
 		self.input_password=self.login.lineEdit.text()

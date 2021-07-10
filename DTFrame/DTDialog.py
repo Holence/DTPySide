@@ -13,12 +13,11 @@ class DTDialog(Ui_DTDialog,QDialog):
 		self.setupUi(self)
 		
 		# 无边框
-		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
+		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
 		
-		# 继承字体
-		self.setAttribute(Qt.WA_WindowPropagation,True)
-		if 0.7*self.font().pointSize()>=9:
-			self.buttonBox.setFont(Font_Resize(self.font(),0.7))
+		# 现在有全局stylesheet和AA_UseStyleSheetPropagationInWidgetStyles了，就不用一个个写继承字体了
+		# Makes a toplevel window inherit font, palette and locale from its parent.
+		# self.setAttribute(Qt.WA_WindowPropagation,True)
 		
 		# 缩放角
 		self.setSizeGripEnabled(True)

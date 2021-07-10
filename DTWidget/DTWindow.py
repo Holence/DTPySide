@@ -14,15 +14,13 @@ class DTWindow(QWidget):
 		
 		self.__monitor_info = None
 
-		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 		
 	
-	def setWindowEffect(self):
+	def initializeWindowEffect(self):
 		"""设置窗口效果，Normal 或 Aero 或 Acrylic
-
-		Args:
-			type (int): 0-Only shadow | 1-Aero | 2-Acrylic
 		"""
+
 		self.windowEffect = WindowEffect()
 		self.windowEffect.addWindowAnimation(self.winId())
 		
@@ -52,19 +50,22 @@ class DTWindow(QWidget):
 
 	def nativeEvent(self, eventType, message):
 		""" 处理windows消息 """
+		scale=self.app.Scale()
 		msg = MSG.from_address(message.__int__())
 		if msg.message == win32con.WM_NCHITTEST:
 			# 鼠标在窗口中移动
 
 			# 解决多屏下会出现鼠标一直为拖动状态的问题
+			
 			xPos = (win32api.LOWORD(msg.lParam) -
-					self.frameGeometry().x()) % 65536
-			yPos = win32api.HIWORD(msg.lParam) - self.frameGeometry().y()
-			w, h = self.width(), self.height()
-			lx = xPos < self.BORDER_WIDTH
-			rx = xPos + 9 > w - self.BORDER_WIDTH
-			ty = yPos < self.BORDER_WIDTH
-			by = yPos > h - self.BORDER_WIDTH
+					self.frameGeometry().x()*scale) % 65536
+			yPos = win32api.HIWORD(msg.lParam) - self.frameGeometry().y()*scale
+			w, h = self.width()*scale, self.height()*scale
+			
+			lx = xPos -9 < self.BORDER_WIDTH
+			rx = xPos +9 > w - self.BORDER_WIDTH
+			ty = yPos -9 < self.BORDER_WIDTH
+			by = yPos +9 > h - self.BORDER_WIDTH
 			if lx and ty:
 				return True, win32con.HTTOPLEFT
 			elif rx and by:

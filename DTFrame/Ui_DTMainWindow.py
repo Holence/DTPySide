@@ -20,7 +20,7 @@ class Ui_DTMainWindow(object):
     def setupUi(self, DTMainWindow):
         if not DTMainWindow.objectName():
             DTMainWindow.setObjectName(u"DTMainWindow")
-        DTMainWindow.resize(1413, 1001)
+        DTMainWindow.resize(1278, 960)
         self.actionSetting = QAction(DTMainWindow)
         self.actionSetting.setObjectName(u"actionSetting")
         icon = QIcon()

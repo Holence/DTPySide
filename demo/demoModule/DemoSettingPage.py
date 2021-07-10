@@ -5,8 +5,6 @@ class DemoSettingPage(Ui_DemoSettingPage,QStackedWidget):
 	def __init__(self,Headquarter):
 		super().__init__(Headquarter)
 		self.setupUi(self)
-		# 继承字体
-		self.setAttribute(Qt.WA_WindowPropagation,True)
 
 		self.Headquarter=Headquarter
 		self.initializeWindow()
@@ -20,5 +18,5 @@ class DemoSettingPage(Ui_DemoSettingPage,QStackedWidget):
 	
 	def setHomeLabel(self):
 		s=self.lineEdit_homelabel.text()
-		self.Headquarter.CentralWidget.homelabel.setText(s)
+		self.Headquarter.Widget.homelabel.setText("HomeLabel's Text is: "+s)
 		self.Headquarter.UserSetting().setValue("HomePage/HomeLabel",s)

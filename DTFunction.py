@@ -429,6 +429,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		PRESSED = "#D7AAE6" # Button Clicked
 		FOCUSED="#BD93F9" # Button Hover
 		TEXT="#EBEBEB" # 文字
+		ICONCOLOR="white"
 
 	elif theme=="Dark":
 		DEEPDARK="#232323"
@@ -438,6 +439,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		PRESSED = "#7AB6F3"
 		FOCUSED="#2A82DA"
 		TEXT="#FFFFFF"
+		ICONCOLOR="white"
 	
 	elif theme=="Light":
 		DEEPDARK="#8972CC"
@@ -447,6 +449,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		PRESSED = "#ECCAFF"
 		FOCUSED="#E2C6FF"
 		TEXT="#2D2730"
+		ICONCOLOR="black"
 	
 	if window_effect=="Normal":
 		stylesheet+=f"""
@@ -473,6 +476,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	{{
 		color: {TEXT};
 		font-family: {font_family};
+		font-size: {font_size}pt;
 	}}
 
 	QDialog {{
@@ -483,58 +487,48 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	#DTMainWindow #statusBar{{
 		background-color: {SOFTDARK};
 	}}
-
-	#DTLogin #label_lock{{
-		min-width: {int(font_size*1.5)}px;
-		max-width: {int(font_size*1.5)}px;
-		min-height: {int(font_size*1.5)}px;
-		max-height: {int(font_size*1.5)}px;
-	}}
-
 	/* TitleBar */
 
-	#TitleBarFrame{{
-		min-width: {font_size*8}px;
+	DTLogin QLineEdit {{
+		font-size: {int(font_size*0.6)}pt;
 	}}
-	#TitleBarFrame #label_titlebar{{
-		font-size: {int(font_size*1.2)}pt;
-		font-weight: bold;
+	
+	#TitleBarFrame #label_titlebar {{
+		font-family: "Segoe UI";
+		font-size: {font_size+2}pt;
 	}}
-
 	#TitleBarFrame QPushButton {{
 		border: none;
-		background-color: transparent;	
-		icon-size: {int(font_size*1.4)}px;
-		min-width: {int(font_size*1.4)}px;
-		max-width: {int(font_size*1.4)}px;
-		min-height: {int(font_size*1.4)}px;
-		max-height: {int(font_size*1.4)}px;
+		background-color: transparent;
+		max-height: 24px;
+		min-height: 24px;
+		min-width: 24px;
+		max-width: 24px;
 	}}
 
 	#TitleBarFrame QPushButton:hover{{
-		background-color: {BACKGROUND};
-		border-style: solid;
-		border-radius: 4px;
-	}}
-	#TitleBarFrame QPushButton:pressed {{
 		background-color: {SOFTDARK};
 		border-style: solid;
 		border-radius: 4px;
 	}}
+	#TitleBarFrame QPushButton:pressed {{
+		background-color: {DIM};
+		border-style: solid;
+		border-radius: 4px;
+	}}
 
-	
 	#TitleBarFrame #title_icon{{
-		icon-size: {int(font_size*2)}px;
-		min-width: {int(font_size*2)}px;
-		max-width: {int(font_size*2)}px;
-		min-height: {int(font_size*2)}px;
-		max-height: {int(font_size*2)}px;
+		icon-size: 36px;
+		max-height: 36px;
+		min-height: 36px;
+		min-width: 36px;
+		max-width: 36px;
 	}}
 	#TitleBarFrame #title_icon:hover{{
-		background-color: rgba(0, 0, 0, 0);
+		background-color: transparent;
 	}}
 	#TitleBarFrame #title_icon:pressed {{
-		background-color: rgba(0, 0, 0, 0);
+		background-color: transparent;
 	}}
 	
 	#TitleBarFrame #btn_close:hover{{
@@ -567,23 +561,25 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	QMainWindow::separator:hover{{
 		background: {FOCUSED};
 	}}
+
+	QSplitter{{
+		min-height: 16px;
+		min-width: 16px;
+		background: transparent;
+	}}
 	QSplitter::handle{{
-		border: 1px solid {DEEPDARK};
-		width: 4px;
-		height: 4px;
+		image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_more-vertical.svg);
+		border: 1px solid transparent;
+		border-radius: 7px;
 	}}
 	QSplitter::handle:hover{{
-		/*splitter->handle(1)->setAttribute(Qt::WA_Hover, true);才生效*/
-		border-color: {FOCUSED};
-	}}
-	QSplitter::handle:pressed{{
-		border-color: {PRESSED};
-	}}
-	QSizeGrip{{
-		background-color: none;
+		background: {SOFTDARK};
 	}}
 	
 
+	QSizeGrip{{
+		background-color: none;
+	}}
 
 	/* MenuBar Menu */
 	QMenuBar {{
@@ -609,6 +605,8 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 
 	QMenu {{
+		font-family: "Hack";
+		font-size: {int(font_size*0.6)}pt;
 		background-color: {BACKGROUND};
 		border: 1px solid {DEEPDARK};
 		margin: 1px;
@@ -619,7 +617,6 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		padding: 2px 25px 2px 15px;
 		border: 1px solid transparent;
 		margin: 1px;
-		font-size: {int(font_size*0.7)}pt;
 	}}
 	QMenu::icon {{
 		width: 15px;
@@ -632,9 +629,12 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border-color: {DEEPDARK};
 		background: {FOCUSED};
 	}}
+	QMenu::item:disabled {{
+		color: {DIM};
+	}}
 
 	QMenu::separator {{
-		height: 1px;
+		height: 2px;
 		background: {DEEPDARK};
 		margin: 0 5px;
 	}}
@@ -692,6 +692,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	QLabel {{
 		background: transparent;
 		border: 1px solid transparent;
+		selection-background-color: {FOCUSED};
 	}}
 
 	QToolTip {{
@@ -701,22 +702,17 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 
 
 	/* TextBox */
-
+	
 	QLineEdit {{
 		background: {SOFTDARK};
 		selection-background-color: {FOCUSED};
 		border: 1px solid {DEEPDARK};
 		border-radius: 2px;
-		height: {int(font_size*1.5)}px;
 	}}
 
 
 	QLineEdit:focus{{
 		border-color: {FOCUSED};
-	}}
-	
-	QLineEdit[echoMode="2"]{{
-		lineedit-password-character: 9679; /*字符的ascii码35 88等 */
 	}}
 
 	QLineEdit:read-only {{
@@ -744,7 +740,8 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border-radius: 3px;
 		background-color: {SOFTDARK};
 		font-family: "Hack";
-		font-size: {int(font_size*0.7)}pt;
+		font-size: {int(font_size*0.6)}pt;
+		min-height: {int(font_size*1.5)}px;
 	}}
 
 	QPushButton:hover{{
@@ -764,15 +761,13 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 
 	QDialogButtonBox QPushButton{{
-		font-size: {int(font_size*0.7)}pt;
-		min-width: {int(font_size*4)}px;
-		min-height: {int(font_size*1.5)}px;
+		min-width: {font_size*4}px;
 	}}
 	
 	QToolButton {{
 		font-family: "Hack";
-		font-size: {int(font_size*0.7)}pt;
-		height: {int(font_size*1.8)}px;
+		font-size: {int(font_size*0.6)}pt;
+		height: {int(font_size*1.5)}px;
 	}}
 	QToolButton,QToolButton:unchecked {{
 		/* ToolBar里的按钮和带下拉菜单的按钮 */
@@ -825,7 +820,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	QRadioButton{{
 		background: transparent;
 		font-family: "Hack";
-		font-size: {int(font_size*0.7)}pt;
+		font-size: {int(font_size*0.6)}pt;
 	}}
 	QRadioButton::indicator {{
 		width: 10px;
@@ -842,7 +837,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 
 	QCheckBox{{
 		font-family: "Hack";
-		font-size: {int(font_size*0.7)}pt;
+		font-size: {int(font_size*0.6)}pt;
 		background: transparent;
 	}}
 	QCheckBox::indicator {{
@@ -862,29 +857,45 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border-radius: 2px;
 	}}
 
-
+	DTSettingButton {{
+		icon-size: 20px;
+		max-height: 30px;
+		min-height: 30px;
+		min-width: 30px;
+		max-width: 30px;
+	}}
 
 	/* ComboBox */
 
 	QComboBox{{
 		background-color: {SOFTDARK};
 		border: 1px solid {DEEPDARK};
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		height: {int(font_size*2)}px;
+		selection-background-color: {FOCUSED};
 	}}
 	QComboBox:focus{{
 		border-color: {FOCUSED};
 	}}
-	QComboBox:on {{
-		/* shift the text when the popup opens */
-		padding-top: 2px;
-		padding-left: 2px;
+	QComboBox QAbstractItemView{{
+		background-color: {DEEPDARK};
 	}}
-	QComboBox::item {{
-		height: {font_size*2}px;
-		font-size: {font_size}pt;
-		
+	QComboBox::drop-down{{
+		background-color: {SOFTDARK};
+		border: 1px solid {DEEPDARK};
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		subcontrol-origin: padding;
+		subcontrol-position: top right;
+		width: {font_size}px;
+		margin: 1px;
 	}}
-	QComboBox::item:selected {{
+	QComboBox::drop-down:pressed{{
 		background-color: {FOCUSED};
+	}}
+	QComboBox::down-arrow{{
+		image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_chevron-down.svg);
 	}}
 	
 
@@ -915,7 +926,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		background-color: {FOCUSED};
 	}}
 	QSpinBox::up-arrow, QDoubleSpinBox::up-arrow, QDateEdit::up-arrow, QTimeEdit::up-arrow, QDateTimeEdit::up-arrow{{
-		image: url(:/icon/white/white_chevron-up.svg);
+		image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_chevron-up.svg);
 	}}
 
 	QSpinBox::down-button, QDoubleSpinBox::down-button, QDateEdit::down-button, QTimeEdit::down-button, QDateTimeEdit::down-button{{
@@ -932,7 +943,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		background-color: {FOCUSED};
 	}}
 	QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QDateEdit::down-arrow, QTimeEdit::down-arrow, QDateTimeEdit::down-arrow{{
-		image: url(:/icon/white/white_chevron-down.svg);
+		image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_chevron-down.svg);
 	}}
 	
 
@@ -993,29 +1004,29 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	/* ScrollBar */
 
 	QScrollBar{{
+		width: 16px;
+		height: 16px;
 		background-color: {SOFTDARK};
-		border: 1px solid {DEEPDARK};
-		border-radius: 5px;
+		border: 1px solid transparent;
+		border-radius: 7px;
 		padding: 1px;
-		height: 10px;
-		width: 10px;
 	}}
 	QScrollBar::handle{{
-		border-radius: 3px;
+		border-radius: 5px;
 		background: {FOCUSED};
-		min-width: 16px;
-		min-height: 16px;
 	}}
 	QScrollBar::handle:hover {{
 		background: {PRESSED};
 	}}
 	QScrollBar::add-line, QScrollBar::sub-line,
 	QScrollBar::add-page, QScrollBar::sub-page {{
-		width: 0px;
 		background: transparent;
 	}}
 	QScrollArea{{
 		border: none;
+	}}
+	QAbstractScrollArea::corner {{
+    	background: transparent;
 	}}
 
 	/* DockWidget*/
@@ -1038,12 +1049,11 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		background-color: {DEEPDARK};
 		border: 1px solid {DEEPDARK};
 		border-radius: 4px;
-		margin-top: 2em;
+		margin-top: 1em;
 	}}
 	QGroupBox::title {{
 		subcontrol-origin: margin;
 		subcontrol-position: top left;
-		left: 1em;
 
 	}}
 
@@ -1053,6 +1063,8 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border: 1px solid {DEEPDARK};
 	}}
 	QToolBox::tab {{
+		font-family: "Hack";
+		font-size: {int(font_size*0.6)}pt;
 		background: {SOFTDARK};
 		border: 1px solid {DEEPDARK};
 		border-radius: 1px;
@@ -1083,6 +1095,8 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		left: 0px;
 	}}
 	QTabBar::tab {{
+		font-family: "Hack";
+		font-size: {int(font_size*0.6)}pt;
 		background: {SOFTDARK};
 		border: 1px solid {DEEPDARK};
 		padding: 3px 5px;    
@@ -1125,14 +1139,15 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	/* QHeaderView for list table */
 
 	QHeaderView {{
+		font-family: "Hack";
+		font-size: {int(font_size*0.6)}pt;
 		border: none;
-		margin: 0px;
-		padding: 0px;
+
 	}}
 	QHeaderView::section, QTableCornerButton::section {{
 		/*设置表头属性*/ /*表格左上角小框框*/
 		background-color: {SOFTDARK};
-		padding: 0 3px;
+		padding-top: 5px;
 		border-right: 1px solid {DEEPDARK};
 		border-bottom: 1px solid {DEEPDARK};
 		border-radius: 0px;
@@ -1184,6 +1199,8 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 
 	QListView, QTreeView, QTableView {{
+		font-family: "Hack";
+		font-size: {int(font_size*0.6)}pt;
 		border:1px solid {DEEPDARK};
 	}}
 	QListView::item:hover, QTreeView::item:hover, QTableView::item:hover {{
@@ -1196,6 +1213,13 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		background: {FOCUSED};
 	}}
 
+	QFontDialog {{
+		min-width: {font_size*35}px;
+		min-height: {font_size*25}px;
+	}}
+	QFontDialog * {{
+		font-size: {font_size-3}px;
+	}}
 	"""
 
 	return stylesheet

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
+    <width>222</width>
     <height>38</height>
    </rect>
   </property>
@@ -43,6 +43,12 @@
        <height>28</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>28</width>
+       <height>28</height>
+      </size>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -64,14 +70,23 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>165</width>
-       <height>24</height>
+       <width>180</width>
+       <height>26</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>28</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <pointsize>9</pointsize>
+       <pointsize>12</pointsize>
       </font>
+     </property>
+     <property name="text">
+      <string/>
      </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>

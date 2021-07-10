@@ -333,6 +333,7 @@ class WidgetGallery(QWidget):
         result.addTab(embed_into_hbox_layout(list_view), "List")
         result.addTab(embed_into_hbox_layout(icon_mode_listview),
                       "Icon Mode List")
+
         return result
 
     def create_simple_inputwidgets_groupbox(self):

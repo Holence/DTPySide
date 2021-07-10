@@ -11,12 +11,11 @@ class DTMessageBox(Ui_DTMessageBox,QDialog):
 		self.setupUi(self)
 		
 		# 无边框
-		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.CustomizeWindowHint)
+		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
 		
-		# 继承字体
-		self.setAttribute(Qt.WA_WindowPropagation)
-		if 0.7*self.font().pointSize()>=9:
-			self.buttonBox.setFont(Font_Resize(self.font(),0.7))
+		# 现在有全局stylesheet和AA_UseStyleSheetPropagationInWidgetStyles了，就不用一个个写继承字体了
+		# Makes a toplevel window inherit font, palette and locale from its parent.
+		# self.setAttribute(Qt.WA_WindowPropagation,True)
 		
 		# 缩放角
 		self.setSizeGripEnabled(True)
@@ -28,8 +27,7 @@ class DTMessageBox(Ui_DTMessageBox,QDialog):
 		self.label_message.setText(messageText)
 		
 		if icon!=None:
-			width=self.font().pointSize()*3
-			icon_pic=icon.pixmap(QSize(width,width))
+			icon_pic=icon.pixmap(QSize(64,64))
 			self.label_icon.setPixmap(icon_pic)
 		else:
 			self.label_icon.hide()

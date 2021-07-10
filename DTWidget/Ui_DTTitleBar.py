@@ -33,15 +33,18 @@ class Ui_DTTitleBar(object):
         self.horizontalLayout_2.setContentsMargins(8, 3, 8, 3)
         self.title_icon = QPushButton(self.TitleBarFrame)
         self.title_icon.setObjectName(u"title_icon")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.title_icon.sizePolicy().hasHeightForWidth())
         self.title_icon.setSizePolicy(sizePolicy)
+        self.title_icon.setMinimumSize(QSize(36, 36))
+        self.title_icon.setMaximumSize(QSize(36, 36))
         self.title_icon.setStyleSheet(u"")
         icon = QIcon()
         icon.addFile(u":/icon/holoicon1.ico", QSize(), QIcon.Normal, QIcon.Off)
         self.title_icon.setIcon(icon)
+        self.title_icon.setIconSize(QSize(36, 36))
 
         self.horizontalLayout_2.addWidget(self.title_icon)
 
@@ -52,6 +55,12 @@ class Ui_DTTitleBar(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label_titlebar.sizePolicy().hasHeightForWidth())
         self.label_titlebar.setSizePolicy(sizePolicy1)
+        font = QFont()
+        font.setFamily(u"Segoe UI")
+        font.setPointSize(18)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_titlebar.setFont(font)
 
         self.horizontalLayout_2.addWidget(self.label_titlebar)
 
@@ -59,10 +68,13 @@ class Ui_DTTitleBar(object):
         self.btn_minimize.setObjectName(u"btn_minimize")
         sizePolicy.setHeightForWidth(self.btn_minimize.sizePolicy().hasHeightForWidth())
         self.btn_minimize.setSizePolicy(sizePolicy)
+        self.btn_minimize.setMinimumSize(QSize(24, 24))
+        self.btn_minimize.setMaximumSize(QSize(24, 24))
         self.btn_minimize.setStyleSheet(u"")
         icon1 = QIcon()
         icon1.addFile(u":/icon/white/white_window-minimize.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_minimize.setIcon(icon1)
+        self.btn_minimize.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_2.addWidget(self.btn_minimize)
 
@@ -70,10 +82,13 @@ class Ui_DTTitleBar(object):
         self.btn_maximize.setObjectName(u"btn_maximize")
         sizePolicy.setHeightForWidth(self.btn_maximize.sizePolicy().hasHeightForWidth())
         self.btn_maximize.setSizePolicy(sizePolicy)
+        self.btn_maximize.setMinimumSize(QSize(24, 24))
+        self.btn_maximize.setMaximumSize(QSize(24, 24))
         self.btn_maximize.setStyleSheet(u"")
         icon2 = QIcon()
         icon2.addFile(u":/icon/white/white_window-maximize.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_maximize.setIcon(icon2)
+        self.btn_maximize.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_2.addWidget(self.btn_maximize)
 
@@ -81,10 +96,13 @@ class Ui_DTTitleBar(object):
         self.btn_close.setObjectName(u"btn_close")
         sizePolicy.setHeightForWidth(self.btn_close.sizePolicy().hasHeightForWidth())
         self.btn_close.setSizePolicy(sizePolicy)
+        self.btn_close.setMinimumSize(QSize(24, 24))
+        self.btn_close.setMaximumSize(QSize(24, 24))
         self.btn_close.setStyleSheet(u"")
         icon3 = QIcon()
         icon3.addFile(u":/icon/white/white_x.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_close.setIcon(icon3)
+        self.btn_close.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_2.addWidget(self.btn_close)
 
