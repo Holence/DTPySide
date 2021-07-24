@@ -303,6 +303,7 @@ class WidgetGallery(QWidget):
         result.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Ignored)
 
         tree_view = QTreeView()
+        tree_view.setSortingEnabled(True)
         init_widget(tree_view, "treeView")
         filesystem_model = QFileSystemModel(tree_view)
         filesystem_model.setRootPath(QDir.rootPath())
@@ -313,10 +314,11 @@ class WidgetGallery(QWidget):
         table_widget.setRowCount(10)
         table_widget.setColumnCount(10)
 
-        list_model = QStandardItemModel(0, 1, result)
+        list_model = QStandardItemModel(0, 0, result)
 
-        list_model.appendRow(QStandardItem(QIcon(DIR_OPEN_ICON), "Directory"))
-        list_model.appendRow(QStandardItem(QIcon(COMPUTER_ICON), "Computer"))
+        list_model.appendRow([QStandardItem(QIcon(COMPUTER_ICON), "Computer"),QStandardItem(QIcon(DIR_OPEN_ICON), "Directory")])
+        list_model.appendRow([QStandardItem(QIcon(DIR_OPEN_ICON), "Directory"),QStandardItem(QIcon(COMPUTER_ICON), "Computer")])
+        list_model.appendRow([QStandardItem(DTIcon.HoloIcon1(), "Holo"),QStandardItem(DTIcon.HoloIcon2(), "Holo"),QStandardItem(DTIcon.Heart(), "Heart")])
 
         list_view = QListView()
         init_widget(list_view, "listView")
@@ -328,11 +330,18 @@ class WidgetGallery(QWidget):
         icon_mode_listview.setViewMode(QListView.IconMode)
         icon_mode_listview.setModel(list_model)
 
+        table_view=QTableView()
+        init_widget(table_view, "tableview")
+        table_view.setModel(list_model)
+
         result.addTab(embed_into_hbox_layout(tree_view), "Tree View")
         result.addTab(embed_into_hbox_layout(table_widget), "Table")
-        result.addTab(embed_into_hbox_layout(list_view), "List")
+        result.addTab(embed_into_hbox_layout(list_view), "List View")
         result.addTab(embed_into_hbox_layout(icon_mode_listview),
-                      "Icon Mode List")
+                      "List View")
+        result.addTab(embed_into_hbox_layout(table_view),
+                      "Tabel View")
+
 
         return result
 

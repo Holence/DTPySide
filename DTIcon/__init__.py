@@ -21,10 +21,10 @@ def Unhappy():
 def Heart():
 	return QIcon(":/icon/white/white_heart.svg")
 
-def Holo1():
+def HoloIcon1():
 	return QIcon(":/icon/holoicon1.ico")
 
-def Holo2():
+def HoloIcon2():
 	return QIcon(":/icon/holoicon2.ico")
 
 def Lock():
@@ -32,3 +32,6 @@ def Lock():
 
 def Unlock():
 	return QIcon(":/icon/white/white_unlock.svg")
+
+def Holo01():
+	return QIcon(":/icon/holo/holo01.ico")

@@ -3,34 +3,46 @@ from DTPySide import *
 
 # MessageBox Module
 from DTPySide.DTFrame.Ui_DTMessageBox import Ui_DTMessageBox
-class DTMessageBox(Ui_DTMessageBox,QDialog):
-	"传入title、messageText和icon的地址（建议使用DTIcon的内置Icon）"
+from DTPySide.DTFrame.DTDialog import DTDialog
 
-	def __init__(self,parent,title,messageText,icon=None):
+class MessageModule(Ui_DTMessageBox,QWidget):
+	def __init__(self,parent):
 		super().__init__(parent)
 		self.setupUi(self)
-		
-		# 无边框
-		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
-		
-		# 现在有全局stylesheet和AA_UseStyleSheetPropagationInWidgetStyles了，就不用一个个写继承字体了
-		# Makes a toplevel window inherit font, palette and locale from its parent.
-		# self.setAttribute(Qt.WA_WindowPropagation,True)
-		
-		# 缩放角
-		self.setSizeGripEnabled(True)
-		
-		self.TitleBar.setWindowTitle(title)
-		self.TitleBar.setFull(False)
-		self.TitleBar.updateWindowIcon()
 
-		self.label_message.setText(messageText)
+class DTMessageBox(DTDialog):
+	def __init__(self,parent,title,text,icon=None):
+		super().__init__(parent,title)
+		self.module=MessageModule(self)
+		self.setCentralWidget(self.module)
 		
+		self.module.label_text.setText(text)
+		self.setButtonBox(QDialogButtonBox.Ok)
+		self.setDefaultButton(QDialogButtonBox.Ok)
+
 		if icon!=None:
 			icon_pic=icon.pixmap(QSize(64,64))
-			self.label_icon.setPixmap(icon_pic)
+			self.module.label_icon.setPixmap(icon_pic)
 		else:
-			self.label_icon.hide()
+			self.module.label_icon.setVisible(False)
+			self.module.horizontalLayout.setContentsMargins(45,10,0,5)
 
 		self.adjustSize()
 		self.exec_()
+
+class DTConfirmBox(DTDialog):
+	def __init__(self,parent,title,text,icon=None):
+		super().__init__(parent, title)
+		self.module=MessageModule(self)
+		self.setCentralWidget(self.module)
+		
+		self.module.label_text.setText(text)
+
+		if icon!=None:
+			icon_pic=icon.pixmap(QSize(64,64))
+			self.module.label_icon.setPixmap(icon_pic)
+		else:
+			self.module.label_icon.setVisible(False)
+			self.module.horizontalLayout.setContentsMargins(45,10,0,5)
+
+		self.adjustSize()

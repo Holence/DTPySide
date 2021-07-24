@@ -11,7 +11,7 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		self.setupUi(self)
 		self.app=app
 		self._MainMenu=QMenu(self)
-		
+	
 	def initialize(self):
 		self.initializeWindow()
 		self.initializeSignal()
@@ -30,6 +30,8 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		self.addAction(self.actionWindow_Toggle_Fullscreen)
 
 		self.actionWindow_Toggle_Stay_on_Top.triggered.connect(self.windowToggleStayonTop)
+		self.addAction(self.actionWindow_Toggle_Stay_on_Top)
+
 		self.actionNormalize_Window.triggered.connect(self.windowShowNormal)
 		self.actionMaximize_Window.triggered.connect(self.showMaximized)
 		self.actionMinimize_Window.triggered.connect(self.showMinimized)
@@ -39,16 +41,15 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 
 	def initializeMenu(self):
 		"制定menu"
-		
-		self._MainMenu.addAction(self.actionWindow_Toggle_Fullscreen)
-		self._MainMenu.addAction(self.actionWindow_Toggle_Stay_on_Top)
-		self._MainMenu.addAction(self.actionNormalize_Window)
-		self._MainMenu.addAction(self.actionMinimize_Window)
-		self._MainMenu.addAction(self.actionMaximize_Window)
-		self._MainMenu.addSeparator()
+		self.__menu_view=QMenu("View",self)
+		self.__menu_view.setIcon(QIcon(":/icon/white/white_eye.svg"))
+		self.__menu_view.addAction(self.actionWindow_Toggle_Stay_on_Top)
+		self.__menu_view.addAction(self.actionWindow_Toggle_Fullscreen)
+		self.__menu_view.addAction(self.actionNormalize_Window)
+		self.__menu_view.addAction(self.actionMinimize_Window)
+		self.__menu_view.addAction(self.actionMaximize_Window)
+		self.addMenuToMainMenu(self.__menu_view)
 
-		################################################################
-		
 		self._MainMenu.addAction(self.actionExit)
 	
 	def MainMenu(self):
@@ -113,8 +114,6 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 	
 	def UserSetting(self):
 		return self.app.UserSetting()
-
-
 
 	def setCentralWidget(self,widget):
 		# 奶奶的，这里本来偷懒，在ui文件中用了一个QWidget占位

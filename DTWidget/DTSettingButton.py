@@ -6,3 +6,5 @@ class DTSettingButton(QPushButton):
 		super().__init__()
 		self.setIcon(icon)
 		self.setFlat(True)
+		self.setIconSize(QSize(30,30))
+		self.setFixedSize(36,36)

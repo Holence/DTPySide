@@ -49,7 +49,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="centralWidget">
+    <layout class="QHBoxLayout" name="centralWidget">
      <property name="leftMargin">
       <number>8</number>
      </property>
@@ -65,7 +65,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="buttonBoxLayout">
      <property name="spacing">
       <number>0</number>
      </property>

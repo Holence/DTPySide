@@ -36,19 +36,19 @@ class Ui_DTDialog(object):
 
         self.verticalLayout.addWidget(self.TitleBar)
 
-        self.centralWidget = QVBoxLayout()
+        self.centralWidget = QHBoxLayout()
         self.centralWidget.setObjectName(u"centralWidget")
         self.centralWidget.setContentsMargins(8, 10, 32, 25)
 
         self.verticalLayout.addLayout(self.centralWidget)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(-1, -1, 32, 25)
+        self.buttonBoxLayout = QHBoxLayout()
+        self.buttonBoxLayout.setSpacing(0)
+        self.buttonBoxLayout.setObjectName(u"buttonBoxLayout")
+        self.buttonBoxLayout.setContentsMargins(-1, -1, 32, 25)
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout.addItem(self.horizontalSpacer)
+        self.buttonBoxLayout.addItem(self.horizontalSpacer)
 
         self.buttonBox = QDialogButtonBox(DTDialog)
         self.buttonBox.setObjectName(u"buttonBox")
@@ -62,10 +62,10 @@ class Ui_DTDialog(object):
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
         self.buttonBox.setCenterButtons(False)
 
-        self.horizontalLayout.addWidget(self.buttonBox)
+        self.buttonBoxLayout.addWidget(self.buttonBox)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.verticalLayout.addLayout(self.buttonBoxLayout)
 
 
         self.retranslateUi(DTDialog)

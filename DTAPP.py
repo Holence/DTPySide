@@ -1,7 +1,6 @@
 from __future__ import annotations
 from DTPySide import *
 
-
 # APP
 class DTAPP(QApplication):
 	"""DTAPP注释
@@ -49,8 +48,8 @@ class DTAPP(QApplication):
 		super().__init__(args)
 
 		self.setStyle("Fusion")
-		
-		self.setWindowIcon(DTIcon.Holo1())
+		self.initializeWindowStyle()
+		self.setWindowIcon(DTIcon.HoloIcon1())
 
 		self.setApplicationName("DT's Project")
 		self.setApplicationVersion("0.0.0.0")
@@ -58,6 +57,8 @@ class DTAPP(QApplication):
 		self.setOrganizationName("Dongli Teahouse")
 		self.setOrganizationDomain("dongliteahouse.com")
 		self.setContact("Holence08@gmail.com")
+		
+		self.loadTranslation()
 		
 		self.setLoginEnable(True)
 		self.__password=None
@@ -85,8 +86,24 @@ class DTAPP(QApplication):
 
 		
 		self.setStyleSheet(Generate_StyleSheet(Theme, WindowEffect, self.Font()))
+	
+	def loadTranslation(self):
+
+		if self.Language() not in DTTranslation.Language_Dict:
+			self.setLanguage("English")
+		if self.Country() not in DTTranslation.Country_Dict:
+			self.setCountry("World")
 		
-		self.__mainsession.initializeWindowEffect()
+		language=self.Language()
+		country=self.Country()
+		
+		# set QLocale
+		QLocale.setDefault(QLocale(DTTranslation.Language_Dict[language][0],DTTranslation.Country_Dict[country]))
+
+		# load .qm file
+		self.translation=QTranslator()
+		self.translation.load(DTTranslation.Language_Dict[language][1])
+		self.installTranslator(self.translation)
 	
 	def Font(self) -> QFont:
 		if self.__UserSetting.value("BasicInfo/Font")==None:
@@ -118,6 +135,18 @@ class DTAPP(QApplication):
 	
 	def setTheme(self,Theme:str):
 		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
+
+	def Language(self):
+		return self.__UserSetting.value("BasicInfo/Language")
+	
+	def setLanguage(self,Language:str):
+		self.__UserSetting.setValue("BasicInfo/Language",Language)
+	
+	def Country(self):
+		return self.__UserSetting.value("BasicInfo/Country")
+	
+	def setCountry(self,Country:str):
+		self.__UserSetting.setValue("BasicInfo/Country",Country)
 
 	def setApplicationName(self,str):
 		super().setApplicationName(str)
@@ -176,8 +205,6 @@ class DTAPP(QApplication):
 			self.setPassword(dlg.input_password)
 	
 	def debugRun(self,password,loginEnable):
-		self.initializeWindowStyle()
-		
 		self.setLoginEnable(loginEnable)
 		self.setPassword(password)
 
@@ -187,9 +214,7 @@ class DTAPP(QApplication):
 
 	def run(self):
 		"""如果没有密码加密，需要setLoginEnable(False)
-		"""		
-		self.initializeWindowStyle()
-		
+		"""	
 		if self.__LoginEnable==True:
 			self.__loginIn()
 		

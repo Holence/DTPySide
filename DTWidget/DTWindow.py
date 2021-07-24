@@ -6,8 +6,15 @@ class DTWindow(QWidget):
 
 	def closeEvent(self, event):
 		super().closeEvent(event)
-		self.deleteLater()
 	
+	def show(self):
+		if self.isMaximized():
+			# 如果关掉的时候是最大化的话，再进行恢复show，就会有bug
+			self.showNormal()
+			self.showMaximized()
+		else:
+			super().show()
+
 	def __init__(self, app:DTAPP, parent=None):
 		super().__init__(parent=parent)
 		self.app=app
@@ -15,6 +22,7 @@ class DTWindow(QWidget):
 		self.__monitor_info = None
 
 		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+		self.initializeWindowEffect()
 		
 	
 	def initializeWindowEffect(self):
@@ -50,86 +58,90 @@ class DTWindow(QWidget):
 
 	def nativeEvent(self, eventType, message):
 		""" 处理windows消息 """
-		scale=self.app.Scale()
-		msg = MSG.from_address(message.__int__())
-		if msg.message == win32con.WM_NCHITTEST:
-			# 鼠标在窗口中移动
+		try:
+			scale=self.app.Scale()
+			msg = MSG.from_address(message.__int__())
+			if msg.message == win32con.WM_NCHITTEST and not self.isWindowMaximized(msg.hWnd):
+				# 鼠标在窗口中移动
 
-			# 解决多屏下会出现鼠标一直为拖动状态的问题
-			
-			xPos = (win32api.LOWORD(msg.lParam) -
-					self.frameGeometry().x()*scale) % 65536
-			yPos = win32api.HIWORD(msg.lParam) - self.frameGeometry().y()*scale
-			w, h = self.width()*scale, self.height()*scale
-			
-			lx = xPos -9 < self.BORDER_WIDTH
-			rx = xPos +9 > w - self.BORDER_WIDTH
-			ty = yPos -9 < self.BORDER_WIDTH
-			by = yPos +9 > h - self.BORDER_WIDTH
-			if lx and ty:
-				return True, win32con.HTTOPLEFT
-			elif rx and by:
-				return True, win32con.HTBOTTOMRIGHT
-			elif rx and ty:
-				return True, win32con.HTTOPRIGHT
-			elif lx and by:
-				return True, win32con.HTBOTTOMLEFT
-			elif ty:
-				return True, win32con.HTTOP
-			elif by:
-				return True, win32con.HTBOTTOM
-			elif lx:
-				return True, win32con.HTLEFT
-			elif rx:
-				return True, win32con.HTRIGHT
-			
-		
-		elif msg.message == win32con.WM_NCCALCSIZE:
-			# 窗口缩放大小
-			if self.isWindowMaximized(msg.hWnd):
-				self.monitorNCCALCSIZE(msg)
+				# 解决多屏下会出现鼠标一直为拖动状态的问题
 				
-				#变成最大化
-				try:
-					self.TitleBar.btn_maximize.setIcon(self.TitleBar.restore_icon)
-				except:
-					pass
-			else:
+				xPos = (win32api.LOWORD(msg.lParam) -
+						self.frameGeometry().x()*scale) % 65536
+				yPos = win32api.HIWORD(msg.lParam) - self.frameGeometry().y()*scale
+				w, h = self.width()*scale, self.height()*scale
 				
-				#变成正常
-				try:
-					self.TitleBar.btn_maximize.setIcon(self.TitleBar.maximize_icon)
-				except:
-					pass
-			return True, 0
-		
-		elif msg.message == win32con.WM_GETMINMAXINFO:
-			# 窗口移动
-			if self.isWindowMaximized(msg.hWnd):
-				window_rect = win32gui.GetWindowRect(msg.hWnd)
-				if not window_rect:
-					return False, 0
-				# 获取显示器句柄
-				monitor = win32api.MonitorFromRect(window_rect)
-				if not monitor:
-					return False, 0
-				# 获取显示器信息
-				monitor_info = win32api.GetMonitorInfo(monitor)
-				monitor_rect = monitor_info['Monitor']
-				work_area = monitor_info['Work']
-				# 将lParam转换为MINMAXINFO指针
-				info = cast(msg.lParam, POINTER(MINMAXINFO)).contents
-				# 调整窗口大小
-				info.ptMaxSize.x = work_area[2] - work_area[0]
-				info.ptMaxSize.y = work_area[3] - work_area[1]
-				info.ptMaxTrackSize.x = info.ptMaxSize.x
-				info.ptMaxTrackSize.y = info.ptMaxSize.y
-				# 修改左上角坐标
-				info.ptMaxPosition.x = abs(window_rect[0] - monitor_rect[0])
-				info.ptMaxPosition.y = abs(window_rect[1] - monitor_rect[1])
-				return True, 1
-		
-		return QWidget.nativeEvent(self, eventType, message)
+				lx = xPos -4 < self.BORDER_WIDTH
+				rx = xPos +4 > w - self.BORDER_WIDTH
+				ty = yPos -4 < self.BORDER_WIDTH
+				by = yPos +4 > h - self.BORDER_WIDTH
+				if lx and ty:
+					return True, win32con.HTTOPLEFT
+				elif rx and by:
+					return True, win32con.HTBOTTOMRIGHT
+				elif rx and ty:
+					return True, win32con.HTTOPRIGHT
+				elif lx and by:
+					return True, win32con.HTBOTTOMLEFT
+				elif ty:
+					return True, win32con.HTTOP
+				elif by:
+					return True, win32con.HTBOTTOM
+				elif lx:
+					return True, win32con.HTLEFT
+				elif rx:
+					return True, win32con.HTRIGHT
+				
+			
+			elif msg.message == win32con.WM_NCCALCSIZE:
+				# 窗口缩放大小
+				if self.isWindowMaximized(msg.hWnd):
+					self.monitorNCCALCSIZE(msg)
+					
+					#变成最大化
+					try:
+						self.TitleBar.btn_maximize.setIcon(self.TitleBar.restore_icon)
+					except:
+						pass
+				else:
+					
+					#变成正常
+					try:
+						self.TitleBar.btn_maximize.setIcon(self.TitleBar.maximize_icon)
+					except:
+						pass
+				return True, 0
+			
+			elif msg.message == win32con.WM_GETMINMAXINFO:
+				# 窗口移动
+				if self.isWindowMaximized(msg.hWnd):
+					window_rect = win32gui.GetWindowRect(msg.hWnd)
+					if not window_rect:
+						return False, 0
+					# 获取显示器句柄
+					monitor = win32api.MonitorFromRect(window_rect)
+					if not monitor:
+						return False, 0
+					# 获取显示器信息
+					monitor_info = win32api.GetMonitorInfo(monitor)
+					monitor_rect = monitor_info['Monitor']
+					work_area = monitor_info['Work']
+					# 将lParam转换为MINMAXINFO指针
+					info = cast(msg.lParam, POINTER(MINMAXINFO)).contents
+					# 调整窗口大小
+					info.ptMaxSize.x = work_area[2] - work_area[0]
+					info.ptMaxSize.y = work_area[3] - work_area[1]
+					info.ptMaxTrackSize.x = info.ptMaxSize.x
+					info.ptMaxTrackSize.y = info.ptMaxSize.y
+					# 修改左上角坐标
+					info.ptMaxPosition.x = abs(window_rect[0] - monitor_rect[0])
+					info.ptMaxPosition.y = abs(window_rect[1] - monitor_rect[1])
+					return True, 1
+			
+			return QWidget.nativeEvent(self, eventType, message)
+
+		except:
+			pass
 
 	def monitorNCCALCSIZE(self, msg: MSG):
 		"""放大到全屏"""

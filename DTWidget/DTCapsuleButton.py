@@ -7,19 +7,17 @@ class DTCapsuleButton(QLabel):
 		super().__init__(parent)
 		self.setSizePolicy(QSizePolicy.Maximum,QSizePolicy.Fixed)
 		
-		# setStyleSheet会自动清空font，这里还得手动set一下
 		self.setText(text)
-		self.setFont(parent.font())
 		self.adjustSize()
 		
 		self.setStyleSheet(""" 
 			QLabel {
 				color: white;
 				background-color: %s;
-				border-radius: %spx;
 				border: 1px solid %s;
+				border-radius: 12px;
 			}
-		"""%(color,int(self.height()/2),color))
+		"""%(color,color))
 
 		# SET DROP SHADOW
 		shadow = QGraphicsDropShadowEffect(self)

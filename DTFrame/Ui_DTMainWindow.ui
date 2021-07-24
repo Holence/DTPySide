@@ -156,6 +156,9 @@
    <property name="text">
     <string>Window Toggle Stay on Top</string>
    </property>
+   <property name="shortcut">
+    <string>F12</string>
+   </property>
   </action>
   <action name="actionWindow_Toggle_Fullscreen">
    <property name="icon">

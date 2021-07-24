@@ -17,6 +17,7 @@ class DemoMainSession(DTSession.DTMainSession):
 
 		self.setCentralWidget(self.CentralWidget)
 
+
 	def initializeMenu(self):
 		self.addActionToMainMenu(self.Widget.actionHello_World)
 		

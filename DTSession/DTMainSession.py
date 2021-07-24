@@ -47,7 +47,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 		if self.dataValidityCheck():
 			self.loadData()
 		else:
-			DTFrame.DTMessageBox(self,"Error","Data Error!")
+			DTFrame.DTMessageBox(self,"Error","Data is not valid!")
 			self.app.quit()
 
 	def restoreWindowStatus(self):
@@ -64,23 +64,11 @@ class DTMainSession(DTFrame.DTMainWindow):
 		"""主窗体的action向function链接
 		注意：需要拥有全局快捷键的action，需要addAction
 		"""
-
+		super().initializeSignal()
 		self.actionSetting.triggered.connect(self.setting)
 		self.actionAbout.triggered.connect(self.about)
-		
-		self.actionWindow_Toggle_Fullscreen.triggered.connect(self.windowToggleFullscreen)
-		self.addAction(self.actionWindow_Toggle_Fullscreen)
-
-		self.actionWindow_Toggle_Stay_on_Top.triggered.connect(self.windowToggleStayonTop)
-		self.actionNormalize_Window.triggered.connect(self.windowShowNormal)
-		self.actionMaximize_Window.triggered.connect(self.showMaximized)
-		self.actionMinimize_Window.triggered.connect(self.showMinimized)
-		
 		self.actionBoss_Key.triggered.connect(self.bossComing)
 		self.addAction(self.actionBoss_Key)
-
-		self.actionExit.triggered.connect(self.close)
-		self.addAction(self.actionExit)
 	
 	def initializeMenu(self):
 		"制定menu"
@@ -91,14 +79,14 @@ class DTMainSession(DTFrame.DTMainWindow):
 		
 		################################################################
 		
-		self._MainMenu.addAction(self.actionWindow_Toggle_Fullscreen)
-		self._MainMenu.addAction(self.actionWindow_Toggle_Stay_on_Top)
-		self._MainMenu.addAction(self.actionNormalize_Window)
-		self._MainMenu.addAction(self.actionMinimize_Window)
-		self._MainMenu.addAction(self.actionMaximize_Window)
-		self._MainMenu.addSeparator()
-
-		################################################################
+		self.__menu_view=QMenu("View",self)
+		self.__menu_view.setIcon(QIcon(":/icon/white/white_eye.svg"))
+		self.__menu_view.addAction(self.actionWindow_Toggle_Stay_on_Top)
+		self.__menu_view.addAction(self.actionWindow_Toggle_Fullscreen)
+		self.__menu_view.addAction(self.actionNormalize_Window)
+		self.__menu_view.addAction(self.actionMinimize_Window)
+		self.__menu_view.addAction(self.actionMaximize_Window)
+		self.addMenuToMainMenu(self.__menu_view)
 		
 		self._MainMenu.addAction(self.actionBoss_Key)
 		self._MainMenu.addAction(self.actionExit)
@@ -168,8 +156,8 @@ class DTMainSession(DTFrame.DTMainWindow):
 		self.UserSetting().setValue("WindowStatus/Size",self.size())
 		self.UserSetting().setValue("WindowStatus/Pos",self.pos())
 	
-	def SaveAllEncryptData(self):
-		"saveData或者UserSetting中有加密的保存项目就要放到这里（除了对密码的加密已经操作过了）"
+	def saveAllEncryptData(self):
+		"saveData或者UserSetting中有加密的保存项目就要放到这里（更改密码的时候会调用这个函数）"
 		pass
 			
 

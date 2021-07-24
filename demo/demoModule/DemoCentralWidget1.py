@@ -10,5 +10,7 @@ class DemoCentralWidget1(Ui_DemoCentralWidget1,QWidget):
             self.homelabel.setText("HomeLabel's Text is: "+Headquarter.UserSetting().value("HomePage/HomeLabel"))
         except:
             pass
-
-        self.actionHello_World.triggered.connect(lambda:DTFrame.DTMessageBox(Headquarter,"Hello World","Hello! Welcome to Dongli Teahouse PySide.",DTIcon.Holo2()))
+        
+        # implement custom stylesheet
+        self.homelabel.setStyleSheet('background:red')
+        self.actionHello_World.triggered.connect(lambda:DTFrame.DTMessageBox(Headquarter,"Hello World","Hello! Welcome to Dongli Teahouse PySide.",DTIcon.Holo01()))

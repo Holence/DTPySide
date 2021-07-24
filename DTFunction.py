@@ -1,17 +1,23 @@
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
-import sys, os
+import sys, os, shutil
 import re
+import copy
+import time
+import requests
+from urllib.parse import unquote
+from lxml import etree
 import pickle
+import json
+import pypinyin
 from functools import partial
+from win32com.shell import shell,shellcon
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-
-
 
 def Clear_Layout(layout):
 	for i in reversed(range(layout.count())): 
@@ -30,12 +36,11 @@ def Delay_Msecs(msecs):
 	while QTime.currentTime() < dieTime:
 		QCoreApplication.processEvents(QEventLoop.AllEvents, 100)
 
-def QDate_to_Str(date,mode="0"):
+def QDate_to_Str(date:QDate, mode="0"):
 	"""
 	mode="0" : 20210101
 	mode="0." : 2021.01.01
 	mode="." : 2021.1.1
-
 	"""
 	if mode=="0":
 		return "%04d%02d%02d"%(date.year(),date.month(),date.day())
@@ -44,8 +49,35 @@ def QDate_to_Str(date,mode="0"):
 	elif mode==".":
 		return "%d.%d.%d"%(date.year(),date.month(),date.day())
 
-def Str_To_QDate(s):
-	return QDate(int(s[:4]),int(s[4:6]),int(s[6:8]))
+def Str_To_QDate(s:str, mode="0"):
+	"""
+	mode="0" : 20210101
+	mode="0." : 2021.01.01
+	mode="." : 2021.1.1
+	"""
+	if mode=="0":
+		return QDate(int(s[:4]),int(s[4:6]),int(s[6:8]))
+	elif mode=="0." or mode==".":
+		date=s.split(".")
+		year=date[0]
+		month=date[1]
+		day=date[2]
+		return QDate(int(year),int(month),int(day))
+
+def QDate_to_Tuple(date:QDate):
+	return (date.year(),date.month(),date.day())
+
+def WhatDayIsToday(mode=0):
+	"""返回年月日
+
+	Args:
+		mode (int, optional): 选择返回的类型。0：Tuple|1: QDate. Defaults to 0.
+	"""
+	today=time.localtime()
+	if mode==0:
+		return today.tm_year,today.tm_mon,today.tm_mday
+	else:
+		return QDate(today.tm_year,today.tm_mon,today.tm_mday)
 
 def Generate_ConicalGradientColor(colorList,cube_width):
 	n=len(colorList)
@@ -143,10 +175,192 @@ def Fernet_Decrypt(password,data):
 	except:
 		return False
 
+def Json_Save(data,file_path):
+	with open(file_path,"w",encoding="utf-8") as f:
+		json.dump(data,f,ensure_ascii=False,indent=4)
+
+def Json_Load(file_path):
+	with open(file_path,"r",encoding="utf-8") as f:
+		data=json.load(f)
+	return data
+
+def Str_to_AZ(input):
+	
+	def cn_to_az(last_name):
+		rows = pypinyin.pinyin(last_name, style=pypinyin.NORMAL)
+		return ''.join(row[0][0] for row in rows if len(row) > 0)
+
+	def jp_to_az(i):
+		jp1=["”","“","《","》","あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん","が","ぎ","ぐ","げ","ご","ざ","じ","ず","ぜ","ぞ","だ","ぢ","づ","で","ど","ば","び","ぶ","べ","ぼ","ぱ","ぴ","ぷ","ぺ","ぽ"]
+		jp2=["”","“","《","》","ア","イ","ウ","エ","オ","カ","キ","ク","ケ","コ","サ","シ","ス","セ","ソ","タ","チ","ツ","テ","ト","ナ","ニ","ヌ","ネ","ノ","ハ","ヒ","フ","ヘ","ホ","マ","ミ","ム","メ","モ","ヤ","ユ","ヨ","ラ","リ","ル","レ","ロ","ワ","ヲ","ン","ガ","ギ","グ","ゲ","ゴ","ザ","ジ","ズ","ゼ","ゾ","ダ","ヂ","ヅ","デ","ド","バ","ビ","ブ","ベ","ボ","パ","ピ","プ","ペ","ポ"]
+		az=["”","“","《","》","a","i","u","e","o","ka","ki","ku","ke","ko","sa","si","su","se","so","ta","ti","tu","te","to","na","ni","nu","ne","no","ha","hi","hu","he","ho","ma","mi","mu","me","mo","ya","yu","yo","ra","ri","ru","re","ro","wa","wo","n","ga","gi","gu","ge","go","za","ji","zu","ze","zo","da","di","du","de","do","ba","bi","bu","be","bo","pa","pi","pu","pe","po"]
+		try:
+			n=jp1.index(i)
+			return az[n]
+		except:
+			try:
+				n=jp2.index(i)
+				return az[n]
+			except:
+				pass
+				# print("%s	假名好像不完整\n"%i)
+		return ""
+	
+	output=""
+	
+	#用unicode划分语言区
+	for i in input:
+		if re.match(r"[\u0000-\u007F]",i):#英
+			output+=i.lower()
+		elif re.match(r"[\u4E00-\u9FFF]",i):#中
+			output+=cn_to_az(i[0])
+		elif re.match(r"[\u0800-\u4DFF]",i):#日，\u4E00是中文的一
+			output+=jp_to_az(i)
+		# if re.match(r"[\uAC00-\uD7FF]",c)#韩
+		else:
+			output+=i
+		
+	return output
+
+def List_Intersection(a:list, b:list) -> list:
+	return list(set(a).intersection(set(b)))
+
+def List_Union(a:list, b:list) -> list:
+	return list(set(a).union(set(b)))
+
+def List_Difference(a:list, b:list) -> list:
+	return list(set(a).difference(set(b)))
+	
+def List_Symmetric_Difference(a:list, b:list) -> list:
+	return list(set(a).symmetric_difference(set(b)))
+
+def List_Intersection_Full(a:list, b:list) -> list:
+	c=[]
+	for i in a:
+		if i in b:
+			c.append(i)
+	return c
+
+def List_Union_Full(a:list, b:list) -> list:
+	c=copy.deepcopy(a)
+	for i in b:
+		if i not in c:
+			c.append(i)
+	return c
+
+def List_Difference_Full(a:list, b:list) -> list:
+	c=[]
+	for i in a:
+		if i not in b:
+			c.append(i)
+	return c
+
+def List_Symmetric_Difference_Full(a:list, b:list) -> list:
+	c=[]
+	for i in a:
+		if i not in b:
+			c.append(i)
+	for i in b:
+		if i not in a:
+			c.append(i)
+	return c
+
+def GetWebPageResponse(url,cookie=""):
+	head={}
+
+	if cookie!="":
+		head["cookie"]=cookie
+	
+	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
+	
+	try:
+		# response=requests.get(url,headers=head,timeout=3)#
+		response=requests.get(url,headers=head)
+		return True,response
+	except Exception as e:
+		return False,e
+
+def GetWebPageInfo(url="",cookie="",response=None):
+	if response==None:
+		status,response=GetWebPageResponse(url,cookie)
+	else:
+		status=True
+	
+	if status==True:
+		return True,response.raw.info()
+	else:
+		return False,response
+
+def GetWebPageType(url="",cookie="",response=None):
+	if response==None:
+		status,response=GetWebPageInfo(url,cookie)
+	else:
+		status=True
+	
+	if status==True:
+		return status,response["Content-Type"]
+	else:
+		return False,response
+
+def GetWebPageHTML(url="",cookie="",response=None):
+	if response==None:
+		status,response=GetWebPageResponse(url,cookie)
+	else:
+		status=True
+	
+	if status==True:
+		if response.encoding!="GB2312" and response.encoding!="GBK":
+			response.encoding='utf-8'
+		else:
+			response.encoding="GBK"
+		return True,response.text
+	else:
+		return False,response
+
+def GetWebPageTitle(url="",cookie="",response=None):
+	"成功的话返回(True,title)，失败的话返回(False,Exception)，其中如果Title中包含url编码（比如|对应的是%7C），自动解析成utf-8编码"
+	if response==None:
+		status,html=GetWebPageHTML(url,cookie)
+	else:
+		status,html=GetWebPageHTML(response=response)
+
+	
+	if status==True:
+		try:
+			html=etree.HTML(html)
+			title=html.xpath("/html/head/title/text()")
+			title=unquote(title[0],'utf-8')
+			return True,title
+		except:
+			try:
+				#YouTube的channel页面的标题竟然在body里面……
+				title=html.xpath("/html/body/title/text()")
+				title=unquote(title[0],'utf-8')
+				return True,title
+			except Exception as e:
+				return False,e
+	else:
+		return False,html
+
+def GetWebPagePic(url="",cookie="",response=None):
+	if response==None:
+		status,response=GetWebPageResponse(url,cookie)
+	else:
+		status=True
+	
+	if status==True:
+		return True,response.content
+	else:
+		return False,response
+
+def Delete_to_Recyclebin(dir):
+	"删除成功返回True"
+	result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
+	return result[0]==0
 
 ##############################################################################################
 
-from ctypes import POINTER, Structure,  c_bool, c_int, pointer, sizeof, WinDLL, byref, cast
+from ctypes import POINTER, Structure, c_bool, c_int, pointer, sizeof, WinDLL, byref, cast
 from ctypes.wintypes import DWORD, HWND, ULONG, POINT, RECT, UINT , LONG, LPCVOID, MSG
 from win32.lib import win32con
 from win32 import win32gui, win32api
@@ -416,19 +630,28 @@ class WindowEffect:
 
 def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	
-	font_size=font.pointSize()
+	# font_size=18
 	font_family=font.family()
 
 	stylesheet=""
 
 	if theme=="Dracula":
-		DEEPDARK="#242830" # Border和GroupBox、TitleBarFrame的Background
-		BACKGROUND="#282C34" # background
-		SOFTDARK="#3A414D" # LineEdit的背景
-		DIM="#696969" # disable的文字
-		PRESSED = "#D7AAE6" # Button Clicked
-		FOCUSED="#BD93F9" # Button Hover
-		TEXT="#EBEBEB" # 文字
+		# DEEPDARK="#202329" # Border和GroupBox、TitleBarFrame的Background 242830
+		# BACKGROUND="#282C34" # background
+		# SOFTDARK="#313341" # LineEdit的背景 3A414D
+		# DIM="#696969" # disable的文字
+		# PRESSED = "#A67DB4" # Button Clicked D7AAE6
+		# FOCUSED="#8C6BBB" # Button Hover BD93F9
+		# TEXT="#EBEBEB" # 文字
+		# ICONCOLOR="white"
+
+		DEEPDARK="#191A21" # Border和GroupBox、TitleBarFrame的Background
+		BACKGROUND="#21222C" # background
+		SOFTDARK="#282A36" # LineEdit的背景
+		DIM="#404257" # disable的文字 6272A4
+		PRESSED = "#A67DB4" # Button Clicked 
+		FOCUSED="#8C6BBB" # Button Hover 
+		TEXT="#E0E0E0" # 文字
 		ICONCOLOR="white"
 
 	elif theme=="Dark":
@@ -476,7 +699,18 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	{{
 		color: {TEXT};
 		font-family: {font_family};
-		font-size: {font_size}pt;
+		font-size: 18pt;
+		selection-background-color: {FOCUSED};
+		selection-color: {TEXT};
+	}}
+	QWidget::item:active, QWidget::item:!active
+	{{
+		color: {TEXT};
+	}}
+	
+	QWidget:disabled
+	{{
+		color: {DIM};
 	}}
 
 	QDialog {{
@@ -490,12 +724,12 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	/* TitleBar */
 
 	DTLogin QLineEdit {{
-		font-size: {int(font_size*0.6)}pt;
+		font-size: 12pt;
 	}}
 	
 	#TitleBarFrame #label_titlebar {{
 		font-family: "Segoe UI";
-		font-size: {font_size+2}pt;
+		font-size: 20pt;
 	}}
 	#TitleBarFrame QPushButton {{
 		border: none;
@@ -563,14 +797,30 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 
 	QSplitter{{
-		min-height: 16px;
-		min-width: 16px;
 		background: transparent;
 	}}
+	
+	QScrollBar::add-line {{
+	height: 0px;
+	}}
+	QScrollBar::sub-line {{
+	height: 0px;
+	}}
+	QScrollBar::add-page, QScrollBar::sub-page {{
+	height: 0px;
+	}}
+
 	QSplitter::handle{{
-		image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_more-vertical.svg);
 		border: 1px solid transparent;
 		border-radius: 7px;
+	}}
+	QSplitter::handle:horizontal{{
+		width: 12px;
+		image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_more-vertical.svg);
+	}}
+	QSplitter::handle:vertical{{
+		height: 12px;
+		image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_more-horizontal.svg);
 	}}
 	QSplitter::handle:hover{{
 		background: {SOFTDARK};
@@ -595,18 +845,18 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 
 	QMenuBar::item:selected{{
 		background: {FOCUSED};
-		border: 1px solid {FOCUSED};
+		border: 1px solid {DEEPDARK};
 	}}
 
 	QMenuBar::item:pressed{{
 		background: {PRESSED};
-		border: 1px solid {PRESSED};
+		border: 1px solid {DEEPDARK};
 		padding-top: 4px;
 	}}
 
 	QMenu {{
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
+		font-size: 12pt;
 		background-color: {BACKGROUND};
 		border: 1px solid {DEEPDARK};
 		margin: 1px;
@@ -617,6 +867,9 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		padding: 2px 25px 2px 15px;
 		border: 1px solid transparent;
 		margin: 1px;
+	}}
+	QMenu::item:disabled{{
+		color: {DIM};
 	}}
 	QMenu::icon {{
 		width: 15px;
@@ -629,14 +882,10 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border-color: {DEEPDARK};
 		background: {FOCUSED};
 	}}
-	QMenu::item:disabled {{
-		color: {DIM};
-	}}
 
 	QMenu::separator {{
 		height: 2px;
 		background: {DEEPDARK};
-		margin: 0 5px;
 	}}
 
 	QMenu::indicator {{/*checked 的√*/
@@ -646,7 +895,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 	QMenu::icon:checked {{ /* appearance of a 'checked' icon */
 		background: {FOCUSED};
-		border: 1px inset {PRESSED};
+		border: 1px inset {DEEPDARK};
 		border-radius: 3px;
 		padding: 2px;
 	}}
@@ -692,7 +941,6 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	QLabel {{
 		background: transparent;
 		border: 1px solid transparent;
-		selection-background-color: {FOCUSED};
 	}}
 
 	QToolTip {{
@@ -705,9 +953,9 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	
 	QLineEdit {{
 		background: {SOFTDARK};
-		selection-background-color: {FOCUSED};
 		border: 1px solid {DEEPDARK};
-		border-radius: 2px;
+		border-radius: 6px;
+		height: 36px;
 	}}
 
 
@@ -719,17 +967,16 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		color: {DIM};
 	}}
 
-	QLineEdit:disabled{{
-		color: {DIM};
-	}}
-
 	QTextEdit, QPlainTextEdit{{
 		background-color: {SOFTDARK};
-		selection-background-color:{FOCUSED};
 		border: 1px solid {DEEPDARK};
 	}}
 	QTextEdit:focus, QPlainTextEdit:focus{{
 		border-color: {FOCUSED};
+	}}
+
+	QTextBrowser:focus{{
+		border-color: {DEEPDARK};
 	}}
 
 	/* Button */
@@ -740,13 +987,13 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border-radius: 3px;
 		background-color: {SOFTDARK};
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
-		min-height: {int(font_size*1.5)}px;
+		font-size: 12pt;
+		min-height: 27px;
 	}}
 
 	QPushButton:hover{{
 		background-color: {FOCUSED};
-		border-color: {PRESSED};
+		border-color: {DEEPDARK};
 	}}
 
 	QPushButton:pressed
@@ -761,13 +1008,13 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 
 	QDialogButtonBox QPushButton{{
-		min-width: {font_size*4}px;
+		min-width: 72px;
 	}}
 	
 	QToolButton {{
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
-		height: {int(font_size*1.5)}px;
+		font-size: 12pt;
+		height: 27px;
 	}}
 	QToolButton,QToolButton:unchecked {{
 		/* ToolBar里的按钮和带下拉菜单的按钮 */
@@ -778,16 +1025,16 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 	QToolButton:checked{{
 		background-color: {FOCUSED};
-		border-color: {PRESSED};
+		border-color: {DEEPDARK};
 	}}
 	QToolButton:hover{{
 		background-color: {FOCUSED};
-		border-color: {PRESSED};
+		border-color: {DEEPDARK};
 	}}
 
 	QToolButton:pressed,QToolButton:checked:hover{{
 		background-color: {PRESSED};
-		border-color: {FOCUSED};
+		border-color: {DEEPDARK};
 	}}
 	QToolButton:checked:pressed{{
 		background-color: {FOCUSED};
@@ -803,7 +1050,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 	QToolButton[popupMode="1"]:hover{{
 		background-color: {FOCUSED};
-		border-color: {PRESSED};
+		border-color: {DEEPDARK};
 	}}
 	QToolButton[popupMode="1"]:pressed{{
 		border-width: 1px;
@@ -820,7 +1067,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	QRadioButton{{
 		background: transparent;
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
+		font-size: 12pt;
 	}}
 	QRadioButton::indicator {{
 		width: 10px;
@@ -837,7 +1084,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 
 	QCheckBox{{
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
+		font-size: 12pt;
 		background: transparent;
 	}}
 	QCheckBox::indicator {{
@@ -857,26 +1104,18 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border-radius: 2px;
 	}}
 
-	DTSettingButton {{
-		icon-size: 20px;
-		max-height: 30px;
-		min-height: 30px;
-		min-width: 30px;
-		max-width: 30px;
-	}}
+	
 
 	/* ComboBox */
 
 	QComboBox{{
 		background-color: {SOFTDARK};
 		border: 1px solid {DEEPDARK};
-		border-top-right-radius: 5px;
-		border-bottom-right-radius: 5px;
-		height: {int(font_size*2)}px;
-		selection-background-color: {FOCUSED};
+		border-radius: 6px;
+		height: 36px;
 	}}
 	QComboBox:focus{{
-		border-color: {FOCUSED};
+		border-color: {DEEPDARK};
 	}}
 	QComboBox QAbstractItemView{{
 		background-color: {DEEPDARK};
@@ -884,11 +1123,11 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	QComboBox::drop-down{{
 		background-color: {SOFTDARK};
 		border: 1px solid {DEEPDARK};
-		border-top-right-radius: 5px;
-		border-bottom-right-radius: 5px;
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
 		subcontrol-origin: padding;
 		subcontrol-position: top right;
-		width: {font_size}px;
+		width: 18px;
 		margin: 1px;
 	}}
 	QComboBox::drop-down:pressed{{
@@ -902,23 +1141,22 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	/* SpinBox DateTime */
 
 	QSpinBox, QDoubleSpinBox, QDateEdit, QTimeEdit, QDateTimeEdit{{
+		font-family: "Hack";
 		background-color: {SOFTDARK};
-		border-top-right-radius: 5px;
-		border-bottom-right-radius: 5px;
-		selection-background-color: {FOCUSED};
+		border-radius: 6px;
+		height: 36px;
 	}}
 	QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus, QTimeEdit:focus, QDateTimeEdit:focus{{
-		border: 1px solid {DEEPDARK};
-		border-color: {FOCUSED};
+		border: 1px solid {FOCUSED};
 	}}
 
 	QSpinBox::up-button, QDoubleSpinBox::up-button, QDateEdit::up-button, QTimeEdit::up-button, QDateTimeEdit::up-button{{
 		background-color: {SOFTDARK};
 		subcontrol-origin: border;
 		subcontrol-position: top right;
-		width: {font_size}px;
+		width: 18px;
 		border: 1px solid {DEEPDARK};
-		border-top-right-radius: 5px;
+		border-top-right-radius: 6px;
 		margin-top: 1px;
 		margin-right: 1px;
 	}}
@@ -933,9 +1171,9 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		background-color: {SOFTDARK};
 		subcontrol-origin: border;
 		subcontrol-position: bottom right;
-		width: {font_size}px;
+		width: 18px;
 		border: 1px solid {DEEPDARK};
-		border-bottom-right-radius: 5px;
+		border-bottom-right-radius: 6px;
 		margin-bottom: 1px;
 		margin-right: 1px;
 	}}
@@ -1026,7 +1264,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border: none;
 	}}
 	QAbstractScrollArea::corner {{
-    	background: transparent;
+		background: transparent;
 	}}
 
 	/* DockWidget*/
@@ -1049,12 +1287,11 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		background-color: {DEEPDARK};
 		border: 1px solid {DEEPDARK};
 		border-radius: 4px;
-		margin-top: 1em;
+		margin-top:1em;
 	}}
 	QGroupBox::title {{
 		subcontrol-origin: margin;
 		subcontrol-position: top left;
-
 	}}
 
 	/* ToolBox */
@@ -1064,7 +1301,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 	QToolBox::tab {{
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
+		font-size: 12pt;
 		background: {SOFTDARK};
 		border: 1px solid {DEEPDARK};
 		border-radius: 1px;
@@ -1079,7 +1316,7 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 	QToolBox::tab:selected {{
 		font-weight: bold;
-		border-color: {FOCUSED};
+		border-color: {DEEPDARK};
 	}}
 
 
@@ -1096,10 +1333,9 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 	QTabBar::tab {{
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
+		font-size: 12pt;
 		background: {SOFTDARK};
 		border: 1px solid {DEEPDARK};
-		padding: 3px 5px;    
 	}}
 	QTabBar::tab:hover {{
 		background: {FOCUSED};
@@ -1107,59 +1343,57 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 	QTabBar::tab:selected {{
 		background: {FOCUSED};
-		border-color: {PRESSED};
+		border-color: {DEEPDARK};
 	}}
 	QTabBar::tab:pressed {{
 		background: {PRESSED};
 		border-color: transparent;
 	}}
 	QTabBar::tab:focus {{
-		border-color: {FOCUSED};
+		border-color: {DEEPDARK};
 	}}
 	QTabBar::tab:top{{
-		margin-top: 3px;
 		border-bottom: transparent;
-		margin-right: 1px;
 	}}
 	QTabBar::tab:bottom{{
-		margin-bottom: 3px;
 		border-top: transparent;
-		margin-right: 1px;
 	}}
 	QTabBar::tab:left{{
 		border-right: transparent;
-		margin-bottom: 1px;
 	}}
 	QTabBar::tab:right{{
 		border-left: transparent;
-		margin-bottom: 1px;
 	}}
 
 
 	/* QHeaderView for list table */
 
-	QHeaderView {{
+	QAbstractItemView, QAbstractItemView QLineEdit {{
 		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
+		font-size: 12pt;
+		background-color: {SOFTDARK};
+	}}
+	
+	QHeaderView {{
 		border: none;
 
 	}}
 	QHeaderView::section, QTableCornerButton::section {{
 		/*设置表头属性*/ /*表格左上角小框框*/
-		background-color: {SOFTDARK};
+		background-color: {DIM};
 		padding-top: 5px;
 		border-right: 1px solid {DEEPDARK};
 		border-bottom: 1px solid {DEEPDARK};
 		border-radius: 0px;
 	}}
 	QHeaderView::section:hover, QTableCornerButton::section:hover{{
-		background-color: {FOCUSED};
+		background-color: {DIM};
 	}}
 	QHeaderView::section:pressed{{
-		background-color: {PRESSED};
+		background-color: {DIM};
 	}}
 	QHeaderView::section:checked {{
-		background-color: {FOCUSED};
+		background-color: {DIM};
 	}}
 
 
@@ -1168,25 +1402,13 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	QTableWidget, QTableView
 	{{
 		gridline-color: {DEEPDARK}; /*表格中的网格线条颜色*/
-		background: {BACKGROUND};
 		alternate-background-color: {FOCUSED};
-		selection-background-color:{FOCUSED}; /*鼠标选中时背景色*/
 		border:1px solid {DEEPDARK}; /*边框线的宽度、颜色*/
 	}}
-	QTableView::item, QTabWidget::item{{
-		background: transparent;
+	QListView::item, QTreeView::item, QTableView::item{{
+		background: {DIM};
 		outline-style: none;
-		border: none;
-	}}
-
-	QTableView::item:hover {{
-		background: {FOCUSED};
-		border: 1px solid {FOCUSED};
-	}}
-
-	QTableView::item:selected {{
-		background: {FOCUSED};
-		color: {TEXT};
+		border-left: 2px solid {PRESSED};
 	}}
 
 	QTableView::item:selected:active {{
@@ -1198,29 +1420,51 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 		border: none;
 	}}
 
-	QListView, QTreeView, QTableView {{
-		font-family: "Hack";
-		font-size: {int(font_size*0.6)}pt;
+	QListView{{
+		font-family: {font_family};
+		border:1px solid {DEEPDARK};
+	}}
+	QTreeView, QTableView {{
 		border:1px solid {DEEPDARK};
 	}}
 	QListView::item:hover, QTreeView::item:hover, QTableView::item:hover {{
-		background: transparent;
+		background: {FOCUSED};
 	}}
 	QListView::item:selected , QTreeView::item:selected, QTableView::item:selected {{
 		background: {FOCUSED};
+		color: {TEXT};
+	}}
+	QTreeView::branch{{
+		
 	}}
 	QTreeView::branch:selected{{
-		background: {FOCUSED};
+		
 	}}
 
+
 	QFontDialog {{
-		min-width: {font_size*35}px;
-		min-height: {font_size*25}px;
+		min-width: 900px;
+		min-height: 700px;
 	}}
 	QFontDialog * {{
-		font-size: {font_size-3}px;
+		font-size: 17px;
 	}}
+	
+	/* QCalendar */
+
+	/* header row */
+	QCalendarWidget QWidget {{
+		font-family: "Hack";
+		font-size: 12pt;
+		alternate-background-color: {SOFTDARK};
+	}}
+	
+	/* normal days */
+	QCalendarWidget QAbstractItemView:enabled
+	{{
+		background-color: {BACKGROUND};
+	}}
+	
 	"""
 
 	return stylesheet
-

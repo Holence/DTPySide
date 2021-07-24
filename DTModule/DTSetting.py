@@ -35,9 +35,16 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.spinBox_scale.setValue(self.app.Scale())
 		self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
 		self.comboBox_theme.setCurrentIndex(["Dracula","Dark","Light"].index(self.app.Theme()))
+		
+		import DTPySide.DTTranslation as DTTranslation
+
+		self.comboBox_language.addItems(DTTranslation.Language_Dict.keys())
+		self.comboBox_country.addItems(DTTranslation.Country_Dict.keys())
+		self.comboBox_language.setCurrentText(self.app.Language())
+		self.comboBox_country.setCurrentText(self.app.Country())
 
 
-		self.setMinimumSize(700,500)
+		self.setMinimumSize(800,550)
 		
 	def initializeSignal(self):
 		self.pushButton_font.clicked.connect(self.FontSetting)
@@ -48,6 +55,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.pushButton_scale.clicked.connect(self.ScaleSetting)
 		self.pushButton_window_effect.clicked.connect(self.WindowEffectSetting)
 		self.pushButton_theme.clicked.connect(self.ThemeSetting)
+		self.pushButton_language.clicked.connect(self.LanguageSetting)
+		self.pushButton_country.clicked.connect(self.CountrySetting)
 	
 		
 
@@ -55,7 +64,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 		
 		try:
 			self.app.setPassword(self.lineEdit_password.text())
-			self.Headquarter.SaveAllEncryptData()
+			self.Headquarter.saveAllEncryptData()
 			DTFrame.DTMessageBox(self,"Information","Password reseted to \"%s\" successfully!"%self.app.password(),DTIcon.Information())
 		except:
 			DTFrame.DTMessageBox(self,"Warning","Error occur during password reseting!",DTIcon.Error())
@@ -84,7 +93,14 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.app.initializeWindowStyle()
 		DTFrame.DTMessageBox(self,"Information","Theme changed to \"%s\" successfully!"%self.app.Theme(),DTIcon.Information())
 		
+	def LanguageSetting(self):
+		self.app.setLanguage(self.comboBox_language.currentText())
+		DTFrame.DTMessageBox(self,"Information","Language changed to \"%s\" successfully!\n\nPlease restart the application manually for better expeirence."%self.app.Language(),DTIcon.Information())
 
+	def CountrySetting(self):
+		self.app.setCountry(self.comboBox_country.currentText())
+		DTFrame.DTMessageBox(self,"Information","Country changed to \"%s\" successfully!"%self.app.Country(),DTIcon.Information())
+	
 	def appendStackPage(self,page):
 		index=self.stackedWidget.addWidget(page)
 		return index

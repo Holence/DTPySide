@@ -57,11 +57,12 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 			if self.btn_minimize.isHidden():
 				self.btn_minimize.show()
 			
-			if self.window().isMaximized():
+			if self.window().isMaximized() or self.window().isFullScreen():
 
 				#变成正常
 				self.window().showNormal()
 				self.btn_maximize.setIcon(self.maximize_icon)
+
 			else:
 
 				#变成最大化
@@ -70,7 +71,8 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 
 	def mousePressEvent(self, event):
 		""" 移动窗口 """
-		win32gui.ReleaseCapture()
-		win32gui.SendMessage(self.window().winId(), win32con.WM_SYSCOMMAND,
-					win32con.SC_MOVE + win32con.HTCAPTION, 0)
-		event.ignore()
+		if not self.window().isFullScreen():
+			win32gui.ReleaseCapture()
+			win32gui.SendMessage(self.window().winId(), win32con.WM_SYSCOMMAND,
+						win32con.SC_MOVE + win32con.HTCAPTION, 0)
+			event.ignore()

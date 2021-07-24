@@ -291,6 +291,9 @@
     <file>icon/black/black_zoom-out.svg</file>
   </qresource>
   <qresource>
+    <file>icon/holo/holo01.ico</file>
+  </qresource>
+  <qresource>
     <file>icon/white/white_activity.svg</file>
     <file>icon/white/white_airplay.svg</file>
     <file>icon/white/white_alert-circle.svg</file>
