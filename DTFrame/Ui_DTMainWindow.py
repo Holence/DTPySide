@@ -66,6 +66,11 @@ class Ui_DTMainWindow(object):
         icon8 = QIcon()
         icon8.addFile(u":/icon/white/white_users.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.actionBoss_Key.setIcon(icon8)
+        self.actionBackup = QAction(DTMainWindow)
+        self.actionBackup.setObjectName(u"actionBackup")
+        icon9 = QIcon()
+        icon9.addFile(u":/icon/white/white_cloud.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.actionBackup.setIcon(icon9)
         self.verticalLayout = QVBoxLayout(DTMainWindow)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -98,14 +103,6 @@ class Ui_DTMainWindow(object):
         self.statusBar.setSizePolicy(sizePolicy1)
         self.statusBar.setMinimumSize(QSize(0, 20))
         self.statusBar.setMaximumSize(QSize(16777215, 20))
-        font = QFont()
-        font.setFamily(u"Segoe UI")
-        font.setPointSize(9)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.statusBar.setFont(font)
-        self.statusBar.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.verticalLayout.addWidget(self.statusBar)
 
@@ -141,6 +138,6 @@ class Ui_DTMainWindow(object):
 #if QT_CONFIG(shortcut)
         self.actionBoss_Key.setShortcut(QCoreApplication.translate("DTMainWindow", u"F1", None))
 #endif // QT_CONFIG(shortcut)
-        self.statusBar.setText("")
+        self.actionBackup.setText(QCoreApplication.translate("DTMainWindow", u"Backup", None))
     # retranslateUi
 

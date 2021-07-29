@@ -22,7 +22,6 @@ class DTSetting(Ui_DTSetting,QWidget):
 		BasicInfoPageButton=DTWidget.DTSettingButton(QIcon(":/icon/white/white_settings.svg"))
 		self.addPageButton(BasicInfoPageButton,0)
 		
-		self.lineEdit_font.setText(self.app.Font().key().split(",")[0])
 		
 		if self.app.isLoginEnable():
 			self.lineEdit_password.setText(self.app.password())
@@ -31,6 +30,18 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.label_password.hide()
 			self.pushButton_password.hide()
 		
+		if self.app.isBackupEnable():
+			dst=self.app.BackupDst()
+			if dst==False:
+				self.lineEdit_backup.setText("")
+			else:
+				self.lineEdit_backup.setText(dst)
+		else:
+			self.label_backup.hide()
+			self.lineEdit_backup.hide()
+			self.pushButton_backup.hide()
+		
+		self.lineEdit_font.setText(self.app.Font().key().split(",")[0])
 
 		self.spinBox_scale.setValue(self.app.Scale())
 		self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
@@ -52,6 +63,9 @@ class DTSetting(Ui_DTSetting,QWidget):
 		if self.app.isLoginEnable():
 			self.pushButton_password.clicked.connect(self.PasswordSetting)
 		
+		if self.app.isBackupEnable():
+			self.pushButton_backup.clicked.connect(self.BackupSetting)
+		
 		self.pushButton_scale.clicked.connect(self.ScaleSetting)
 		self.pushButton_window_effect.clicked.connect(self.WindowEffectSetting)
 		self.pushButton_theme.clicked.connect(self.ThemeSetting)
@@ -69,6 +83,14 @@ class DTSetting(Ui_DTSetting,QWidget):
 		except:
 			DTFrame.DTMessageBox(self,"Warning","Error occur during password reseting!",DTIcon.Error())
 
+	def BackupSetting(self):
+		dlg=QFileDialog(self)
+		backup_dst=dlg.getExistingDirectory()
+		if backup_dst:
+			self.app.setBackupDst(backup_dst)
+			self.lineEdit_backup.setText(self.app.BackupDst())
+			DTFrame.DTMessageBox(self,"Information","Backup Dst changed to\n\n \"%s\" \n\nsuccessfully!"%self.app.BackupDst(),DTIcon.Information())
+	
 	def FontSetting(self):
 		ok, font = QFontDialog.getFont(self.app.Font(), self)
 		if ok:

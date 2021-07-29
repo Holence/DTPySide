@@ -45,7 +45,7 @@ class DTWindow(QWidget):
 			
 		elif window_effect=="Acrylic":
 			# Acrylic
-			self.windowEffect.setAcrylicEffect(self.winId(),"34374620")
+			self.windowEffect.setAcrylicEffect(self.winId())
 	
 	
 	def isWindowMaximized(self, hWnd) -> bool:

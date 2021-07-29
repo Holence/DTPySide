@@ -105,7 +105,10 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 			self.TitleBar.setWindowTitle(title)
 		except:
 			pass
-
+	
+	def setStatusTip(self, tip:str):
+		self.statusBar.setText(tip)
+	
 	def password(self):
 		return self.app.password()
 	
@@ -122,4 +125,4 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		# TitleBar的mousePressEvent、mouseMoveEvent等事件在左上角的一个区域内都侦测不到了
 		# 花了我将近两个小时才捉出这只虫子……
 		
-		self.centralwidget.addWidget(widget)
+		self.centralwidget.addWidget(widget,Qt.AlignCenter)

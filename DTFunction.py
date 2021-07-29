@@ -6,10 +6,11 @@ import re
 import copy
 import time
 import requests
-from urllib.parse import unquote
+import urllib #淦！最新版的urllib3不支持代理。pip install urllib3==1.25.11就行了
 from lxml import etree
 import pickle
 import json
+import feedparser
 import pypinyin
 from functools import partial
 from win32com.shell import shell,shellcon
@@ -71,13 +72,27 @@ def WhatDayIsToday(mode=0):
 	"""返回年月日
 
 	Args:
-		mode (int, optional): 选择返回的类型。0：Tuple|1: QDate. Defaults to 0.
+		mode (int, optional):选择返回的类型。
+
+		0：Tuple
+
+		1: QDate
+		
+		"0": str: 20210101
+		
+		"0.": str: 2021.01.01
+		
+		".": str: 2021.1.1.
+		
+		Defaults to 0.
 	"""
 	today=time.localtime()
 	if mode==0:
 		return today.tm_year,today.tm_mon,today.tm_mday
-	else:
+	elif mode==1:
 		return QDate(today.tm_year,today.tm_mon,today.tm_mday)
+	elif mode in ["0","0.","."]:
+		return QDate_to_Str(QDate(today.tm_year,today.tm_mon,today.tm_mday),mode)
 
 def Generate_ConicalGradientColor(colorList,cube_width):
 	n=len(colorList)
@@ -275,7 +290,7 @@ def GetWebPageResponse(url,cookie=""):
 	
 	try:
 		# response=requests.get(url,headers=head,timeout=3)#
-		response=requests.get(url,headers=head)
+		response=requests.get(url,headers=head,timeout=3)
 		return True,response
 	except Exception as e:
 		return False,e
@@ -329,14 +344,41 @@ def GetWebPageTitle(url="",cookie="",response=None):
 		try:
 			html=etree.HTML(html)
 			title=html.xpath("/html/head/title/text()")
-			title=unquote(title[0],'utf-8')
+			title=urllib.parse.unquote(title[0],'utf-8')
 			return True,title
 		except:
 			try:
 				#YouTube的channel页面的标题竟然在body里面……
 				title=html.xpath("/html/body/title/text()")
-				title=unquote(title[0],'utf-8')
+				title=urllib.parse.unquote(title[0],'utf-8')
 				return True,title
+			except Exception as e:
+				return False,e
+	else:
+		return False,html
+
+
+def GetWebFavIcon(url="",cookie="",response=None):
+	if response==None:
+		status,html=GetWebPageHTML(url,cookie)
+	else:
+		status,html=GetWebPageHTML(response=response)
+
+	if status==True:
+		try:
+			html=etree.HTML(html)
+			icon_url=html.xpath("//*[@rel='icon']/@href")[0]
+			icon_url=urllib.parse.urljoin(url,icon_url)
+			status,icon=GetWebPagePic(icon_url)
+			
+			return status,icon
+		except:
+			try:
+				icon_url=html.xpath("//*[@rel='shortcut icon']/@href")[0]
+				icon_url=urllib.parse.urljoin(url,icon_url)
+				status,icon=GetWebPagePic(icon_url)
+				
+				return status,icon
 			except Exception as e:
 				return False,e
 	else:
@@ -516,8 +558,8 @@ class WindowEffect:
 		self.winCompAttrData.SizeOfData = sizeof(self.accentPolicy)
 		self.winCompAttrData.Data = pointer(self.accentPolicy)
 
-	def setAcrylicEffect(self, hWnd, gradientColor: str = "FFFFFF20", isEnableShadow: bool = True, animationId: int = 0):
-		""" 给窗口开启Win10的亚克力效果
+	def setAcrylicEffect(self, hWnd, gradientColor: str = "52557018", isEnableShadow: bool = True, animationId: int = 0):
+		""" 给窗口开启Win10的亚克力效果34374620 52557018
 
 		Parameter
 		----------
@@ -720,6 +762,8 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 
 	#DTMainWindow #statusBar{{
 		background-color: {SOFTDARK};
+		font-family: "Hack";
+		font-size: 9pt;
 	}}
 	/* TitleBar */
 
@@ -901,38 +945,13 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	}}
 
 
-	/* ToolBar StatusBar */
+	/* ToolBar */
 
 	QToolBar {{
 		background: {BACKGROUND};
 		spacing: 1px;
 		padding: 1px;
 		border-bottom: 1px solid {DEEPDARK};
-	}}
-
-	QStatusBar{{
-		background: transparent;
-		border-top:1px solid {DEEPDARK};
-	}}
-
-	QStatusBar::item {{
-		margin: 2px 0;
-		border-left: 1px solid {DEEPDARK};
-	}}
-
-	QStatusBar QLabel{{
-		background: transparent;
-		margin: 0  2px;
-	}}
-
-	QStatusBar QPushButton{{
-		background: transparent;
-		margin: 0  2px;
-	}}
-
-	QStatusBar QPushButton:hover{{
-		background: {FOCUSED};
-		margin: 0  2px;
 	}}
 
 
@@ -1468,3 +1487,28 @@ def Generate_StyleSheet(theme:str, window_effect:str, font:QFont):
 	"""
 
 	return stylesheet
+
+# QStatusBar{{
+# 	background: transparent;
+# 	border-top:1px solid {DEEPDARK};
+# }}
+
+# QStatusBar::item {{
+# 	margin: 2px 0;
+# 	border-left: 1px solid {DEEPDARK};
+# }}
+
+# QStatusBar QLabel{{
+# 	background: transparent;
+# 	margin: 0  2px;
+# }}
+
+# QStatusBar QPushButton{{
+# 	background: transparent;
+# 	margin: 0  2px;
+# }}
+
+# QStatusBar QPushButton:hover{{
+# 	background: {FOCUSED};
+# 	margin: 0  2px;
+# }}

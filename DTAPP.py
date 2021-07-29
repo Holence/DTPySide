@@ -11,11 +11,6 @@ class DTAPP(QApplication):
 	"""
 	
 	def __init__(self,args):
-		"""asd
-
-		Args:
-			args (asd): asddas
-		"""
 		
 		self.__UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
 		
@@ -33,11 +28,17 @@ class DTAPP(QApplication):
 		#	2. on macOS, in the Resource directory inside the application bundle, for example assistant.app/Contents/Resources/qt.conf
 		#	3. in the directory containing the application executable, i.e. QCoreApplication::applicationDirPath() + QDir::separator() + "qt.conf"
 		# 
-		# print(self.applicationDirPath()+QDir.separator()) to see where the qt.conf should be placed (同时pyside2中的plugins文件夹也要复制过去)
+		# print(self.applicationDirPath()+QDir.separator()) to see where the qt.conf should be placed
 		# 新建一个qt.conf写下下面的设置 would cause the Windows platform plugin to use the FreeType font engine.
 		# [Platforms]
 		# WindowsArguments = fontengine=freetype
 		# 这样字体也就不会有锯齿啦~
+		#
+		# （用Python解释器跑的时候，self.applicationDirPath()==D:/Program/Python，也就是python.exe的根目录
+		# 如果这时候把qt.conf放到D:/Program/Python，会影响对相应组件的加载与打包（即使设置了Prefix等路径也不行）
+		# 
+		# 所以在解释的时候就不放qt.conf，而是在打包后，把qt.conf放在main.exe的目录下
+		# （如果用了WebEngine的话，还要复制一份resource、translation和QtWebEngineProcess.exe到根目录）
 
 		# 继承stylesheet
 		self.setAttribute(Qt.AA_UseStyleSheetPropagationInWidgetStyles,True)
@@ -49,21 +50,30 @@ class DTAPP(QApplication):
 
 		self.setStyle("Fusion")
 		self.initializeWindowStyle()
-		self.setWindowIcon(DTIcon.HoloIcon1())
+		self.loadTranslation()
+		self.TrayIcon=QSystemTrayIcon(self)
+		self.__password=None
+		self.__mainsession=None
 
+		self.setWindowIcon(DTIcon.HoloIcon1())
 		self.setApplicationName("DT's Project")
 		self.setApplicationVersion("0.0.0.0")
 		self.setAuthor("鍵山狐")
 		self.setOrganizationName("Dongli Teahouse")
-		self.setOrganizationDomain("dongliteahouse.com")
+		self.setOrganizationDomain("www.dongliteahouse.com")
 		self.setContact("Holence08@gmail.com")
 		
-		self.loadTranslation()
+		self.setLoginEnable(False)
+		self.setBackupEnable(False)
+	
+	def initializeTrayIcon(self):
+		"生成TrayIcon"
 		
-		self.setLoginEnable(True)
-		self.__password=None
-		self.__mainsession=None
-
+		self.TrayIcon.setIcon(self.windowIcon())
+		self.TrayIcon.activated.connect(self.__mainsession.windowResurrection)
+		self.TrayIcon.setContextMenu(self.__mainsession._MainMenu)
+		
+		self.TrayIcon.show()
 
 	def initializeWindowStyle(self):
 		"""设置MainwWindow的Window Effect和Theme
@@ -76,14 +86,13 @@ class DTAPP(QApplication):
 		WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
 		
 		if WindowEffect!="Normal" and WindowEffect!="Aero" and WindowEffect!="Acrylic":
-			self.__UserSetting.setValue("BasicInfo/WindowEffect","Normal")
+			self.__UserSetting.setValue("BasicInfo/WindowEffect","Acrylic")
 			WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
 
 		Theme=self.__UserSetting.value("BasicInfo/Theme")
 		if Theme!="Dracula" and Theme!="Dark" and Theme!="Light":
 			self.__UserSetting.setValue("BasicInfo/Theme","Dracula")
 			Theme=self.__UserSetting.value("BasicInfo/Theme")
-
 		
 		self.setStyleSheet(Generate_StyleSheet(Theme, WindowEffect, self.Font()))
 	
@@ -172,6 +181,46 @@ class DTAPP(QApplication):
 	
 	def setLoginEnable(self,bool=True):
 		self.__LoginEnable=bool
+	
+	def isBackupEnable(self):
+		return self.__BackupEnable
+	
+	def setBackupEnable(self,bool=True):
+		"""设置是否开启备份功能
+
+		Args:
+			bool (bool, optional): Defaults to True.
+		"""		
+		self.__BackupEnable=bool
+		self.setBackupList([])
+	
+	def setBackupDst(self,dst:str):
+		"""设置面板中设置备份地址
+
+		Args:
+			dst (str): 备份的目的地
+		"""
+		if self.isBackupEnable():
+			if os.path.exists(dst):
+				self.__UserSetting.setValue("BasicInfo/BackupDst",Fernet_Encrypt(self.__password,dst))
+			else:
+				DTFrame.DTMessageBox(None,"Error","Backup Dst does not exsit!",DTIcon.Error())
+		else:
+			raise("Please setBackupEnable before setBackupList.")
+	
+	def BackupDst(self):
+		return Fernet_Decrypt(self.__password,self.__UserSetting.value("BasicInfo/BackupDst"))
+
+	def setBackupList(self,backup_list:list):
+		"""程序中对app设置，要备份的文件的url列表
+
+		Args:
+			backup_list (list): 要备份的文件的url列表
+		"""
+		self.__BackupList=backup_list
+	
+	def BackupList(self):
+		return self.__BackupList
 
 	def password(self):
 		return self.__password
@@ -204,20 +253,26 @@ class DTAPP(QApplication):
 		else:
 			self.setPassword(dlg.input_password)
 	
-	def debugRun(self,password,loginEnable):
+	def debugRun(self,password,loginEnable,show=True):
 		self.setLoginEnable(loginEnable)
 		self.setPassword(password)
 
 		self.__mainsession.initialize()
-		self.__mainsession.show()
+		if show==True:
+			self.__mainsession.show()
+		
+		self.initializeTrayIcon()
 		sys.exit(self.exec_())
 
-	def run(self):
+	def run(self,show=True):
 		"""如果没有密码加密，需要setLoginEnable(False)
-		"""	
+		"""
 		if self.__LoginEnable==True:
 			self.__loginIn()
 		
 		self.__mainsession.initialize()
-		self.__mainsession.show()
+		if show==True:
+			self.__mainsession.show()
+		
+		self.initializeTrayIcon()
 		sys.exit(self.exec_())
