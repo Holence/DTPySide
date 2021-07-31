@@ -27,7 +27,8 @@ class DTDialog(Ui_DTDialog,QDialog):
 		self.TitleBar.updateWindowIcon()
 
 		# 默认cancel
-		self.setDefaultButton(QDialogButtonBox.Cancel)
+		# self.setDefaultButton(QDialogButtonBox.Cancel)
+		self.setDefaultButton(QDialogButtonBox.Ok)
 		
 		self.adjustSize()
 

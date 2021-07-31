@@ -32,16 +32,16 @@ class DTHorizontalTabel(QTableWidget):
 		self.selected_row=self.currentRow()
 		self.sort_index=self.horizontalHeader().sortIndicatorSection()
 		self.sort_order=self.horizontalHeader().sortIndicatorOrder()
-		self.horizontalHeader().setSortIndicator(-1,Qt.SortOrder.AscendingOrder) #因为如果有排序的话，再insertItem会有疏漏，所以提前取消排序
 	
 	def Clear(self):
 		self.clearContents()
 		self.setRowCount(0)
+		self.horizontalHeader().setSortIndicator(-1,Qt.SortOrder.AscendingOrder) #因为如果有排序的话，再insertItem会有疏漏，所以提前取消排序
 
 	def RestoreTableStatus(self):
 		self.horizontalHeader().setSortIndicator(self.sort_index,self.sort_order) # insertItem完了后，再把sort_index,sort_order设置回来
 		self.selectRow(self.selected_row)
-	
+
 	def addRow(self, row:int, column_item_list:list):
 		
 		if len(column_item_list)>self.columnCount():

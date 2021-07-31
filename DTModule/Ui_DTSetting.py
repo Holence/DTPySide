@@ -178,9 +178,6 @@ class Ui_DTSetting(object):
         self.gridLayout.addWidget(self.pushButton_backup, 3, 1, 1, 1)
 
         self.comboBox_theme = QComboBox(self.scrollAreaWidgetContentsBasicInfo)
-        self.comboBox_theme.addItem("")
-        self.comboBox_theme.addItem("")
-        self.comboBox_theme.addItem("")
         self.comboBox_theme.setObjectName(u"comboBox_theme")
         sizePolicy1.setHeightForWidth(self.comboBox_theme.sizePolicy().hasHeightForWidth())
         self.comboBox_theme.setSizePolicy(sizePolicy1)
@@ -246,10 +243,6 @@ class Ui_DTSetting(object):
         self.comboBox_window_effect.setItemText(2, QCoreApplication.translate("DTSetting", u"Acrylic", None))
 
         self.label_theme.setText(QCoreApplication.translate("DTSetting", u"Theme", None))
-        self.comboBox_theme.setItemText(0, QCoreApplication.translate("DTSetting", u"Dracula", None))
-        self.comboBox_theme.setItemText(1, QCoreApplication.translate("DTSetting", u"Dark", None))
-        self.comboBox_theme.setItemText(2, QCoreApplication.translate("DTSetting", u"Light", None))
-
         self.label_window_effect.setText(QCoreApplication.translate("DTSetting", u"Window Effect", None))
         self.label_font.setText(QCoreApplication.translate("DTSetting", u"Font (font-size is fixed)", None))
         self.label_backup.setText(QCoreApplication.translate("DTSetting", u"Backup Dst", None))

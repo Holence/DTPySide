@@ -77,10 +77,6 @@ class DTAPP(QApplication):
 
 	def initializeWindowStyle(self):
 		"""设置MainwWindow的Window Effect和Theme
-
-		Args:
-			WindowEffect: Normal (only shadow) | Aero | Acrylic
-			Theme: Dracula | Dark | Light
 		"""
 		
 		WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
@@ -89,12 +85,13 @@ class DTAPP(QApplication):
 			self.__UserSetting.setValue("BasicInfo/WindowEffect","Acrylic")
 			WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
 
+		self.ThemeList=["Dracula","Dracula2","Brown","Green","Cyan"]
 		Theme=self.__UserSetting.value("BasicInfo/Theme")
-		if Theme!="Dracula" and Theme!="Dark" and Theme!="Light":
+		if Theme not in self.ThemeList:
 			self.__UserSetting.setValue("BasicInfo/Theme","Dracula")
 			Theme=self.__UserSetting.value("BasicInfo/Theme")
 		
-		self.setStyleSheet(Generate_StyleSheet(Theme, WindowEffect, self.Font()))
+		self.setStyleSheet(DTStyleSheet(Theme, WindowEffect, self.Font()))
 	
 	def loadTranslation(self):
 

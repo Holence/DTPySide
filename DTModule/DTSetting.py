@@ -45,7 +45,9 @@ class DTSetting(Ui_DTSetting,QWidget):
 
 		self.spinBox_scale.setValue(self.app.Scale())
 		self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
-		self.comboBox_theme.setCurrentIndex(["Dracula","Dark","Light"].index(self.app.Theme()))
+		
+		self.comboBox_theme.addItems(self.app.ThemeList)
+		self.comboBox_theme.setCurrentIndex(self.app.ThemeList.index(self.app.Theme()))
 		
 		import DTPySide.DTTranslation as DTTranslation
 

@@ -185,7 +185,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 		else:
 			self.backup_thread=BackUpThread(self,backup_dst,self.app.BackupList())
 			self.backup_thread.finished.connect(self.backup_thread.deleteLater)
-			self.backup_thread.finished.connect(lambda:self.app.TrayIcon.showMessage("Information","Data backup completed."))
+			self.backup_thread.finished.connect(lambda:self.app.TrayIcon.showMessage("Information","Data backup completed.",DTIcon.Information()))
 			self.backup_thread.start()
 
 	def about(self):
