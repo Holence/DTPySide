@@ -1,63 +1,47 @@
 from __future__ import annotations
 from DTPySide import *
 
+def changeHue(old_color:str,shift_hue:int):
+	old_color=colour.Color(old_color)
+	old_hue=old_color.get_hue()
+	if old_hue+shift_hue<0:
+		new_hue=1+old_hue+shift_hue
+	else:
+		new_hue=old_hue+shift_hue
+	old_color.set_hue(new_hue)
+	return old_color.get_web()
+
 class DTStyleSheet(str):
-	def __new__(cls,theme:str, window_effect:str, font:QFont):
+	def __new__(cls,theme:str, hue:int, window_effect:str, font:QFont):
 		
 		# font_size=18
 		font_family=font.family()
-
+		
+		# DEEPDARK="#191A21" # Border和GroupBox、TitleBarFrame的Background
+		# BACKGROUND="#21222C" # background
+		# SOFTDARK="#282A36" # LineEdit、QPushButton的背景
+		# DIM="#404257" # disable的文字、Itemview的item的背景
+		# PRESSED = "#A67DB4" # Button Clicked 
+		# FOCUSED="#8C6BBB" # Button Hover 
+		# TEXT="#E0E0E0" # 文字
+		# ICONCOLOR="white" # 部分icon的颜色（暂未适配ui文件中指派的icon）
+		
 		if theme=="Dracula":
-
-			DEEPDARK="#191A21" # Border和GroupBox、TitleBarFrame的Background
-			BACKGROUND="#21222C" # background
-			SOFTDARK="#282A36" # LineEdit、QPushButton的背景
-			DIM="#404257" # disable的文字、Itemview的item的背景
-			PRESSED = "#A67DB4" # Button Clicked 
-			FOCUSED="#8C6BBB" # Button Hover 
-			TEXT="#E0E0E0" # 文字
-			ICONCOLOR="white" # 部分icon的颜色（暂未适配ui文件中指派的icon）
-
+			color_list=["#191A21","#21222C","#282A36","#404257", "#A67DB4","#8C6BBB","#E0E0E0","white"]
 		elif theme=="Dracula2":
-			DEEPDARK="#202329"
-			BACKGROUND="#282C34"
-			SOFTDARK="#313341"
-			DIM="#404257"
-			PRESSED = "#D7AAE6"
-			FOCUSED="#BD93F9"
-			TEXT="#EBEBEB"
-			ICONCOLOR="white"
-		
+			color_list=["#202329","#282C34","#313341","#404257","#D7AAE6","#BD93F9","#EBEBEB","white"]
 		elif theme=="Brown":
-			DEEPDARK="#232323"
-			BACKGROUND="#2A2A2A"
-			SOFTDARK="#353535"
-			DIM="#5c5c5c"
-			PRESSED = "#7AB6F3"
-			FOCUSED="#2A82DA"
-			TEXT="#FFFFFF"
-			ICONCOLOR="white"
-
+			color_list=["#232323","#2A2A2A","#353535","#5c5c5c","#7AB6F3","#2A82DA","#FFFFFF","white"]
 		elif theme=="Green":
-			DEEPDARK="#17241F"
-			BACKGROUND="#294137"
-			SOFTDARK="#3F6151"
-			DIM="#5D796C"
-			PRESSED = "#C6CA8F"
-			FOCUSED="#A5AD79"
-			TEXT="#EEF1E0"
-			ICONCOLOR="white"
-		
+			color_list=["#17241F","#294137","#3F6151","#5D796C","#C6CA8F","#A5AD79","#EEF1E0","white"]
 		elif theme=="Cyan":
-			DEEPDARK="#212A35"
-			BACKGROUND="#303F53"
-			SOFTDARK="#3F5670"
-			DIM="#5b789e"
-			PRESSED = "#B0C8D2"
-			FOCUSED="#8BACBC"
-			TEXT="#EEF4ED"
-			ICONCOLOR="white"
+			color_list=["#212A35","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED","white"]
+		elif theme=="White":
+			color_list=["#e7e0d8","#dbd0c1","#d0bfac","#bca68a","#7d6b63","#988074","#110b12","black"]
 		
+		color_list=[changeHue(color,hue) for color in color_list]
+		DEEPDARK,BACKGROUND,SOFTDARK,DIM,PRESSED ,FOCUSED,TEXT,ICONCOLOR=color_list
+
 		stylesheet=""
 
 		if window_effect=="Normal":

@@ -48,6 +48,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 		
 		self.comboBox_theme.addItems(self.app.ThemeList)
 		self.comboBox_theme.setCurrentIndex(self.app.ThemeList.index(self.app.Theme()))
+		self.slider_Hue.setValue(int(self.app.Hue()*360))
 		
 		import DTPySide.DTTranslation as DTTranslation
 
@@ -71,6 +72,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.pushButton_scale.clicked.connect(self.ScaleSetting)
 		self.pushButton_window_effect.clicked.connect(self.WindowEffectSetting)
 		self.pushButton_theme.clicked.connect(self.ThemeSetting)
+		self.slider_Hue.valueChanged.connect(self.HueSetting)
 		self.pushButton_language.clicked.connect(self.LanguageSetting)
 		self.pushButton_country.clicked.connect(self.CountrySetting)
 	
@@ -116,7 +118,11 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.app.setTheme(self.comboBox_theme.currentText())
 		self.app.initializeWindowStyle()
 		DTFrame.DTMessageBox(self,"Information","Theme changed to \"%s\" successfully!"%self.app.Theme(),DTIcon.Information())
-		
+	
+	def HueSetting(self):
+		self.app.setHue(float(self.slider_Hue.value()/360))
+		self.app.initializeWindowStyle()
+	
 	def LanguageSetting(self):
 		self.app.setLanguage(self.comboBox_language.currentText())
 		DTFrame.DTMessageBox(self,"Information","Language changed to \"%s\" successfully!\n\nPlease restart the application manually for better expeirence."%self.app.Language(),DTIcon.Information())

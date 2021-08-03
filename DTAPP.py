@@ -49,6 +49,7 @@ class DTAPP(QApplication):
 		super().__init__(args)
 
 		self.setStyle("Fusion")
+		self.ThemeList=["Dracula","Dracula2","Brown","Green","Cyan","White"]
 		self.initializeWindowStyle()
 		self.loadTranslation()
 		self.TrayIcon=QSystemTrayIcon(self)
@@ -79,19 +80,28 @@ class DTAPP(QApplication):
 		"""设置MainwWindow的Window Effect和Theme
 		"""
 		
-		WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
 		
+		WindowEffect=self.WindowEffect()
 		if WindowEffect!="Normal" and WindowEffect!="Aero" and WindowEffect!="Acrylic":
-			self.__UserSetting.setValue("BasicInfo/WindowEffect","Acrylic")
-			WindowEffect=self.__UserSetting.value("BasicInfo/WindowEffect")
+			self.setWindowEffect("Acrylic")
+			WindowEffect=self.WindowEffect()
 
-		self.ThemeList=["Dracula","Dracula2","Brown","Green","Cyan"]
-		Theme=self.__UserSetting.value("BasicInfo/Theme")
+		Theme=self.Theme()
 		if Theme not in self.ThemeList:
-			self.__UserSetting.setValue("BasicInfo/Theme","Dracula")
-			Theme=self.__UserSetting.value("BasicInfo/Theme")
+			self.setTheme("Dracula")
+			Theme=self.Theme()
 		
-		self.setStyleSheet(DTStyleSheet(Theme, WindowEffect, self.Font()))
+		Hue=self.__UserSetting.value("BasicInfo/Hue")
+		if Hue==None:
+			self.setHue(0.0)
+			Hue=self.Hue()
+		else:
+			Hue=float(Hue)
+			if not 0<=Hue<=1:
+				self.setHue(0.0)
+				Hue=self.Hue()
+		
+		self.setStyleSheet(DTStyleSheet(Theme, Hue, WindowEffect, self.Font()))
 	
 	def loadTranslation(self):
 
@@ -141,6 +151,12 @@ class DTAPP(QApplication):
 	
 	def setTheme(self,Theme:str):
 		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
+	
+	def Hue(self):
+		return float(self.__UserSetting.value("BasicInfo/Hue"))
+	
+	def setHue(self,hue:float):
+		self.__UserSetting.setValue("BasicInfo/Hue",str(hue))
 
 	def Language(self):
 		return self.__UserSetting.value("BasicInfo/Language")

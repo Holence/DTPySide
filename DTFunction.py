@@ -12,12 +12,15 @@ import pickle
 import json
 import pypinyin
 from functools import partial
+from win32.lib import win32con
+from win32 import win32gui, win32api
 from win32com.shell import shell,shellcon
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import colour
 
 def Clear_Layout(layout):
 	for i in reversed(range(layout.count())): 
@@ -190,13 +193,21 @@ def Fernet_Decrypt(password,data):
 		return False
 
 def Json_Save(data,file_path):
-	with open(file_path,"w",encoding="utf-8") as f:
-		json.dump(data,f,ensure_ascii=False,indent=4)
+	try:
+		with open(file_path,"w",encoding="utf-8") as f:
+			json.dump(data,f,ensure_ascii=False,indent=4)
+		
+		return True
+	except:
+		return False
 
 def Json_Load(file_path):
-	with open(file_path,"r",encoding="utf-8") as f:
-		data=json.load(f)
-	return data
+	try:
+		with open(file_path,"r",encoding="utf-8") as f:
+			data=json.load(f)
+		return data
+	except:
+		return False
 
 def Str_to_AZ(input):
 	
@@ -279,391 +290,97 @@ def List_Symmetric_Difference_Full(a:list, b:list) -> list:
 			c.append(i)
 	return c
 
-def GetWebPageResponse(url,cookie=""):
+def GetWebPageResponse(url,cookie="") -> requests.Response:
 	head={}
-
-	if cookie!="":
-		head["cookie"]=cookie
-	
+	head["cookie"]=cookie
 	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
-	
-	try:
-		# response=requests.get(url,headers=head,timeout=3)#
-		response=requests.get(url,headers=head,timeout=3)
-		return True,response
-	except Exception as e:
-		return False,e
+	response=requests.get(url,headers=head,timeout=3)
+	if response.ok:
+		return response
+	else:
+		return None
 
-def GetWebPageInfo(url="",cookie="",response=None):
-	if response==None:
-		status,response=GetWebPageResponse(url,cookie)
+def GetWebPageHTML(url,cookie=""):
+	head={}
+	head["cookie"]=cookie
+	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
+	response=requests.get(url,headers=head,timeout=3)
+	if response.ok:
+		return response.text
 	else:
-		status=True
-	
-	if status==True:
-		return True,response.raw.info()
-	else:
-		return False,response
+		return None
 
-def GetWebPageType(url="",cookie="",response=None):
-	if response==None:
-		status,response=GetWebPageInfo(url,cookie)
+def GetWebPageHeaders(url,cookie=""):
+	head={}
+	head["cookie"]=cookie
+	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
+	response=requests.get(url,headers=head,timeout=3)
+	if response.ok:
+		return response.headers
 	else:
-		status=True
-	
-	if status==True:
-		return status,response["Content-Type"]
-	else:
-		return False,response
+		return None
 
-def GetWebPageHTML(url="",cookie="",response=None):
-	if response==None:
-		status,response=GetWebPageResponse(url,cookie)
+def GetWebPageType(url,cookie=""):
+	head={}
+	head["cookie"]=cookie
+	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
+	response=requests.get(url,headers=head,timeout=3)
+	if response.ok:
+		return response["Content-Type"]
 	else:
-		status=True
-	
-	if status==True:
-		if response.encoding!="GB2312" and response.encoding!="GBK":
-			response.encoding='utf-8'
-		else:
-			response.encoding="GBK"
-		return True,response.text
-	else:
-		return False,response
+		return None
 
-def GetWebPageTitle(url="",cookie="",response=None):
-	"成功的话返回(True,title)，失败的话返回(False,Exception)，其中如果Title中包含url编码（比如|对应的是%7C），自动解析成utf-8编码"
-	if response==None:
-		status,html=GetWebPageHTML(url,cookie)
-	else:
-		status,html=GetWebPageHTML(response=response)
-
-	
-	if status==True:
+def GetWebPageTitle(url,cookie=""):
+	head={}
+	head["cookie"]=cookie
+	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
+	response=requests.get(url,headers=head,timeout=3)
+	if response.ok:
+		html=response.text
 		try:
-			html=etree.HTML(html)
-			title=html.xpath("/html/head/title/text()")
-			title=urllib.parse.unquote(title[0],'utf-8')
-			return True,str(title)
+			tree=etree.HTML(html)
+			title=tree.xpath(".//title/text()")[0]
+			title=urllib.parse.unquote(title,'utf-8')
+			return str(title)
 		except:
-			try:
-				#YouTube的channel页面的标题竟然在body里面……
-				title=html.xpath("/html/body/title/text()")
-				title=urllib.parse.unquote(title[0],'utf-8')
-				return True,str(title)
-			except Exception as e:
-				return False,e
+			return None
 	else:
-		return False,html
+		return None
 
 
-def GetWebFavIcon(url="",cookie="",response=None):
-	if response==None:
-		status,html=GetWebPageHTML(url,cookie)
-	else:
-		status,html=GetWebPageHTML(response=response)
-
-	if status==True:
+def GetWebFavIcon(url,cookie=""):
+	head={}
+	head["cookie"]=cookie
+	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
+	response=requests.get(url,headers=head,timeout=3)
+	if response.ok:
 		try:
-			html=etree.HTML(html)
-			icon_url=html.xpath("//*[@rel='icon']/@href")[0]
+			html=response.text
+			tree=etree.HTML(html)
+			icon_url=tree.xpath("//*[@rel='icon']/@href | //*[@rel='shortcut icon']/@href")[-1]
 			if "http" not in icon_url:
 				icon_url=urllib.parse.urljoin(url,icon_url)
-			status,icon=GetWebPagePic(icon_url)
-			
-			return status,icon
+			res=GetWebPageResponse(icon_url)
+			if res!=None:
+				return res.content
+			else:
+				return None
 		except:
-			try:
-				icon_url=html.xpath("//*[@rel='shortcut icon']/@href")[0]
-				icon_url=urllib.parse.urljoin(url,icon_url)
-				status,icon=GetWebPagePic(icon_url)
-				
-				return status,icon
-			except Exception as e:
-				return False,e
+			return None
 	else:
-		return False,html
+		return None
 
-def GetWebPagePic(url="",cookie="",response=None):
-	if response==None:
-		status,response=GetWebPageResponse(url,cookie)
+def GetWebPagePic(url,cookie=""):
+	head={}
+	head["cookie"]=cookie
+	head['User-Agent']='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.135 YaBrowser/21.6.2.143 (beta) Yowser/2.5 Safari/537.36'
+	response=requests.get(url,headers=head,timeout=3)
+	if response.ok:
+		return response.content
 	else:
-		status=True
-	
-	if status==True:
-		return True,response.content
-	else:
-		return False,response
+		return None
 
 def Delete_to_Recyclebin(dir):
 	"删除成功返回True"
 	result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
 	return result[0]==0
-
-##############################################################################################
-
-from ctypes import POINTER, Structure, c_bool, c_int, pointer, sizeof, WinDLL, byref, cast
-from ctypes.wintypes import DWORD, HWND, ULONG, POINT, RECT, UINT , LONG, LPCVOID, MSG
-from win32.lib import win32con
-from win32 import win32gui, win32api
-from enum import Enum
-
-
-class WINDOWCOMPOSITIONATTRIB(Enum):
-	WCA_UNDEFINED = 0,
-	WCA_NCRENDERING_ENABLED = 1,
-	WCA_NCRENDERING_POLICY = 2,
-	WCA_TRANSITIONS_FORCEDISABLED = 3,
-	WCA_ALLOW_NCPAINT = 4,
-	WCA_CAPTION_BUTTON_BOUNDS = 5,
-	WCA_NONCLIENT_RTL_LAYOUT = 6,
-	WCA_FORCE_ICONIC_REPRESENTATION = 7,
-	WCA_EXTENDED_FRAME_BOUNDS = 8,
-	WCA_HAS_ICONIC_BITMAP = 9,
-	WCA_THEME_ATTRIBUTES = 10,
-	WCA_NCRENDERING_EXILED = 11,
-	WCA_NCADORNMENTINFO = 12,
-	WCA_EXCLUDED_FROM_LIVEPREVIEW = 13,
-	WCA_VIDEO_OVERLAY_ACTIVE = 14,
-	WCA_FORCE_ACTIVEWINDOW_APPEARANCE = 15,
-	WCA_DISALLOW_PEEK = 16,
-	WCA_CLOAK = 17,
-	WCA_CLOAKED = 18,
-	WCA_ACCENT_POLICY = 19,
-	WCA_FREEZE_REPRESENTATION = 20,
-	WCA_EVER_UNCLOAKED = 21,
-	WCA_VISUAL_OWNER = 22,
-	WCA_LAST = 23
-
-
-class ACCENT_STATE(Enum):
-	""" 客户区状态枚举类 """
-	ACCENT_DISABLED = 0,
-	ACCENT_ENABLE_GRADIENT = 1,
-	ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
-	ACCENT_ENABLE_BLURBEHIND = 3,          # Aero效果
-	ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,   # 亚克力效果
-	ACCENT_INVALID_STATE = 5
-
-
-class ACCENT_POLICY(Structure):
-	""" 设置客户区的具体属性 """
-
-	_fields_ = [
-		("AccentState",     DWORD),
-		("AccentFlags",     DWORD),
-		("GradientColor",   DWORD),
-		("AnimationId",     DWORD),
-	]
-
-
-class WINDOWCOMPOSITIONATTRIBDATA(Structure):
-	_fields_ = [
-		("Attribute",   DWORD),
-		# POINTER()接收任何ctypes类型，并返回一个指针类型
-		("Data",        POINTER(ACCENT_POLICY)),
-		("SizeOfData",  ULONG),
-	]
-
-
-class DWMNCRENDERINGPOLICY(Enum):
-	DWMNCRP_USEWINDOWSTYLE = 0
-	DWMNCRP_DISABLED = 1
-	DWMNCRP_ENABLED = 2
-	DWMNCRP_LAS = 3
-
-
-class DWMWINDOWATTRIBUTE(Enum):
-	DWMWA_NCRENDERING_ENABLED = 1
-	DWMWA_NCRENDERING_POLICY = 2
-	DWMWA_TRANSITIONS_FORCEDISABLED = 3
-	DWMWA_ALLOW_NCPAINT = 4
-	DWMWA_CAPTION_BUTTON_BOUNDS = 5
-	DWMWA_NONCLIENT_RTL_LAYOUT = 6
-	DWMWA_FORCE_ICONIC_REPRESENTATION = 7
-	DWMWA_FLIP3D_POLICY = 8
-	DWMWA_EXTENDED_FRAME_BOUNDS = 9
-	DWMWA_HAS_ICONIC_BITMAP = 10
-	DWMWA_DISALLOW_PEEK = 11
-	DWMWA_EXCLUDED_FROM_PEEK = 12
-	DWMWA_CLOAK = 13
-	DWMWA_CLOAKED = 14
-	DWMWA_FREEZE_REPRESENTATION = 25
-	DWMWA_LAST = 16
-
-
-class MARGINS(Structure):
-	_fields_ = [
-		("cxLeftWidth",     c_int),
-		("cxRightWidth",    c_int),
-		("cyTopHeight",     c_int),
-		("cyBottomHeight",  c_int),
-	]
-
-
-class MINMAXINFO(Structure):
-	_fields_ = [
-		("ptReserved",      POINT),
-		("ptMaxSize",       POINT),
-		("ptMaxPosition",   POINT),
-		("ptMinTrackSize",  POINT),
-		("ptMaxTrackSize",  POINT),
-	]
-
-
-class PWINDOWPOS(Structure):
-	_fields_ = [
-		('hWnd',            HWND),
-		('hwndInsertAfter', HWND),
-		('x',               c_int),
-		('y',               c_int),
-		('cx',              c_int),
-		('cy',              c_int),
-		('flags',           UINT)
-	]
-
-
-class NCCALCSIZE_PARAMS(Structure):
-	_fields_ = [
-		('rgrc', RECT*3),
-		('lppos', POINTER(PWINDOWPOS))
-	]
-
-
-class WindowEffect:
-	""" 调用windows api实现窗口效果 """
-
-	def __init__(self):
-		# 调用api
-		self.user32 = WinDLL("user32")
-		self.dwmapi = WinDLL("dwmapi")
-		self.SetWindowCompositionAttribute = self.user32.SetWindowCompositionAttribute
-		self.DwmExtendFrameIntoClientArea = self.dwmapi.DwmExtendFrameIntoClientArea
-		self.DwmSetWindowAttribute = self.dwmapi.DwmSetWindowAttribute
-		self.SetWindowCompositionAttribute.restype = c_bool
-		self.DwmExtendFrameIntoClientArea.restype = LONG
-		self.DwmSetWindowAttribute.restype = LONG
-		self.SetWindowCompositionAttribute.argtypes = [
-			c_int,
-			POINTER(WINDOWCOMPOSITIONATTRIBDATA),
-		]
-		self.DwmSetWindowAttribute.argtypes = [c_int, DWORD, LPCVOID, DWORD]
-		self.DwmExtendFrameIntoClientArea.argtypes = [c_int, POINTER(MARGINS)]
-		# 初始化结构体
-		self.accentPolicy = ACCENT_POLICY()
-		self.winCompAttrData = WINDOWCOMPOSITIONATTRIBDATA()
-		self.winCompAttrData.Attribute = WINDOWCOMPOSITIONATTRIB.WCA_ACCENT_POLICY.value[
-			0
-		]
-		self.winCompAttrData.SizeOfData = sizeof(self.accentPolicy)
-		self.winCompAttrData.Data = pointer(self.accentPolicy)
-
-	def setAcrylicEffect(self, hWnd, gradientColor: str = "52557018", isEnableShadow: bool = True, animationId: int = 0):
-		""" 给窗口开启Win10的亚克力效果34374620 52557018
-
-		Parameter
-		----------
-		hWnd: int or `sip.voidptr`
-			窗口句柄
-
-		gradientColor: str
-			十六进制亚克力混合色，对应rgba四个分量
-
-		isEnableShadow: bool
-			控制是否启用窗口阴影
-
-		animationId: int
-			控制磨砂动画
-		
-		拖动缓慢：去掉高级系统设置 -> 性能 -> 拖动时显示窗口内容 复选框的 √
-		"""
-
-		# 亚克力混合色
-		gradientColor = (
-			gradientColor[6:]
-			+ gradientColor[4:6]
-			+ gradientColor[2:4]
-			+ gradientColor[:2]
-		)
-		gradientColor = DWORD(int(gradientColor, base=16))
-		# 磨砂动画
-		animationId = DWORD(animationId)
-		# 窗口阴影
-		accentFlags = DWORD(0x20 | 0x40 | 0x80 |
-							0x100) if isEnableShadow else DWORD(0)
-		self.accentPolicy.AccentState = ACCENT_STATE.ACCENT_ENABLE_ACRYLICBLURBEHIND.value[
-			0
-		]
-		self.accentPolicy.GradientColor = gradientColor
-		self.accentPolicy.AccentFlags = accentFlags
-		self.accentPolicy.AnimationId = animationId
-		# 开启亚克力
-		self.SetWindowCompositionAttribute(hWnd, pointer(self.winCompAttrData))
-
-	def setAeroEffect(self, hWnd):
-		""" 给窗口开启Aero效果
-
-		Parameter
-		----------
-		hWnd: int or `sip.voidptr`
-			窗口句柄
-		"""
-		self.accentPolicy.AccentState = ACCENT_STATE.ACCENT_ENABLE_BLURBEHIND.value[0]
-		# 开启Aero
-		self.SetWindowCompositionAttribute(hWnd, pointer(self.winCompAttrData))
-
-	def moveWindow(self, hWnd):
-		""" 移动窗口
-
-		Parameter
-		----------
-		hWnd: int or `sip.voidptr`
-			窗口句柄
-		"""
-		win32gui.ReleaseCapture()
-		win32api.SendMessage(
-			hWnd, win32con.WM_SYSCOMMAND, win32con.SC_MOVE + win32con.HTCAPTION, 0
-		)
-
-	def addShadowEffect(self, hWnd):
-		""" 给窗口添加阴影
-
-		Parameter
-		----------
-		hWnd: int or `sip.voidptr`
-			窗口句柄
-		"""
-		hWnd = int(hWnd)
-		self.DwmSetWindowAttribute(
-			hWnd,
-			DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY.value,
-			byref(c_int(DWMNCRENDERINGPOLICY.DWMNCRP_ENABLED.value)),
-			4,
-		)
-		margins = MARGINS(-1, -1, -1, -1)
-		self.DwmExtendFrameIntoClientArea(hWnd, byref(margins))
-
-	def addWindowAnimation(self, hWnd):
-		""" 打开窗口动画效果
-
-		Parameters
-		----------
-		hWnd : int or `sip.voidptr`
-			窗口句柄
-		"""
-		style = win32gui.GetWindowLong(hWnd, win32con.GWL_STYLE)
-		win32gui.SetWindowLong(
-			hWnd,
-			win32con.GWL_STYLE,
-			style
-			# | win32con.WS_MAXIMIZEBOX
-			# | win32con.WS_CAPTION
-			# | win32con.CS_DBLCLKS
-			# | win32con.WS_THICKFRAME,
-			| win32con.WS_OVERLAPPEDWINDOW,
-		)
-
-		# 奶奶的不写WS_MAXIMIZEBOX、WS_CAPTION的话，拖动到顶端的最大化将会出现空隙
-		# 但写了的话用Aero全透明就会出现windows自带的三个窗口title按钮，咋办呢？
-		# 只能用亚克力Acrylic，或者用Aero的时候把Title设置为不透明好了……
-		# 花了半个多小时的时间……
