@@ -23,6 +23,12 @@ class DTHorizontalTabel(QTableWidget):
 
 		self.setDragEnabled(True)
 		self.setDragDropMode(QAbstractItemView.DragDrop)
+
+		def	slot():
+			self.selected_row=0
+			self.clearSelection()
+		# 手动sort后清空选区
+		self.horizontalHeader().sectionPressed.connect(slot)
 	
 	def setColumn(self,column_list:list):
 		self.setColumnCount(len(column_list))

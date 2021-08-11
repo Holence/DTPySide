@@ -80,28 +80,12 @@ class DTAPP(QApplication):
 		"""设置MainwWindow的Window Effect和Theme
 		"""
 		
-		
 		WindowEffect=self.WindowEffect()
-		if WindowEffect!="Normal" and WindowEffect!="Aero" and WindowEffect!="Acrylic":
-			self.setWindowEffect("Acrylic")
-			WindowEffect=self.WindowEffect()
-
 		Theme=self.Theme()
-		if Theme not in self.ThemeList:
-			self.setTheme("Dracula")
-			Theme=self.Theme()
+		Hue=self.Hue()
+		Font=self.Font()
 		
-		Hue=self.__UserSetting.value("BasicInfo/Hue")
-		if Hue==None:
-			self.setHue(0.0)
-			Hue=self.Hue()
-		else:
-			Hue=float(Hue)
-			if not 0<=Hue<=1:
-				self.setHue(0.0)
-				Hue=self.Hue()
-		
-		self.setStyleSheet(DTStyleSheet(Theme, Hue, WindowEffect, self.Font()))
+		self.setStyleSheet(DTStyleSheet(Theme, Hue, WindowEffect,Font))
 	
 	def loadTranslation(self):
 
@@ -141,18 +125,28 @@ class DTAPP(QApplication):
 		self.__UserSetting.setValue("BasicInfo/Scale",str(scale))
 	
 	def WindowEffect(self):
+		if self.__UserSetting.value("BasicInfo/WindowEffect") not in ["Normal","Aero","Acrylic"]:
+			self.setWindowEffect("Acrylic")
 		return self.__UserSetting.value("BasicInfo/WindowEffect")
 	
 	def setWindowEffect(self, WindowEffect:str):
 		self.__UserSetting.setValue("BasicInfo/WindowEffect",WindowEffect)
 	
 	def Theme(self):
+		if self.__UserSetting.value("BasicInfo/Theme") not in self.ThemeList:
+			self.setTheme("Dracula")
 		return self.__UserSetting.value("BasicInfo/Theme")
 	
 	def setTheme(self,Theme:str):
 		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
 	
 	def Hue(self):
+		if self.__UserSetting.value("BasicInfo/Hue")==None:
+			self.setHue(0.0)
+		else:
+			Hue=float(self.__UserSetting.value("BasicInfo/Hue"))
+			if not 0<=Hue<=1:
+				self.setHue(0.0)
 		return float(self.__UserSetting.value("BasicInfo/Hue"))
 	
 	def setHue(self,hue:float):
