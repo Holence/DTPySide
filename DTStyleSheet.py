@@ -710,7 +710,7 @@ class DTStyleSheet(str):
 		/* QHeaderView for list table */
 
 		QAbstractItemView, QAbstractItemView QLineEdit {{
-			font-family: "Hack";
+			font-family: {font_family};
 			font-size: 12pt;
 			background-color: {SOFTDARK};
 		}}
@@ -752,11 +752,7 @@ class DTStyleSheet(str):
 			border: none;
 		}}
 
-		QListView{{
-			font-family: {font_family};
-			border:1px solid {DEEPDARK};
-		}}
-		QTreeView, QTableView {{
+		QListView, QTreeView, QTableView {{
 			border:1px solid {DEEPDARK};
 		}}
 		

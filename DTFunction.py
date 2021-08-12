@@ -358,6 +358,7 @@ def GetWebPagePic(url,cookie=""):
 		response=requests.get(url,headers=head,timeout=3)
 	except:
 		return None
+	
 	if response.ok:
 		return response.content
 	else:
@@ -367,3 +368,41 @@ def Delete_to_Recyclebin(dir):
 	"删除成功返回True"
 	result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
 	return result[0]==0
+
+def Win32_Shellcopy(src, dest):
+	"""
+	Copy files and directories using Windows shell.
+
+	:param src: Path or a list of paths to copy. Filename portion of a path
+				(but not directory portion) can contain wildcards ``*`` and
+				``?``.
+	:param dst: destination directory.
+	:returns: ``True`` if the operation completed successfully,
+			  ``False`` if it was aborted by user (completed partially).
+	:raises: ``WindowsError`` if anything went wrong. Typically, when source
+			 file was not found.
+
+	.. seealso:
+		`SHFileperation on MSDN <http://msdn.microsoft.com/en-us/library/windows/desktop/bb762164(v=vs.85).aspx>`
+	"""
+	if isinstance(src, str):
+		src = os.path.abspath(src)
+	else:  # iterable
+		src = '\0'.join(os.path.abspath(path) for path in src)
+
+	result, aborted = shell.SHFileOperation((
+		0,
+		shellcon.FO_COPY,
+		src,
+		os.path.abspath(dest),
+		shellcon.FOF_NOCONFIRMMKDIR,  # flags
+		None,
+		None))
+
+	if not aborted and result != 0:
+		# Note: raising a WindowsError with correct error code is quite
+		# difficult due to SHFileOperation historical idiosyncrasies.
+		# Therefore we simply pass a message.
+		raise WindowsError('SHFileOperation failed: 0x%08x' % result)
+
+	return not aborted
