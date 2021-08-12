@@ -138,15 +138,16 @@ class DTAPP(QApplication):
 		return self.__UserSetting.value("BasicInfo/Theme")
 	
 	def setTheme(self,Theme:str):
+		self.setHue(-1)
 		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
 	
 	def Hue(self):
 		if self.__UserSetting.value("BasicInfo/Hue")==None:
-			self.setHue(0.0)
+			self.setHue(-1)
 		else:
 			Hue=float(self.__UserSetting.value("BasicInfo/Hue"))
-			if not 0<=Hue<=1:
-				self.setHue(0.0)
+			if not 0<=Hue<=1 and Hue!=-1:
+				self.setHue(-1)
 		return float(self.__UserSetting.value("BasicInfo/Hue"))
 	
 	def setHue(self,hue:float):

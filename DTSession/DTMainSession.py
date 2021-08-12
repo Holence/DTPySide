@@ -170,7 +170,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 				self.backup_list=backup_list
 			
 			def run(self):
-				new_folder_dst=os.path.join(self.backup_dst,WhatDayIsToday("0"))
+				new_folder_dst=os.path.join(self.backup_dst,WhatDayIsToday(1).toString("yyyyMMdd"))
 				if not os.path.exists(new_folder_dst):
 					os.makedirs(new_folder_dst)
 				for url in self.backup_list:

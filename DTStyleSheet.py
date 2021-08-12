@@ -1,13 +1,8 @@
 from __future__ import annotations
 from DTPySide import *
 
-def changeHue(old_color:str,shift_hue:int):
+def changeHue(old_color:str,new_hue:int):
 	old_color=colour.Color(old_color)
-	old_hue=old_color.get_hue()
-	if old_hue+shift_hue<0:
-		new_hue=1+old_hue+shift_hue
-	else:
-		new_hue=old_hue+shift_hue
 	old_color.set_hue(new_hue)
 	return old_color.get_web()
 
@@ -39,7 +34,8 @@ class DTStyleSheet(str):
 		elif theme=="White":
 			color_list=["#e7e0d8","#dbd0c1","#d0bfac","#bca68a","#7d6b63","#988074","#110b12","black"]
 		
-		color_list=[changeHue(color,hue) for color in color_list]
+		if hue!=-1:
+			color_list=[changeHue(color,hue) for color in color_list]
 		DEEPDARK,BACKGROUND,SOFTDARK,DIM,PRESSED ,FOCUSED,TEXT,ICONCOLOR=color_list
 
 		stylesheet=""
@@ -581,7 +577,7 @@ class DTStyleSheet(str):
 			background:{SOFTDARK};
 		}}
 		QSlider::sub-page{{
-			/*已经划过的从地方*/                            
+			/*已经划过的从地方*/
 			background: {FOCUSED};
 		}}
 
@@ -591,9 +587,7 @@ class DTStyleSheet(str):
 		QScrollBar{{
 			width: 16px;
 			height: 16px;
-			background-color: {SOFTDARK};
-			border: 1px solid transparent;
-			border-radius: 7px;
+			background-color: transparent;
 			padding: 1px;
 		}}
 		QScrollBar::handle{{

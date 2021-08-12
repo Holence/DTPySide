@@ -41,7 +41,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.lineEdit_backup.hide()
 			self.pushButton_backup.hide()
 		
-		self.lineEdit_font.setText(self.app.Font().key().split(",")[0])
+		self.pushButton_font.setText(self.app.Font().key().split(",")[0])
+		self.pushButton_font.setStyleSheet("font-family:%s"%self.app.Font().key().split(",")[0])
 
 		self.spinBox_scale.setValue(self.app.Scale())
 		self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
@@ -49,6 +50,31 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.comboBox_theme.addItems(self.app.ThemeList)
 		self.comboBox_theme.setCurrentIndex(self.app.ThemeList.index(self.app.Theme()))
 		self.slider_Hue.setValue(int(self.app.Hue()*360))
+		self.slider_Hue.setStyleSheet("""
+		QSlider{
+			padding-left:5px;
+			padding-right:5px;
+			height: 36px;
+		}
+		QSlider::groove:horizontal {
+			height: 24px;
+			border: none;
+			border-radius: 6px;
+		}
+		QSlider::handle {
+			height: 28px;
+		}
+		QSlider::groove{
+			background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:0.166 rgba(255, 255, 0, 255), stop:0.333 rgba(0, 255, 0, 255), stop:0.5 rgba(0, 255, 255, 255), stop:0.666 rgba(0, 0, 255, 255), stop:0.833 rgba(255, 0, 255, 255), stop:1 rgba(255, 0, 0, 255));
+		}
+		QSlider::add-page{
+			background:transparent;
+		}
+		QSlider::sub-page{
+			background: transparent;
+		}
+		""")
+		self.pushButton_hue_reset.setStyleSheet("QPushButton{ min-height:16px; max-height:16px; min-width:16px; max-width:16px; icon-size:12px; }")
 		
 		import DTPySide.DTTranslation as DTTranslation
 
@@ -64,19 +90,18 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.pushButton_font.clicked.connect(self.FontSetting)
 	
 		if self.app.isLoginEnable():
-			self.pushButton_password.clicked.connect(self.PasswordSetting)
+			self.lineEdit_password.editingFinished.connect(self.PasswordSetting)
 		
 		if self.app.isBackupEnable():
 			self.pushButton_backup.clicked.connect(self.BackupSetting)
 		
 		self.pushButton_scale.clicked.connect(self.ScaleSetting)
-		self.pushButton_window_effect.clicked.connect(self.WindowEffectSetting)
-		self.pushButton_theme.clicked.connect(self.ThemeSetting)
-		self.slider_Hue.valueChanged.connect(self.HueSetting)
-		self.pushButton_language.clicked.connect(self.LanguageSetting)
-		self.pushButton_country.clicked.connect(self.CountrySetting)
-	
-		
+		self.comboBox_window_effect.currentIndexChanged.connect(self.WindowEffectSetting)
+		self.comboBox_theme.currentIndexChanged.connect(self.ThemeSetting)
+		self.pushButton_hue.clicked.connect(self.HueSetting)
+		self.pushButton_hue_reset.clicked.connect(self.HueReset)
+		self.comboBox_language.currentIndexChanged.connect(self.LanguageSetting)
+		self.comboBox_country.currentIndexChanged.connect(self.CountrySetting)
 
 	def PasswordSetting(self):
 		
@@ -98,10 +123,12 @@ class DTSetting(Ui_DTSetting,QWidget):
 	def FontSetting(self):
 		ok, font = QFontDialog.getFont(self.app.Font(), self)
 		if ok:
-			self.lineEdit_font.setText(font.key().split(",")[0])
+			self.pushButton_font.setText(font.key().split(",")[0])
 			self.app.setFont(font)
 			self.app.initializeWindowStyle()
 			DTFrame.DTMessageBox(self,"Information","Font changed to \"%s\" successfully!"%self.app.Font().key().split(",")[0],DTIcon.Information())
+			self.pushButton_font.setStyleSheet("font-family:%s"%self.app.Font().key().split(",")[0])
+			
 	
 	def ScaleSetting(self):
 		self.app.setScale(round(self.spinBox_scale.value(),1))
@@ -114,8 +141,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 		DTFrame.DTMessageBox(self,"Information","Window Effet changed to \"%s\" successfully!\n\nPlease restart the application manually for better expeirence."%self.app.WindowEffect(),DTIcon.Information())
 
 	def ThemeSetting(self):
-		
 		self.app.setTheme(self.comboBox_theme.currentText())
+		self.slider_Hue.setValue(0)
 		self.app.initializeWindowStyle()
 		DTFrame.DTMessageBox(self,"Information","Theme changed to \"%s\" successfully!"%self.app.Theme(),DTIcon.Information())
 	
@@ -123,6 +150,12 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.app.setHue(float(self.slider_Hue.value()/360))
 		self.app.initializeWindowStyle()
 	
+	def HueReset(self):
+		self.app.setHue(-1)
+		self.slider_Hue.setValue(0)
+		self.app.initializeWindowStyle()
+
+
 	def LanguageSetting(self):
 		self.app.setLanguage(self.comboBox_language.currentText())
 		DTFrame.DTMessageBox(self,"Information","Language changed to \"%s\" successfully!\n\nPlease restart the application manually for better expeirence."%self.app.Language(),DTIcon.Information())

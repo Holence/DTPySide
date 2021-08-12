@@ -7,8 +7,7 @@ class DTSettingSession(DTFrame.DTDialog):
 		super().__init__(Headquarter,"Setting")
 		
 		# 不要按钮了，实时保存设置
-		# self.buttonBox.removeButton(self.buttonBox.button(QDialogButtonBox.Cancel))
-		self.buttonBox.clear()
+		self.buttonBox.hide()
 		self.centralWidget.setContentsMargins(QMargins(10,10,32,0))
 		self.buttonBoxLayout.setContentsMargins(QMargins(0,0,32,0))
 		

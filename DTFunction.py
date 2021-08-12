@@ -39,38 +39,10 @@ def Delay_Msecs(msecs):
 	while QTime.currentTime() < dieTime:
 		QCoreApplication.processEvents(QEventLoop.AllEvents, 100)
 
-def QDate_to_Str(date:QDate, mode="0"):
-	"""
-	mode="0" : 20210101
-	mode="0." : 2021.01.01
-	mode="." : 2021.1.1
-	"""
-	if mode=="0":
-		return "%04d%02d%02d"%(date.year(),date.month(),date.day())
-	elif mode=="0.":
-		return "%04d.%02d.%02d"%(date.year(),date.month(),date.day())
-	elif mode==".":
-		return "%d.%d.%d"%(date.year(),date.month(),date.day())
-
-def Str_To_QDate(s:str, mode="0"):
-	"""
-	mode="0" : 20210101
-	mode="0." : 2021.01.01
-	mode="." : 2021.1.1
-	"""
-	if mode=="0":
-		return QDate(int(s[:4]),int(s[4:6]),int(s[6:8]))
-	elif mode=="0." or mode==".":
-		date=s.split(".")
-		year=date[0]
-		month=date[1]
-		day=date[2]
-		return QDate(int(year),int(month),int(day))
-
 def QDate_to_Tuple(date:QDate):
 	return (date.year(),date.month(),date.day())
 
-def WhatDayIsToday(mode=0):
+def WhatDayIsToday(mode):
 	"""返回年月日
 
 	Args:
@@ -79,22 +51,12 @@ def WhatDayIsToday(mode=0):
 		0：Tuple
 
 		1: QDate
-		
-		"0": str: 20210101
-		
-		"0.": str: 2021.01.01
-		
-		".": str: 2021.1.1.
-		
-		Defaults to 0.
 	"""
 	today=time.localtime()
 	if mode==0:
 		return today.tm_year,today.tm_mon,today.tm_mday
 	elif mode==1:
 		return QDate(today.tm_year,today.tm_mon,today.tm_mday)
-	elif mode in ["0","0.","."]:
-		return QDate_to_Str(QDate(today.tm_year,today.tm_mon,today.tm_mday),mode)
 
 def Generate_ConicalGradientColor(colorList,cube_width):
 	n=len(colorList)

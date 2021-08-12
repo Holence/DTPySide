@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>529</height>
+    <width>869</width>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_buttons">
      <item>
-      <spacer name="verticalSpacer_2">
+      <spacer name="verticalSpacer_buttons">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -78,8 +78,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>732</width>
-            <height>529</height>
+            <width>841</width>
+            <height>659</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
@@ -95,49 +95,6 @@
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <property name="horizontalSpacing">
-            <number>6</number>
-           </property>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_backup">
-             <property name="text">
-              <string>Backup Dst</string>
-             </property>
-            </widget>
-           </item>
-           <item row="14" column="0">
-            <widget class="QComboBox" name="comboBox_language">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="16" column="1">
-            <widget class="DTApplyButton" name="pushButton_country">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="17" column="1">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>258</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="8" column="0">
             <widget class="QLabel" name="label_window_effect">
              <property name="text">
@@ -145,17 +102,13 @@
              </property>
             </widget>
            </item>
-           <item row="13" column="0">
-            <widget class="QLabel" name="label_language">
-             <property name="text">
-              <string>Language</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_password">
-             <property name="text">
-              <string>Password</string>
+           <item row="5" column="0">
+            <widget class="QPushButton" name="pushButton_font">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
             </widget>
            </item>
@@ -184,6 +137,49 @@
              </item>
             </widget>
            </item>
+           <item row="14" column="0">
+            <widget class="QLabel" name="label_language">
+             <property name="text">
+              <string>Language</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="1">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>258</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="11" column="0">
+            <widget class="QComboBox" name="comboBox_theme">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLineEdit" name="lineEdit_password"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="DTApplyButton" name="pushButton_backup">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
            <item row="7" column="0">
             <widget class="QDoubleSpinBox" name="spinBox_scale">
              <property name="decimals">
@@ -200,45 +196,25 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLineEdit" name="lineEdit_password"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLineEdit" name="lineEdit_backup">
-             <property name="readOnly">
-              <bool>true</bool>
+           <item row="13" column="0">
+            <widget class="QSlider" name="slider_Hue">
+             <property name="maximum">
+              <number>360</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="15" column="0">
+           <item row="16" column="0">
             <widget class="QLabel" name="label_country">
              <property name="text">
               <string>Country</string>
              </property>
             </widget>
            </item>
-           <item row="14" column="1">
-            <widget class="DTApplyButton" name="pushButton_language">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="DTApplyButton" name="pushButton_password">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="0">
-            <widget class="QComboBox" name="comboBox_theme">
+           <item row="17" column="0">
+            <widget class="QComboBox" name="comboBox_country">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -247,35 +223,39 @@
              </property>
             </widget>
            </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_font">
+             <property name="text">
+              <string>Font (font-size is fixed)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="0">
+            <widget class="QComboBox" name="comboBox_language">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_password">
+             <property name="text">
+              <string>Password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0">
+            <widget class="QLabel" name="label_theme">
+             <property name="text">
+              <string>Theme</string>
+             </property>
+            </widget>
+           </item>
            <item row="7" column="1">
             <widget class="DTApplyButton" name="pushButton_scale">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLineEdit" name="lineEdit_font">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1">
-            <widget class="DTApplyButton" name="pushButton_window_effect">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="DTApplyButton" name="pushButton_font">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -291,15 +271,15 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_font">
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_backup">
              <property name="text">
-              <string>Font (font-size is fixed)</string>
+              <string>Backup Dst</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="DTApplyButton" name="pushButton_backup">
+           <item row="13" column="1">
+            <widget class="DTApplyButton" name="pushButton_hue">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -308,48 +288,53 @@
              </property>
             </widget>
            </item>
-           <item row="11" column="1">
-            <widget class="DTApplyButton" name="pushButton_theme">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="0">
-            <widget class="QLabel" name="label_theme">
-             <property name="text">
-              <string>Theme</string>
-             </property>
-            </widget>
-           </item>
-           <item row="16" column="0">
-            <widget class="QComboBox" name="comboBox_country">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+           <item row="3" column="0">
+            <widget class="QLineEdit" name="lineEdit_backup">
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
            <item row="12" column="0">
-            <widget class="QSlider" name="slider_Hue">
-             <property name="maximum">
-              <number>360</number>
-             </property>
-             <property name="singleStep">
-              <number>1</number>
-             </property>
-             <property name="pageStep">
-              <number>60</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_hue">
+             <item>
+              <widget class="QLabel" name="label_hue">
+               <property name="text">
+                <string>Hue</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_hue_reset">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../DT.qrc">
+                 <normaloff>:/icon/white/white_corner-down-left.svg</normaloff>:/icon/white/white_corner-down-left.svg</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
