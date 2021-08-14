@@ -13,6 +13,7 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from DTPySide.DTWidget.DTApplyButton import DTApplyButton
+from DTPySide.DTWidget import LazyCombobox
 
 import DTPySide.DT_rc
 
@@ -66,7 +67,7 @@ class Ui_DTSetting(object):
 
         self.gridLayout.addWidget(self.pushButton_font, 5, 0, 1, 1)
 
-        self.comboBox_window_effect = QComboBox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_window_effect = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
         self.comboBox_window_effect.addItem("")
         self.comboBox_window_effect.addItem("")
         self.comboBox_window_effect.addItem("")
@@ -88,7 +89,7 @@ class Ui_DTSetting(object):
 
         self.gridLayout.addItem(self.verticalSpacer, 18, 1, 1, 1)
 
-        self.comboBox_theme = QComboBox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_theme = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
         self.comboBox_theme.setObjectName(u"comboBox_theme")
         sizePolicy1.setHeightForWidth(self.comboBox_theme.sizePolicy().hasHeightForWidth())
         self.comboBox_theme.setSizePolicy(sizePolicy1)
@@ -131,7 +132,7 @@ class Ui_DTSetting(object):
 
         self.gridLayout.addWidget(self.label_country, 16, 0, 1, 1)
 
-        self.comboBox_country = QComboBox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_country = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
         self.comboBox_country.setObjectName(u"comboBox_country")
         sizePolicy1.setHeightForWidth(self.comboBox_country.sizePolicy().hasHeightForWidth())
         self.comboBox_country.setSizePolicy(sizePolicy1)
@@ -143,7 +144,7 @@ class Ui_DTSetting(object):
 
         self.gridLayout.addWidget(self.label_font, 4, 0, 1, 1)
 
-        self.comboBox_language = QComboBox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_language = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
         self.comboBox_language.setObjectName(u"comboBox_language")
         sizePolicy1.setHeightForWidth(self.comboBox_language.sizePolicy().hasHeightForWidth())
         self.comboBox_language.setSizePolicy(sizePolicy1)
@@ -201,9 +202,6 @@ class Ui_DTSetting(object):
         self.pushButton_hue_reset.setObjectName(u"pushButton_hue_reset")
         sizePolicy2.setHeightForWidth(self.pushButton_hue_reset.sizePolicy().hasHeightForWidth())
         self.pushButton_hue_reset.setSizePolicy(sizePolicy2)
-        icon = QIcon()
-        icon.addFile(u":/icon/white/white_corner-down-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton_hue_reset.setIcon(icon)
 
         self.horizontalLayout_hue.addWidget(self.pushButton_hue_reset)
 

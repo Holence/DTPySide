@@ -79,10 +79,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="../DT.qrc">
-          <normaloff>:/icon/holoicon1.ico</normaloff>:/icon/holoicon1.ico</iconset>
-        </property>
         <property name="iconSize">
          <size>
           <width>36</width>
@@ -138,10 +134,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="../DT.qrc">
-          <normaloff>:/icon/white/white_window-minimize.svg</normaloff>:/icon/white/white_window-minimize.svg</iconset>
-        </property>
         <property name="iconSize">
          <size>
           <width>24</width>
@@ -176,10 +168,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="../DT.qrc">
-          <normaloff>:/icon/white/white_window-maximize.svg</normaloff>:/icon/white/white_window-maximize.svg</iconset>
-        </property>
         <property name="iconSize">
          <size>
           <width>24</width>
@@ -213,10 +201,6 @@
         </property>
         <property name="text">
          <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../DT.qrc">
-          <normaloff>:/icon/white/white_x.svg</normaloff>:/icon/white/white_x.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

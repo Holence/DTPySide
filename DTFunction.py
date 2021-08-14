@@ -22,6 +22,9 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import colour
 
+def IconFromCurrentTheme(name):
+	return QIcon(":/icons/%s/%s"%(QIcon.themeName(),name))
+
 def Clear_Layout(layout):
 	for i in reversed(range(layout.count())): 
 		layout.takeAt(i).widget().deleteLater()

@@ -19,7 +19,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 	def initializeWindow(self):
 		
 		#加入第一页的menu button
-		BasicInfoPageButton=DTWidget.DTSettingButton(QIcon(":/icon/white/white_settings.svg"))
+		BasicInfoPageButton=DTWidget.DTSettingButton(IconFromCurrentTheme("settings.svg"))
 		self.addPageButton(BasicInfoPageButton,0)
 		
 		
@@ -28,7 +28,6 @@ class DTSetting(Ui_DTSetting,QWidget):
 		else:
 			self.lineEdit_password.hide()
 			self.label_password.hide()
-			self.pushButton_password.hide()
 		
 		if self.app.isBackupEnable():
 			dst=self.app.BackupDst()
@@ -52,8 +51,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.slider_Hue.setValue(int(self.app.Hue()*360))
 		self.slider_Hue.setStyleSheet("""
 		QSlider{
-			padding-left:5px;
-			padding-right:5px;
+			padding-left:10px;
+			padding-right:10px;
 			height: 36px;
 		}
 		QSlider::groove:horizontal {
@@ -75,14 +74,18 @@ class DTSetting(Ui_DTSetting,QWidget):
 		}
 		""")
 		self.pushButton_hue_reset.setStyleSheet("QPushButton{ min-height:16px; max-height:16px; min-width:16px; max-width:16px; icon-size:12px; }")
+		self.pushButton_hue_reset.setIcon(IconFromCurrentTheme("corner-down-left.svg"))
 		
-		import DTPySide.DTTranslation as DTTranslation
-
-		self.comboBox_language.addItems(DTTranslation.Language_Dict.keys())
-		self.comboBox_country.addItems(DTTranslation.Country_Dict.keys())
-		self.comboBox_language.setCurrentText(self.app.Language())
-		self.comboBox_country.setCurrentText(self.app.Country())
-
+		if self.app.hasTanslation():
+			self.comboBox_language.addItems(self.app.translation_module.Language_Dict.keys())
+			self.comboBox_country.addItems(self.app.translation_module.Country_Dict.keys())
+			self.comboBox_language.setCurrentText(self.app.Language())
+			self.comboBox_country.setCurrentText(self.app.Country())
+		else:
+			self.comboBox_language.hide()
+			self.label_language.hide()
+			self.comboBox_country.hide()
+			self.label_country.hide()
 
 		self.setMinimumSize(800,550)
 		
@@ -100,8 +103,10 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.comboBox_theme.currentIndexChanged.connect(self.ThemeSetting)
 		self.pushButton_hue.clicked.connect(self.HueSetting)
 		self.pushButton_hue_reset.clicked.connect(self.HueReset)
-		self.comboBox_language.currentIndexChanged.connect(self.LanguageSetting)
-		self.comboBox_country.currentIndexChanged.connect(self.CountrySetting)
+	
+		if self.app.hasTanslation():
+			self.comboBox_language.currentIndexChanged.connect(self.LanguageSetting)
+			self.comboBox_country.currentIndexChanged.connect(self.CountrySetting)
 
 	def PasswordSetting(self):
 		
@@ -123,28 +128,26 @@ class DTSetting(Ui_DTSetting,QWidget):
 	def FontSetting(self):
 		ok, font = QFontDialog.getFont(self.app.Font(), self)
 		if ok:
-			self.pushButton_font.setText(font.key().split(",")[0])
 			self.app.setFont(font)
-			self.app.initializeWindowStyle()
-			DTFrame.DTMessageBox(self,"Information","Font changed to \"%s\" successfully!"%self.app.Font().key().split(",")[0],DTIcon.Information())
-			self.pushButton_font.setStyleSheet("font-family:%s"%self.app.Font().key().split(",")[0])
+			# DTFrame.DTMessageBox(self,"Information","Font changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Font().key().split(",")[0],DTIcon.Information())
+			self.app.restart()
 			
 	
 	def ScaleSetting(self):
 		self.app.setScale(round(self.spinBox_scale.value(),1))
-		DTFrame.DTMessageBox(self,"Information","Scale changed to \"%s\" successfully!\n\nPlease restart the application manually to apply the setting."%self.app.Scale(),DTIcon.Information())
+		# DTFrame.DTMessageBox(self,"Information","Scale changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Scale(),DTIcon.Information())
+		self.app.restart()
 
 	def WindowEffectSetting(self):
-		
 		self.app.setWindowEffect(self.comboBox_window_effect.currentText())
-		self.app.initializeWindowStyle()
-		DTFrame.DTMessageBox(self,"Information","Window Effet changed to \"%s\" successfully!\n\nPlease restart the application manually for better expeirence."%self.app.WindowEffect(),DTIcon.Information())
+		# DTFrame.DTMessageBox(self,"Information","Window Effet changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.WindowEffect(),DTIcon.Information())
+		self.app.restart()
 
 	def ThemeSetting(self):
 		self.app.setTheme(self.comboBox_theme.currentText())
 		self.slider_Hue.setValue(0)
-		self.app.initializeWindowStyle()
-		DTFrame.DTMessageBox(self,"Information","Theme changed to \"%s\" successfully!"%self.app.Theme(),DTIcon.Information())
+		# DTFrame.DTMessageBox(self,"Information","Theme changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Theme(),DTIcon.Information())
+		self.app.restart()
 	
 	def HueSetting(self):
 		self.app.setHue(float(self.slider_Hue.value()/360))
@@ -155,14 +158,15 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.slider_Hue.setValue(0)
 		self.app.initializeWindowStyle()
 
-
 	def LanguageSetting(self):
 		self.app.setLanguage(self.comboBox_language.currentText())
-		DTFrame.DTMessageBox(self,"Information","Language changed to \"%s\" successfully!\n\nPlease restart the application manually for better expeirence."%self.app.Language(),DTIcon.Information())
+		# DTFrame.DTMessageBox(self,"Information","Language changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Language(),DTIcon.Information())
+		self.app.restart()
 
 	def CountrySetting(self):
 		self.app.setCountry(self.comboBox_country.currentText())
-		DTFrame.DTMessageBox(self,"Information","Country changed to \"%s\" successfully!"%self.app.Country(),DTIcon.Information())
+		# DTFrame.DTMessageBox(self,"Information","Country changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Country(),DTIcon.Information())
+		self.app.restart()
 	
 	def appendStackPage(self,page):
 		index=self.stackedWidget.addWidget(page)

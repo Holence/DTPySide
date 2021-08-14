@@ -21,6 +21,19 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		self.TitleBar.setFull(True)
 		self.TitleBar.updateWindowIcon()
 		self.setWindowTitle(self.app.applicationName())
+
+		self.actionSetting.setIcon(IconFromCurrentTheme("settings.svg"))
+		self.actionExit.setIcon(IconFromCurrentTheme("log-out.svg"))
+		self.actionMaximize_Window.setIcon(IconFromCurrentTheme("window-maximize.svg"))
+		self.actionNormalize_Window.setIcon(IconFromCurrentTheme("window-restore.svg"))
+		self.actionMinimize_Window.setIcon(IconFromCurrentTheme("window-minimize.svg"))
+		self.actionWindow_Toggle_Stay_on_Top.setIcon(IconFromCurrentTheme("arrow-up.svg"))
+		self.actionWindow_Toggle_Fullscreen.setIcon(IconFromCurrentTheme("maximize.svg"))
+		self.actionWindow_Toggle_Fullscreen.setIcon(IconFromCurrentTheme("maximize.svg"))
+		self.actionAbout.setIcon(IconFromCurrentTheme("book.svg"))
+		self.actionBoss_Key.setIcon(IconFromCurrentTheme("users.svg"))
+		self.actionBoss_Key.setIcon(IconFromCurrentTheme("users.svg"))
+		self.actionBackup.setIcon(IconFromCurrentTheme("cloud.svg"))
 	
 	def initializeSignal(self):	
 		"""主窗体的action向function链接
@@ -41,8 +54,9 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 
 	def initializeMenu(self):
 		"制定menu"
-		self.__menu_view=QMenu("View",self)
-		self.__menu_view.setIcon(QIcon(":/icon/white/white_eye.svg"))
+		
+		self.__menu_view=QMenu(QCoreApplication.translate("DTMainWindow","View"),self) #这里不能用self.tr，因为如果被继承了，这里的self将会是子类，而在qm翻译文件的context中记录的是DTMainSWindow的翻译
+		self.__menu_view.setIcon(IconFromCurrentTheme("eye.svg"))
 		self.__menu_view.addAction(self.actionWindow_Toggle_Stay_on_Top)
 		self.__menu_view.addAction(self.actionWindow_Toggle_Fullscreen)
 		self.__menu_view.addAction(self.actionNormalize_Window)

@@ -20,8 +20,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 		self.saveWindowStatus()
 		self.saveData()
 		self.quitApp.emit()
-	
-		
+
 	def __init__(self, app):
 		"""DTMainSession的构造函数
 
@@ -30,8 +29,16 @@ class DTMainSession(DTFrame.DTMainWindow):
 		"""
 		
 		super().__init__(app)
+
+		self.haveTanslation=hasattr(self.app,"translation")
+			
 	
 	def initialize(self):
+		if self.haveTanslation==False and hasattr(self.app,"translation")==True:
+			raise("You Must load the translation module before the construction of MainSession!")
+		else:
+			del self.haveTanslation
+		
 		self.initializeData()
 		self.initializeWindow()
 		self.restoreWindowStatus()
@@ -88,8 +95,8 @@ class DTMainSession(DTFrame.DTMainWindow):
 		
 		################################################################
 		
-		self.__menu_view=QMenu("View",self)
-		self.__menu_view.setIcon(QIcon(":/icon/white/white_eye.svg"))
+		self.__menu_view=QMenu(QCoreApplication.translate("DTMainWindow","View"),self) #这里不能用self.tr，因为如果被继承了，这里的self将会是子类，而在qm翻译文件的context中记录的是DTMainSWindow的翻译
+		self.__menu_view.setIcon(IconFromCurrentTheme("eye.svg"))
 		self.__menu_view.addAction(self.actionWindow_Toggle_Stay_on_Top)
 		self.__menu_view.addAction(self.actionWindow_Toggle_Fullscreen)
 		self.__menu_view.addAction(self.actionNormalize_Window)
@@ -201,7 +208,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 	def setting(self):
 		"请在继承的DTSettingSession中做到实时保存设定"
 		
-		from DTPySide import DTSession 
+		from DTPySide import DTSession
 		# 必须在这里再调用一次，如果不写的话，下面会说name 'DTSession' is not defined。不知道为什么啊啊啊，明明都在DTPySide的__init__中导入过了呀？！难道又是同级包内互相调用的问题，还是__feature__的annotation暂时还有bug？
 		
 		dlg=DTSession.DTSettingSession(self, self.app)

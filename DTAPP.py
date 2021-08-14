@@ -11,7 +11,7 @@ class DTAPP(QApplication):
 	"""
 	
 	def __init__(self,args):
-		
+	
 		self.__UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
 		
 		# 添加缩放大小的环境变量
@@ -47,14 +47,12 @@ class DTAPP(QApplication):
 		self.setQuitOnLastWindowClosed(False)
 		
 		super().__init__(args)
-
+		
 		self.setStyle("Fusion")
 		self.ThemeList=["Dracula","Dracula2","Brown","Green","Cyan","White"]
 		self.initializeWindowStyle()
-		self.loadTranslation()
+		
 		self.TrayIcon=QSystemTrayIcon(self)
-		self.__password=None
-		self.__mainsession=None
 
 		self.setWindowIcon(DTIcon.HoloIcon1())
 		self.setApplicationName("DT's Project")
@@ -85,24 +83,38 @@ class DTAPP(QApplication):
 		Hue=self.Hue()
 		Font=self.Font()
 		
-		self.setStyleSheet(DTStyleSheet(Theme, Hue, WindowEffect,Font))
+		self.setStyleSheet(DTStyleSheet(Theme, Hue, WindowEffect, Font))
 	
-	def loadTranslation(self):
+	def hasTanslation(self):
+		return hasattr(self,"translation")
 
-		if self.Language() not in DTTranslation.Language_Dict:
+	def loadTranslation(self,translation_module=DTTranslation):
+		"""请在构造MainSession之前调用这个函数，因为MainSession中的文字会用translate来请求translation
+		
+		设置translation的module（请复制DTTranslation文件夹到自己的项目中，先翻译自己项目里的文本，之后再在lrelease的时候与合并qm文件）。
+		
+		如果不调用这个函数，App默认为无translation，设置菜单中也不会有语言和地区的选项
+
+		Args:
+			translation_module (module, optional): Defaults to DTTranslation.
+		"""		
+		
+		self.translation_module=translation_module
+
+		if self.Language() not in translation_module.Language_Dict:
 			self.setLanguage("English")
-		if self.Country() not in DTTranslation.Country_Dict:
+		if self.Country() not in translation_module.Country_Dict:
 			self.setCountry("World")
 		
 		language=self.Language()
 		country=self.Country()
 		
 		# set QLocale
-		QLocale.setDefault(QLocale(DTTranslation.Language_Dict[language][0],DTTranslation.Country_Dict[country]))
+		QLocale.setDefault(QLocale(translation_module.Language_Dict[language][0],translation_module.Country_Dict[country]))
 
 		# load .qm file
 		self.translation=QTranslator()
-		self.translation.load(DTTranslation.Language_Dict[language][1])
+		self.translation.load(translation_module.Language_Dict[language][1])
 		self.installTranslator(self.translation)
 	
 	def Font(self) -> QFont:
@@ -126,7 +138,7 @@ class DTAPP(QApplication):
 	
 	def WindowEffect(self):
 		if self.__UserSetting.value("BasicInfo/WindowEffect") not in ["Normal","Aero","Acrylic"]:
-			self.setWindowEffect("Acrylic")
+			self.setWindowEffect("Normal")
 		return self.__UserSetting.value("BasicInfo/WindowEffect")
 	
 	def setWindowEffect(self, WindowEffect:str):
@@ -253,6 +265,16 @@ class DTAPP(QApplication):
 		self.__mainsession=mainsession
 		self.__mainsession.quitApp.connect(self.quit)
 	
+	def restart(self):
+		self.__mainsession.saveWindowStatus()
+		self.__mainsession.saveData()
+		self.exit()
+		if self.__LoginEnable==True:
+			QProcess.startDetached(sys.executable, sys.argv+[str(Fernet_Encrypt("9961",self.password())), "9961"])
+		else:
+			QProcess.startDetached(sys.executable, sys.argv+["9961"])
+
+
 	def __loginIn(self):
 		dlg=DTSession.DTLoginSession(self.__UserSetting.value("BasicInfo/Password"))
 		if dlg.exec_()==0:
@@ -262,25 +284,59 @@ class DTAPP(QApplication):
 			self.setPassword(dlg.input_password)
 	
 	def debugRun(self,password,loginEnable,show=True):
-		self.setLoginEnable(loginEnable)
-		self.setPassword(password)
-
-		self.__mainsession.initialize()
-		if show==True:
-			self.__mainsession.show()
 		
-		self.initializeTrayIcon()
-		sys.exit(self.exec_())
+		self.setLoginEnable(loginEnable)
+		
+		# Restart
+		if self.arguments()[-1]=="9961":
+			if self.__LoginEnable==True:
+				# print("Args:",self.arguments())
+				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
+				# print("Restart Password:",self.password())
+
+			self.__mainsession.initialize()
+			self.__mainsession.show()
+			
+			self.initializeTrayIcon()
+			self.exec_()
+		
+		# Normal
+		else:
+			self.setPassword(password)
+
+			self.__mainsession.initialize()
+			if show==True:
+				self.__mainsession.show()
+			
+			self.initializeTrayIcon()
+			self.exec_()
 
 	def run(self,show=True):
 		"""如果没有密码加密，需要setLoginEnable(False)
 		"""
-		if self.__LoginEnable==True:
-			self.__loginIn()
-		
-		self.__mainsession.initialize()
-		if show==True:
+
+		# Restart
+		if self.arguments()[-1]=="9961":
+			if self.__LoginEnable==True:
+				# print("Args:",self.arguments())
+				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
+				# print("Restart Password:",self.password())
+
+			self.__mainsession.initialize()
 			self.__mainsession.show()
+			
+			self.initializeTrayIcon()
+			self.exec_()
 		
-		self.initializeTrayIcon()
-		sys.exit(self.exec_())
+		# Normal
+		else:
+			if self.__LoginEnable==True:
+				self.__loginIn()
+			
+			self.__mainsession.initialize()
+			if show==True:
+				self.__mainsession.show()
+			
+			self.initializeTrayIcon()
+			
+			self.exec_()

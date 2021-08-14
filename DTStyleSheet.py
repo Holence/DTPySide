@@ -17,26 +17,33 @@ class DTStyleSheet(str):
 		# SOFTDARK="#282A36" # LineEdit、QPushButton的背景
 		# DIM="#404257" # disable的文字、Itemview的item的背景
 		# PRESSED = "#A67DB4" # Button Clicked 
-		# FOCUSED="#8C6BBB" # Button Hover 
+		# FOCUSED="#8C6BBB" # Button Hover、text selection
 		# TEXT="#E0E0E0" # 文字
 		# ICONCOLOR="white" # 部分icon的颜色（暂未适配ui文件中指派的icon）
 		
 		if theme=="Dracula":
-			color_list=["#191A21","#21222C","#282A36","#404257", "#A67DB4","#8C6BBB","#E0E0E0","white"]
+			color_list=["#191A21","#21222C","#282A36","#404257", "#A67DB4","#8C6BBB","#E0E0E0"]
+			QIcon.setThemeName("white")
 		elif theme=="Dracula2":
-			color_list=["#202329","#282C34","#313341","#404257","#D7AAE6","#BD93F9","#EBEBEB","white"]
+			color_list=["#202329","#282C34","#313341","#404257","#D7AAE6","#BD93F9","#EBEBEB"]
+			QIcon.setThemeName("white")
 		elif theme=="Brown":
-			color_list=["#232323","#2A2A2A","#353535","#5c5c5c","#7AB6F3","#2A82DA","#FFFFFF","white"]
+			color_list=["#232323","#2A2A2A","#353535","#5c5c5c","#7AB6F3","#2A82DA","#FFFFFF"]
+			QIcon.setThemeName("white")
 		elif theme=="Green":
-			color_list=["#17241F","#294137","#3F6151","#5D796C","#C6CA8F","#A5AD79","#EEF1E0","white"]
+			color_list=["#17241F","#294137","#3F6151","#5D796C","#C6CA8F","#A5AD79","#EEF1E0"]
+			QIcon.setThemeName("white")
 		elif theme=="Cyan":
-			color_list=["#212A35","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED","white"]
+			color_list=["#212A35","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED"]
+			QIcon.setThemeName("white")
 		elif theme=="White":
-			color_list=["#e7e0d8","#dbd0c1","#d0bfac","#bca68a","#7d6b63","#988074","#110b12","black"]
-		
+			color_list=["#aaaaaa","#ffffff","#dddddd","#cccccc","#eeeeee","#dae3ea","#333333"]
+			QIcon.setThemeName("black")
+			
 		if hue!=-1:
 			color_list=[changeHue(color,hue) for color in color_list]
-		DEEPDARK,BACKGROUND,SOFTDARK,DIM,PRESSED ,FOCUSED,TEXT,ICONCOLOR=color_list
+		DEEPDARK,BACKGROUND,SOFTDARK,DIM,PRESSED,FOCUSED,TEXT=color_list
+		ICONCOLOR=QIcon.themeName()
 
 		stylesheet=""
 
@@ -184,11 +191,11 @@ class DTStyleSheet(str):
 		}}
 		QSplitter::handle:horizontal{{
 			width: 12px;
-			image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_more-vertical.svg);
+			image: url(:/icons/{ICONCOLOR}/more-vertical.svg);
 		}}
 		QSplitter::handle:vertical{{
 			height: 12px;
-			image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_more-horizontal.svg);
+			image: url(:/icons/{ICONCOLOR}/more-horizontal.svg);
 		}}
 		QSplitter::handle:hover{{
 			background: {SOFTDARK};
@@ -232,6 +239,8 @@ class DTStyleSheet(str):
 		}}
 
 		QMenu::item{{
+			font-family: "Hack";
+			font-size: 12pt;
 			padding: 2px 25px 2px 15px;
 			border: 1px solid transparent;
 			margin: 1px;
@@ -477,7 +486,7 @@ class DTStyleSheet(str):
 			background-color: {FOCUSED};
 		}}
 		QComboBox::down-arrow{{
-			image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_chevron-down.svg);
+			image: url(:/icons/{ICONCOLOR}/chevron-down.svg);
 		}}
 		
 
@@ -507,7 +516,7 @@ class DTStyleSheet(str):
 			background-color: {FOCUSED};
 		}}
 		QSpinBox::up-arrow, QDoubleSpinBox::up-arrow, QDateEdit::up-arrow, QTimeEdit::up-arrow, QDateTimeEdit::up-arrow{{
-			image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_chevron-up.svg);
+			image: url(:/icons/{ICONCOLOR}/chevron-up.svg);
 		}}
 
 		QSpinBox::down-button, QDoubleSpinBox::down-button, QDateEdit::down-button, QTimeEdit::down-button, QDateTimeEdit::down-button{{
@@ -524,7 +533,7 @@ class DTStyleSheet(str):
 			background-color: {FOCUSED};
 		}}
 		QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QDateEdit::down-arrow, QTimeEdit::down-arrow, QDateTimeEdit::down-arrow{{
-			image: url(:/icon/{ICONCOLOR}/{ICONCOLOR}_chevron-down.svg);
+			image: url(:/icons/{ICONCOLOR}/chevron-down.svg);
 		}}
 		
 

@@ -1,6 +1,4 @@
 import os
-import shutil
-
 
 def deepin(base):
 	
@@ -13,10 +11,10 @@ def deepin(base):
 			os.chdir(base)
 		else:
 			ext=os.path.splitext(i)[1]
-			if ext==".ui":
+			if ext==".ui" or ext==".py":
 				ui_list.append(" "+os.path.abspath(i))
 
 ui_list=[]
 base=os.getcwd()
 deepin(base)
-os.system("lupdate %s -ts translation.ts"%("".join(ui_list)))
+os.system("pyside2-lupdate %s -ts en.ts"%("".join(ui_list)))

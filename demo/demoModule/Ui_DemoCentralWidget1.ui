@@ -33,7 +33,7 @@
   <action name="actionHello_World">
    <property name="icon">
     <iconset resource="../../DT.qrc">
-     <normaloff>:/icon/holoicon1.ico</normaloff>:/icon/holoicon1.ico</iconset>
+     <normaloff>:/icons/icon/holoicon1.ico</normaloff>:/icons/icon/holoicon1.ico</iconset>
    </property>
    <property name="text">
     <string>Hello World</string>

@@ -10,14 +10,18 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 
 		self.btn_close.clicked.connect(self.window().close)
 
-		self.maximize_icon=QIcon(":/icon/white/white_window-maximize.svg")
-		self.restore_icon=QIcon(":/icon/white/white_window-restore.svg")
+		self.maximize_icon=IconFromCurrentTheme("window-maximize.svg")
+		self.restore_icon=IconFromCurrentTheme("window-restore.svg")
 		
 		if self.window().isMaximized():
 			#是最大化的
 			self.btn_maximize.setIcon(self.restore_icon)
 		else:
 			self.btn_maximize.setIcon(self.maximize_icon)
+
+		self.title_icon.setIcon(QIcon(":/icons/icon/holoicon1.ico"))
+		self.btn_minimize.setIcon(IconFromCurrentTheme("window-minimize.svg"))
+		self.btn_close.setIcon(IconFromCurrentTheme("x.svg"))
 		
 	
 	def setFull(self,full:bool):

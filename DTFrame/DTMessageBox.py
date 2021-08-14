@@ -11,12 +11,19 @@ class MessageModule(Ui_DTMessageBox,QWidget):
 		self.setupUi(self)
 
 class DTMessageBox(DTDialog):
-	def __init__(self,parent,title,text,icon=None):
+	def __init__(self,parent,title,text,icon=None,detail=""):
 		super().__init__(parent,title)
 		self.module=MessageModule(self)
 		self.setCentralWidget(self.module)
-		
+
 		self.module.label_text.setText(text)
+
+		if detail=="":
+			self.module.textBrowser.hide()
+		else:
+			self.module.textBrowser.setText(detail)
+			self.module.textBrowser.setStyleSheet('font-family:"Hack"; font-size:12pt;')
+
 		self.setButtonBox(QDialogButtonBox.Ok)
 		self.setDefaultButton(QDialogButtonBox.Ok)
 
@@ -31,12 +38,18 @@ class DTMessageBox(DTDialog):
 		self.exec_()
 
 class DTConfirmBox(DTDialog):
-	def __init__(self,parent,title,text,icon=None):
+	def __init__(self,parent,title,text,icon=None,detail=""):
 		super().__init__(parent, title)
 		self.module=MessageModule(self)
 		self.setCentralWidget(self.module)
 		
 		self.module.label_text.setText(text)
+
+		if detail=="":
+			self.module.textBrowser.hide()
+		else:
+			self.module.textBrowser.setText(detail)
+			self.module.textBrowser.setStyleSheet('font-family:"Hack"; font-size:12pt;')
 
 		if icon!=None:
 			icon_pic=icon.pixmap(QSize(64,64))

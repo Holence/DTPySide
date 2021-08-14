@@ -1,8 +1,7 @@
 from __future__ import annotations
 from DTPySide import *
 
-import DTPySide
-base=os.path.join(DTPySide.__path__[0],"DTTranslation")+"\\"
+base=os.path.dirname(__file__)+"\\"
 
 Language_Dict={
     "简体中文": (QLocale.Language.Chinese, base+"zh_CN.qm"),

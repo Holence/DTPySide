@@ -20,7 +20,6 @@ class Ui_DTDialog(object):
         if not DTDialog.objectName():
             DTDialog.setObjectName(u"DTDialog")
         DTDialog.resize(433, 332)
-        DTDialog.setMinimumSize(QSize(0, 0))
         DTDialog.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(DTDialog)
         self.verticalLayout.setSpacing(0)

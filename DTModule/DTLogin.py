@@ -7,3 +7,5 @@ class DTLogin(Ui_DTLogin,QWidget):
 	def __init__(self,parent):
 		super().__init__(parent)
 		self.setupUi(self)
+		self.label_lock.setPixmap(IconFromCurrentTheme("lock.svg").pixmap(24,24))
+		

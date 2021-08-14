@@ -1,90 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="eo">
+<TS version="2.1" language="ja">
 <context>
     <name>DTMainWindow</name>
     <message>
         <source>Setting</source>
-        <translation>Agordo</translation>
+        <translation>設定</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation>Eliru</translation>
+        <translation>出口</translation>
     </message>
     <message>
         <source>Maximize Window</source>
-        <translation>Maksimumigi Fenestron</translation>
+        <translation>ウィンドウを最大化</translation>
     </message>
     <message>
         <source>Normalize Window</source>
-        <translation>Normaligi Fenestron</translation>
+        <translation>ウィンドウの正規化</translation>
     </message>
     <message>
         <source>Minimize Window</source>
-        <translation>Minimumigi Fenestron</translation>
+        <translation>ウィンドウを最小化</translation>
     </message>
     <message>
         <source>Window Toggle Stay on Top</source>
-        <translation>Fenestra Baskulado Restu Supre</translation>
+        <translation>ウィンドウトグルトップにとどまる</translation>
     </message>
     <message>
         <source>Window Toggle Fullscreen</source>
-        <translation>Fenestra Baskuligi Plenekranon</translation>
+        <translation>ウィンドウトグルフルスクリーン</translation>
     </message>
     <message>
         <source>About</source>
-        <translation>Pri</translation>
+        <translation>約</translation>
     </message>
     <message>
         <source>Boss Key</source>
-        <translation>Estro-Ŝlosilo</translation>
+        <translation>ボスキー</translation>
     </message>
     <message>
         <source>Backup</source>
-        <translation>Rezerva</translation>
+        <translation>バックアップ</translation>
     </message>
     <message>
         <source>View</source>
-        <translation>Vido</translation>
+        <translation>意見</translation>
     </message>
 </context>
 <context>
     <name>DTSetting</name>
     <message>
         <source>Window Effect</source>
-        <translation>Fenestra Efiko</translation>
+        <translation>ウィンドウ効果</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation>Lingvo</translation>
+        <translation>言語</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation>Lando</translation>
+        <translation>国</translation>
     </message>
     <message>
         <source>Font (font-size is fixed)</source>
-        <translation>Tiparo (tiparo-grandeco estas fiksita)</translation>
+        <translation>フォント（フォントサイズは固定）</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Pasvorto</translation>
+        <translation>パスワード</translation>
     </message>
     <message>
         <source>Theme</source>
-        <translation>Temo</translation>
+        <translation>テーマ</translation>
     </message>
     <message>
         <source>Scale (Change this according to your screen DPI)</source>
-        <translation>Skalo (Ŝanĝu ĉi tion laŭ via ekrana DPI)</translation>
+        <translation>スケール（画面のDPIに応じてこれを変更します）</translation>
     </message>
     <message>
         <source>Backup Dst</source>
-        <translation>Rezerva Dst</translation>
+        <translation>バックアップDst</translation>
     </message>
     <message>
         <source>Hue</source>
-        <translation>Nuanco</translation>
+        <translation>色相</translation>
     </message>
 </context>
 </TS>

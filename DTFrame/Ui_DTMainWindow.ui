@@ -83,10 +83,6 @@
    </item>
   </layout>
   <action name="actionSetting">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_settings.svg</normaloff>:/icon/white/white_settings.svg</iconset>
-   </property>
    <property name="text">
     <string>Setting</string>
    </property>
@@ -95,10 +91,6 @@
    </property>
   </action>
   <action name="actionExit">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_log-out.svg</normaloff>:/icon/white/white_log-out.svg</iconset>
-   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -107,37 +99,21 @@
    </property>
   </action>
   <action name="actionMaximize_Window">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_window-maximize.svg</normaloff>:/icon/white/white_window-maximize.svg</iconset>
-   </property>
    <property name="text">
     <string>Maximize Window</string>
    </property>
   </action>
   <action name="actionNormalize_Window">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_window-restore.svg</normaloff>:/icon/white/white_window-restore.svg</iconset>
-   </property>
    <property name="text">
     <string>Normalize Window</string>
    </property>
   </action>
   <action name="actionMinimize_Window">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_window-minimize.svg</normaloff>:/icon/white/white_window-minimize.svg</iconset>
-   </property>
    <property name="text">
     <string>Minimize Window</string>
    </property>
   </action>
   <action name="actionWindow_Toggle_Stay_on_Top">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_arrow-up.svg</normaloff>:/icon/white/white_arrow-up.svg</iconset>
-   </property>
    <property name="text">
     <string>Window Toggle Stay on Top</string>
    </property>
@@ -146,10 +122,6 @@
    </property>
   </action>
   <action name="actionWindow_Toggle_Fullscreen">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_maximize.svg</normaloff>:/icon/white/white_maximize.svg</iconset>
-   </property>
    <property name="text">
     <string>Window Toggle Fullscreen</string>
    </property>
@@ -158,19 +130,11 @@
    </property>
   </action>
   <action name="actionAbout">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_book.svg</normaloff>:/icon/white/white_book.svg</iconset>
-   </property>
    <property name="text">
     <string>About</string>
    </property>
   </action>
   <action name="actionBoss_Key">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_users.svg</normaloff>:/icon/white/white_users.svg</iconset>
-   </property>
    <property name="text">
     <string>Boss Key</string>
    </property>
@@ -179,10 +143,6 @@
    </property>
   </action>
   <action name="actionBackup">
-   <property name="icon">
-    <iconset resource="../DT.qrc">
-     <normaloff>:/icon/white/white_cloud.svg</normaloff>:/icon/white/white_cloud.svg</iconset>
-   </property>
    <property name="text">
     <string>Backup</string>
    </property>

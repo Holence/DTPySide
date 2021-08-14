@@ -32,7 +32,6 @@ class Ui_DTLogin(object):
         self.label_lock.setSizePolicy(sizePolicy)
         self.label_lock.setMinimumSize(QSize(28, 28))
         self.label_lock.setMaximumSize(QSize(28, 28))
-        self.label_lock.setPixmap(QPixmap(u":/icon/white/white_lock.svg"))
         self.label_lock.setScaledContents(True)
 
         self.horizontalLayout.addWidget(self.label_lock)

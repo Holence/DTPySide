@@ -1,5 +1,6 @@
 import os
 
+os.chdir(os.path.dirname(__file__))
 for i in os.listdir("./"):
     name=os.path.splitext(i)[0]
     ext=os.path.splitext(i)[1]

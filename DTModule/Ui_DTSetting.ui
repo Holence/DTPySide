@@ -113,7 +113,7 @@
             </widget>
            </item>
            <item row="9" column="0">
-            <widget class="QComboBox" name="comboBox_window_effect">
+            <widget class="LazyCombobox" name="comboBox_window_effect">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -158,7 +158,7 @@
             </spacer>
            </item>
            <item row="11" column="0">
-            <widget class="QComboBox" name="comboBox_theme">
+            <widget class="LazyCombobox" name="comboBox_theme">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -214,7 +214,7 @@
             </widget>
            </item>
            <item row="17" column="0">
-            <widget class="QComboBox" name="comboBox_country">
+            <widget class="LazyCombobox" name="comboBox_country">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -231,7 +231,7 @@
             </widget>
            </item>
            <item row="15" column="0">
-            <widget class="QComboBox" name="comboBox_language">
+            <widget class="LazyCombobox" name="comboBox_language">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -315,10 +315,6 @@
                <property name="text">
                 <string/>
                </property>
-               <property name="icon">
-                <iconset resource="../DT.qrc">
-                 <normaloff>:/icon/white/white_corner-down-left.svg</normaloff>:/icon/white/white_corner-down-left.svg</iconset>
-               </property>
               </widget>
              </item>
              <item>
@@ -351,6 +347,11 @@
    <class>DTApplyButton</class>
    <extends>QPushButton</extends>
    <header>DTWidget.DTApplyButton</header>
+  </customwidget>
+  <customwidget>
+   <class>LazyCombobox</class>
+   <extends>QComboBox</extends>
+   <header>DTWidget</header>
   </customwidget>
  </customwidgets>
  <resources>

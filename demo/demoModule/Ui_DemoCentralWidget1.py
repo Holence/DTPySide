@@ -22,7 +22,7 @@ class Ui_DemoCentralWidget1(object):
         self.actionHello_World = QAction(DemoCentralWidget1)
         self.actionHello_World.setObjectName(u"actionHello_World")
         icon = QIcon()
-        icon.addFile(u":/icon/holoicon1.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icons/icon/holoicon1.ico", QSize(), QIcon.Normal, QIcon.Off)
         self.actionHello_World.setIcon(icon)
         self.horizontalLayout = QHBoxLayout(DemoCentralWidget1)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
