@@ -25,7 +25,7 @@ class DTHorizontalTabel(QTableWidget):
 		self.setDragDropMode(QAbstractItemView.DragDrop)
 
 		def	slot():
-			self.selected_row=0
+			self.selected_index=[]
 			self.clearSelection()
 		# 手动sort后清空选区
 		self.horizontalHeader().sectionPressed.connect(slot)
@@ -35,9 +35,10 @@ class DTHorizontalTabel(QTableWidget):
 		self.setHorizontalHeaderLabels(column_list)
 	
 	def StoreTableStatus(self):
-		self.selected_row=self.currentRow()
 		self.sort_index=self.horizontalHeader().sortIndicatorSection()
 		self.sort_order=self.horizontalHeader().sortIndicatorOrder()
+		self.selected_index=self.selectedIndexes()
+		self.scrollbarValue=self.verticalScrollBar().value()
 	
 	def Clear(self):
 		self.clearContents()
@@ -45,8 +46,15 @@ class DTHorizontalTabel(QTableWidget):
 		self.horizontalHeader().setSortIndicator(-1,Qt.SortOrder.AscendingOrder) #因为如果有排序的话，再insertItem会有疏漏，所以提前取消排序
 
 	def RestoreTableStatus(self):
-		self.horizontalHeader().setSortIndicator(self.sort_index,self.sort_order) # insertItem完了后，再把sort_index,sort_order设置回来
-		self.selectRow(self.selected_row)
+		# restore sorting
+		self.horizontalHeader().setSortIndicator(self.sort_index,self.sort_order)
+		
+		# restore selection
+		for index in self.selected_index:
+			self.selectionModel().select(index,QItemSelectionModel.Select | QItemSelectionModel.Rows)
+		
+		# restore scrollbar
+		self.verticalScrollBar().setValue(self.scrollbarValue)
 
 	def addRow(self, row:int, column_item_list:list):
 		

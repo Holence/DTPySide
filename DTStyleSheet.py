@@ -93,7 +93,7 @@ class DTStyleSheet(str):
 
 		#DTMainWindow #statusBar{{
 			background-color: {SOFTDARK};
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 9pt;
 		}}
 		/* TitleBar */
@@ -102,11 +102,11 @@ class DTStyleSheet(str):
 			font-size: 12pt;
 		}}
 		
-		#TitleBarFrame #label_titlebar {{
+		DTTitleBar QLabel {{
 			font-family: "Segoe UI";
 			font-size: 20pt;
 		}}
-		#TitleBarFrame QPushButton {{
+		DTTitleBar QPushButton {{
 			border: none;
 			background-color: transparent;
 			max-height: 24px;
@@ -115,45 +115,45 @@ class DTStyleSheet(str):
 			max-width: 24px;
 		}}
 
-		#TitleBarFrame QPushButton:hover{{
+		DTTitleBar QPushButton:hover{{
 			background-color: {SOFTDARK};
 			border-style: solid;
 			border-radius: 4px;
 		}}
-		#TitleBarFrame QPushButton:pressed {{
+		DTTitleBar QPushButton:pressed {{
 			background-color: {DIM};
 			border-style: solid;
 			border-radius: 4px;
 		}}
 
-		#TitleBarFrame #title_icon{{
+		DTTitleBar #title_icon{{
 			icon-size: 36px;
 			max-height: 36px;
 			min-height: 36px;
 			min-width: 36px;
 			max-width: 36px;
 		}}
-		#TitleBarFrame #title_icon:hover{{
+		DTTitleBar #title_icon:hover{{
 			background-color: transparent;
 		}}
-		#TitleBarFrame #title_icon:pressed {{
+		DTTitleBar #title_icon:pressed {{
 			background-color: transparent;
 		}}
 		
-		#TitleBarFrame #btn_close:hover{{
+		DTTitleBar #btn_close:hover{{
 			background-color: rgb(232, 17, 35);
 			border-style: solid;
 			border-radius: 4px;
 		}}
-		#TitleBarFrame #btn_close:pressed {{
+		DTTitleBar #btn_close:pressed {{
 			background-color: rgb(241, 112, 122);
 			border-style: solid;
 			border-radius: 4px;
 		}}
-		#TitleBarFrame * {{
+		DTTitleBar * {{
 			background-color: {DEEPDARK};
 		}}
-		#TitleBarFrame {{
+		DTTitleBar {{
 			background-color: {DEEPDARK};
 		}}
 
@@ -230,7 +230,7 @@ class DTStyleSheet(str):
 		}}
 
 		QMenu {{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			background-color: {BACKGROUND};
 			border: 1px solid {DEEPDARK};
@@ -239,7 +239,7 @@ class DTStyleSheet(str):
 		}}
 
 		QMenu::item{{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			padding: 2px 25px 2px 15px;
 			border: 1px solid transparent;
@@ -338,7 +338,7 @@ class DTStyleSheet(str):
 			border: 1px solid {DEEPDARK};
 			border-radius: 3px;
 			background-color: {SOFTDARK};
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			min-height: 27px;
 		}}
@@ -364,7 +364,7 @@ class DTStyleSheet(str):
 		}}
 		
 		QToolButton {{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			height: 27px;
 		}}
@@ -418,7 +418,7 @@ class DTStyleSheet(str):
 
 		QRadioButton{{
 			background: transparent;
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 		}}
 		QRadioButton::indicator {{
@@ -435,7 +435,7 @@ class DTStyleSheet(str):
 		}}
 
 		QCheckBox{{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			background: transparent;
 		}}
@@ -493,7 +493,7 @@ class DTStyleSheet(str):
 		/* SpinBox DateTime */
 
 		QSpinBox, QDoubleSpinBox, QDateEdit, QTimeEdit, QDateTimeEdit{{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			background-color: {SOFTDARK};
 			border-radius: 6px;
 			height: 36px;
@@ -650,7 +650,7 @@ class DTStyleSheet(str):
 			border: 1px solid {DEEPDARK};
 		}}
 		QToolBox::tab {{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			background: {SOFTDARK};
 			border: 1px solid {DEEPDARK};
@@ -682,7 +682,7 @@ class DTStyleSheet(str):
 			left: 0px;
 		}}
 		QTabBar::tab {{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			background: {SOFTDARK};
 			border: 1px solid {DEEPDARK};
@@ -801,7 +801,7 @@ class DTStyleSheet(str):
 
 		/* header row */
 		QCalendarWidget QWidget {{
-			font-family: "Hack";
+			font-family: "微软雅黑";
 			font-size: 12pt;
 			alternate-background-color: {SOFTDARK};
 		}}

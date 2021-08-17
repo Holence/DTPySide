@@ -22,7 +22,7 @@ class DTMessageBox(DTDialog):
 			self.module.textBrowser.hide()
 		else:
 			self.module.textBrowser.setText(detail)
-			self.module.textBrowser.setStyleSheet('font-family:"Hack"; font-size:12pt;')
+			self.module.textBrowser.setStyleSheet('font-family:"微软雅黑"; font-size:12pt;')
 
 		self.setButtonBox(QDialogButtonBox.Ok)
 		self.setDefaultButton(QDialogButtonBox.Ok)
@@ -49,7 +49,7 @@ class DTConfirmBox(DTDialog):
 			self.module.textBrowser.hide()
 		else:
 			self.module.textBrowser.setText(detail)
-			self.module.textBrowser.setStyleSheet('font-family:"Hack"; font-size:12pt;')
+			self.module.textBrowser.setStyleSheet('font-family:"微软雅黑"; font-size:12pt;')
 
 		if icon!=None:
 			icon_pic=icon.pixmap(QSize(64,64))
