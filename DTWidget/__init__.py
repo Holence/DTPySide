@@ -8,3 +8,4 @@ from DTPySide.DTWidget.DTPlainTextEdit import DTPlainTextEdit
 from DTPySide.DTWidget.DTHorizontalTabel import DTHorizontalTabel
 from DTPySide.DTWidget.DTTree import DTTree
 from DTPySide.DTWidget.LazyCombobox import LazyCombobox
+from DTPySide.DTWidget.MarkdownViewer import MarkdownViewer
