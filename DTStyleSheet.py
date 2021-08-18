@@ -174,16 +174,6 @@ class DTStyleSheet(str):
 		QSplitter{{
 			background: transparent;
 		}}
-		
-		QScrollBar::add-line {{
-		height: 0px;
-		}}
-		QScrollBar::sub-line {{
-		height: 0px;
-		}}
-		QScrollBar::add-page, QScrollBar::sub-page {{
-		height: 0px;
-		}}
 
 		QSplitter::handle{{
 			border: 1px solid transparent;
@@ -600,15 +590,18 @@ class DTStyleSheet(str):
 			padding: 1px;
 		}}
 		QScrollBar::handle{{
+			min-height: 30px;
+		}}
+		QScrollBar::handle{{
 			border-radius: 5px;
 			background: {FOCUSED};
 		}}
 		QScrollBar::handle:hover {{
 			background: {PRESSED};
 		}}
-		QScrollBar::add-line, QScrollBar::sub-line,
-		QScrollBar::add-page, QScrollBar::sub-page {{
+		QScrollBar::add-line, QScrollBar::sub-line, QScrollBar::add-page, QScrollBar::sub-page {{
 			background: transparent;
+			height: 0px;
 		}}
 		QScrollArea{{
 			border: none;
