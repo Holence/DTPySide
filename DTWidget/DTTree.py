@@ -6,6 +6,7 @@ class DTTree(QTreeWidget):
 		super().__init__(parent=parent)
 		self.setSortingEnabled(True)
 		self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+		self.setAnimated(True)
 
 		self.setExpandsOnDoubleClick(False)
 
