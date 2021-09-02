@@ -22,6 +22,8 @@ class DTLoginSession(DTFrame.DTDialog):
 		self.__LoginModule.lineEdit.setFocus()
 	
 	def accept(self):
+
+		self.__LoginModule.lineEdit.setReadOnly(True)
 		self.input_password=self.__LoginModule.lineEdit.text()
 		
 		#新用户
@@ -40,6 +42,7 @@ class DTLoginSession(DTFrame.DTDialog):
 			super().accept()
 		else:
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Unhappy().pixmap(QSize(64,64)))
+			self.__LoginModule.lineEdit.setReadOnly(False)
 	
 	def reject(self):
 		super().reject()

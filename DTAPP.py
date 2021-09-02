@@ -11,7 +11,7 @@ class DTAPP(QApplication):
 	"""
 	
 	def __init__(self,args):
-	
+
 		self.__UserSetting=QSettings("./UserSetting.ini",QSettings.IniFormat)
 		
 		# 添加缩放大小的环境变量
@@ -19,7 +19,7 @@ class DTAPP(QApplication):
 
 		# 设置图片缩放质量
 		self.setAttribute(Qt.AA_UseOpenGLES,True)
-		self.setAttribute(Qt.AA_EnableHighDpiScaling,True)
+		# self.setAttribute(Qt.AA_EnableHighDpiScaling,True)
 		self.setAttribute(Qt.AA_UseHighDpiPixmaps,True)
 		
 		# 设置字体缩放质量
@@ -129,7 +129,7 @@ class DTAPP(QApplication):
 		self.__UserSetting.setValue("BasicInfo/Font",font)
 
 	def Scale(self):
-		if self.__UserSetting.value("BasicInfo/Scale")==None or float(self.__UserSetting.value("BasicInfo/Scale"))<1 or float(self.__UserSetting.value("BasicInfo/Scale"))>5:
+		if self.__UserSetting.value("BasicInfo/Scale")==None or float(self.__UserSetting.value("BasicInfo/Scale"))<1:
 			self.setScale(1.0)
 		return float(self.__UserSetting.value("BasicInfo/Scale"))
 	
