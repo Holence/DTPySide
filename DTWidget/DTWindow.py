@@ -288,7 +288,12 @@ class DTWindow(QWidget):
 
 		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 		self.initializeWindowEffect()
-		
+	
+	def reInitialize(self):
+		self.__monitor_info = None
+
+		self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+		self.initializeWindowEffect()
 	
 	def initializeWindowEffect(self):
 		"""设置窗口效果，Normal 或 Aero 或 Acrylic
@@ -340,6 +345,7 @@ class DTWindow(QWidget):
 				rx = xPos +4 > w - self.BORDER_WIDTH
 				ty = yPos -4 < self.BORDER_WIDTH
 				by = yPos +4 > h - self.BORDER_WIDTH
+				
 				if lx and ty:
 					return True, win32con.HTTOPLEFT
 				elif rx and by:

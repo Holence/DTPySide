@@ -93,6 +93,8 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 
 		if bool(self.windowFlags() & Qt.WindowStaysOnTopHint):
 			self.setWindowFlag(Qt.WindowStaysOnTopHint,False)
+			# 貌似设置了置顶后缩放就侦测不到了，手动重置一下
+			self.reInitialize()
 		else:
 			self.setWindowFlag(Qt.WindowStaysOnTopHint,True)
 		
@@ -100,6 +102,7 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 			self.showFullScreen()
 		else:
 			self.showNormal()
+		
 	
 	def windowToggleFullscreen(self):
 		"切换主窗体的全屏与否"
