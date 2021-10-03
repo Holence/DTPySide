@@ -3,11 +3,11 @@ from DTPySide import *
 
 # Login 
 class DTLoginSession(DTFrame.DTDialog):
-	def __init__(self,locked_password):
-		super().__init__(None,"Login")
+	def __init__(self,locked_password,title="Login"):
+		super().__init__(None,title)
 		self.__LoginModule=DTModule.DTLogin(self)
 		self.setCentralWidget(self.__LoginModule)
-		self.setWindowTitle("Login")
+		self.setWindowTitle(title)
 
 		self.buttonBox.button(QDialogButtonBox.Ok).setDefault(True)
 
