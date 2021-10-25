@@ -1,13 +1,32 @@
 from __future__ import annotations
 from DTPySide import *
 
-def changeHue(old_color:str,new_hue:int):
-	old_color=colour.Color(old_color)
-	old_color.set_hue(new_hue)
-	return old_color.get_web()
+def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:float,contrast:float):
+	hue_offset=new_hue-colour.Color(color_list[1]).get_hue()
+	sat_offset=new_saturation-0.5
+	lum_offset=new_luminance-0.5
+
+	contrast=contrast-0.5
+	std_lum=max(min(colour.Color(color_list[1]).get_luminance()+lum_offset,1),0)
+
+	for i in range(len(color_list)):
+		color=colour.Color(color_list[i])
+		if new_hue!=-1:
+			color.set_hue((color.get_hue()+hue_offset)%360)
+		
+		new_saturation=max(min(color.get_saturation()+sat_offset,1),0)
+		color.set_saturation(new_saturation)
+		
+		new_luminance=max(min(color.get_luminance()+lum_offset,1),0)
+		new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast,1),0)
+		color.set_luminance(new_luminance)
+		
+		color_list[i]=color.get_web()
+	
+	return color_list
 
 class DTStyleSheet(str):
-	def __new__(cls,theme:str, hue:int, window_effect:str, font:QFont):
+	def __new__(cls,theme:str, hue:float, saturation:float, luminance:float, contrast:float, window_effect:str, font:QFont):
 		
 		# font_size=18
 		font_family=font.family()
@@ -39,9 +58,9 @@ class DTStyleSheet(str):
 		elif theme=="White":
 			color_list=["#aaaaaa","#ffffff","#dddddd","#cccccc","#eeeeee","#dae3ea","#333333"]
 			QIcon.setThemeName("black")
-			
-		if hue!=-1:
-			color_list=[changeHue(color,hue) for color in color_list]
+		
+		if hue!=-1 or saturation!=0.5 or luminance!=0.5 or contrast!=0.5:
+			color_list=changeColor(color_list,hue,saturation,luminance,contrast)
 		DEEPDARK,BACKGROUND,SOFTDARK,DIM,PRESSED,FOCUSED,TEXT=color_list
 		ICONCOLOR=QIcon.themeName()
 

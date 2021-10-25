@@ -13,8 +13,6 @@ class DTSetting(Ui_DTSetting,QWidget):
 
 		self.initializeWindow()
 		self.initializeSignal()
-		
-		
 
 	def initializeWindow(self):
 		
@@ -40,16 +38,20 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.lineEdit_backup.hide()
 			self.pushButton_backup.hide()
 		
+		# font
 		self.pushButton_font.setText(self.app.Font().key().split(",")[0])
 		self.pushButton_font.setStyleSheet("font-family:%s"%self.app.Font().key().split(",")[0])
 
+		# scale
 		self.spinBox_scale.setValue(self.app.Scale())
 		self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
 		
+		# theme
 		self.comboBox_theme.addItems(self.app.ThemeList)
 		self.comboBox_theme.setCurrentIndex(self.app.ThemeList.index(self.app.Theme()))
-		self.slider_Hue.setValue(int(self.app.Hue()*360))
-		self.slider_Hue.setStyleSheet("""
+
+		# color
+		self.setStyleSheet("""
 		QSlider{
 			padding-left:10px;
 			padding-right:10px;
@@ -63,9 +65,6 @@ class DTSetting(Ui_DTSetting,QWidget):
 		QSlider::handle {
 			height: 28px;
 		}
-		QSlider::groove{
-			background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:0.166 rgba(255, 255, 0, 255), stop:0.333 rgba(0, 255, 0, 255), stop:0.5 rgba(0, 255, 255, 255), stop:0.666 rgba(0, 0, 255, 255), stop:0.833 rgba(255, 0, 255, 255), stop:1 rgba(255, 0, 0, 255));
-		}
 		QSlider::add-page{
 			background:transparent;
 		}
@@ -73,9 +72,41 @@ class DTSetting(Ui_DTSetting,QWidget):
 			background: transparent;
 		}
 		""")
+		# hue
+		self.slider_Hue.setValue(int(self.app.Hue()*self.slider_Hue.maximum()))
+		self.slider_Hue.setStyleSheet("""
+		QSlider::groove{
+			background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:0.166 rgba(255, 255, 0, 255), stop:0.333 rgba(0, 255, 0, 255), stop:0.5 rgba(0, 255, 255, 255), stop:0.666 rgba(0, 0, 255, 255), stop:0.833 rgba(255, 0, 255, 255), stop:1 rgba(255, 0, 0, 255));
+		}
+		""")
 		self.pushButton_hue_reset.setStyleSheet("QPushButton{ min-height:16px; max-height:16px; min-width:16px; max-width:16px; icon-size:12px; }")
 		self.pushButton_hue_reset.setIcon(IconFromCurrentTheme("corner-down-left.svg"))
+		# saturation
+		self.slider_saturation.setValue(int(self.app.Saturation()*self.slider_saturation.maximum()))
+		self.updateSaturationSlider()
+		self.pushButton_saturation_reset.setStyleSheet("QPushButton{ min-height:16px; max-height:16px; min-width:16px; max-width:16px; icon-size:12px; }")
+		self.pushButton_saturation_reset.setIcon(IconFromCurrentTheme("corner-down-left.svg"))
+		# luminance
+		self.slider_luminance.setValue(int(self.app.Luminance()*self.slider_luminance.maximum()))
+		self.slider_luminance.setStyleSheet("""
+		QSlider::groove{
+			background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+		}
+		""")
+		self.pushButton_luminance_reset.setStyleSheet("QPushButton{ min-height:16px; max-height:16px; min-width:16px; max-width:16px; icon-size:12px; }")
+		self.pushButton_luminance_reset.setIcon(IconFromCurrentTheme("corner-down-left.svg"))
+
+		self.slider_contrast.setValue(int(self.app.Contrast()*self.slider_contrast.maximum()))
+		self.slider_contrast.setStyleSheet("""
+		QSlider::groove{
+			background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));
+		}
+		""")
+		self.pushButton_contrast_reset.setStyleSheet("QPushButton{ min-height:16px; max-height:16px; min-width:16px; max-width:16px; icon-size:12px; }")
+		self.pushButton_contrast_reset.setIcon(IconFromCurrentTheme("corner-down-left.svg"))
 		
+		self.updateColorPreview()
+
 		if self.app.hasTanslation():
 			self.comboBox_language.addItems(self.app.translation_module.Language_Dict.keys())
 			self.comboBox_country.addItems(self.app.translation_module.Country_Dict.keys())
@@ -101,8 +132,21 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.pushButton_scale.clicked.connect(self.ScaleSetting)
 		self.comboBox_window_effect.currentIndexChanged.connect(self.WindowEffectSetting)
 		self.comboBox_theme.currentIndexChanged.connect(self.ThemeSetting)
-		self.pushButton_hue.clicked.connect(self.HueSetting)
+		
+		self.pushButton_color.clicked.connect(self.ColorSetting)
+
+		def slotColorPreview():
+			self.updateColorPreview()
+			self.updateSaturationSlider()
+		
+		self.slider_Hue.sliderMoved.connect(slotColorPreview)
+		self.slider_saturation.sliderMoved.connect(slotColorPreview)
+		self.slider_luminance.sliderMoved.connect(slotColorPreview)
+
 		self.pushButton_hue_reset.clicked.connect(self.HueReset)
+		self.pushButton_saturation_reset.clicked.connect(self.SaturationReset)
+		self.pushButton_luminance_reset.clicked.connect(self.LuminanceReset)
+		self.pushButton_contrast_reset.clicked.connect(self.ContrastReset)
 	
 		if self.app.hasTanslation():
 			self.comboBox_language.currentIndexChanged.connect(self.LanguageSetting)
@@ -145,17 +189,69 @@ class DTSetting(Ui_DTSetting,QWidget):
 
 	def ThemeSetting(self):
 		self.app.setTheme(self.comboBox_theme.currentText())
-		self.slider_Hue.setValue(0)
-		# DTFrame.DTMessageBox(self,"Information","Theme changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Theme(),DTIcon.Information())
 		self.app.restart()
 	
-	def HueSetting(self):
-		self.app.setHue(float(self.slider_Hue.value()/360))
+	def updateColorPreview(self):
+		if self.app.Hue()==-1 and self.slider_Hue.value()==0:
+			self.label_color_preview.setStyleSheet("background:black")
+			return
+		c=colour.Color()
+		c.set_hue(float(self.slider_Hue.value()/self.slider_Hue.maximum()))
+		c.set_saturation(float(self.slider_saturation.value()/self.slider_saturation.maximum()))
+		c.set_luminance(float(self.slider_luminance.value()/self.slider_luminance.maximum()))
+		color=c.get_web()
+		self.label_color_preview.setStyleSheet("background:%s"%color)
+
+	def updateSaturationSlider(self):
+		if self.app.Hue()==-1 and self.slider_Hue.value()==0:
+			self.slider_saturation.setStyleSheet("""
+			QSlider::groove{
+				background:qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));
+			}
+			""")
+			return
+		c=colour.Color()
+		c.set_hue(float(self.slider_Hue.value()/self.slider_Hue.maximum()))	
+		c.set_luminance(0.5)
+		c.set_saturation(1.0)
+		r,g,b=list(map(lambda x:int(x*255),c.get_rgb()))
+		self.slider_saturation.setStyleSheet("""
+		QSlider::groove{
+			background:qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(%s, %s, %s, 255));
+		}
+		"""%(r,g,b))
+		
+
+	def ColorSetting(self):
+		if self.app.Hue()==-1 and self.slider_Hue.value()==0:
+			pass
+		else:
+			self.app.setHue(float(self.slider_Hue.value()/self.slider_Hue.maximum()))
+		self.app.setSaturation(float(self.slider_saturation.value()/self.slider_saturation.maximum()))
+		self.app.setLuminance(float(self.slider_luminance.value()/self.slider_luminance.maximum()))
+		self.app.setContrast(float(self.slider_contrast.value()/self.slider_contrast.maximum()))
 		self.app.initializeWindowStyle()
 	
 	def HueReset(self):
 		self.app.setHue(-1)
 		self.slider_Hue.setValue(0)
+		self.app.initializeWindowStyle()
+		self.updateColorPreview()
+		self.updateSaturationSlider()
+	
+	def SaturationReset(self):
+		self.app.setSaturation(0.5)
+		self.slider_saturation.setValue(int(self.slider_saturation.maximum()/2))
+		self.app.initializeWindowStyle()
+	
+	def LuminanceReset(self):
+		self.app.setLuminance(0.5)
+		self.slider_luminance.setValue(int(self.slider_luminance.maximum()/2))
+		self.app.initializeWindowStyle()
+	
+	def ContrastReset(self):
+		self.app.setContrast(0.5)
+		self.slider_contrast.setValue(int(self.slider_contrast.maximum()/2))
 		self.app.initializeWindowStyle()
 
 	def LanguageSetting(self):

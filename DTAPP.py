@@ -78,12 +78,7 @@ class DTAPP(QApplication):
 		"""设置MainwWindow的Window Effect和Theme
 		"""
 		
-		WindowEffect=self.WindowEffect()
-		Theme=self.Theme()
-		Hue=self.Hue()
-		Font=self.Font()
-		
-		self.setStyleSheet(DTStyleSheet(Theme, Hue, WindowEffect, Font))
+		self.setStyleSheet(DTStyleSheet(self.Theme(), self.Hue(), self.Saturation(), self.Luminance(), self.Contrast(), self.WindowEffect(), self.Font()))
 	
 	def hasTanslation(self):
 		return hasattr(self,"translation")
@@ -151,6 +146,9 @@ class DTAPP(QApplication):
 	
 	def setTheme(self,Theme:str):
 		self.setHue(-1)
+		self.setSaturation(0.5)
+		self.setLuminance(0.5)
+		self.setContrast(0.5)
 		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
 	
 	def Hue(self):
@@ -164,6 +162,42 @@ class DTAPP(QApplication):
 	
 	def setHue(self,hue:float):
 		self.__UserSetting.setValue("BasicInfo/Hue",str(hue))
+
+	def Saturation(self):
+		if self.__UserSetting.value("BasicInfo/Saturation")==None:
+			self.setSaturation(0.5)
+		else:
+			Saturation=float(self.__UserSetting.value("BasicInfo/Saturation"))
+			if not 0<=Saturation<=1:
+				self.setSaturation(0.5)
+		return float(self.__UserSetting.value("BasicInfo/Saturation"))
+	
+	def setSaturation(self,saturation:float):
+		self.__UserSetting.setValue("BasicInfo/Saturation",str(saturation))
+
+	def Luminance(self):
+		if self.__UserSetting.value("BasicInfo/Luminance")==None:
+			self.setLuminance(0.5)
+		else:
+			Luminance=float(self.__UserSetting.value("BasicInfo/Luminance"))
+			if not 0<=Luminance<=1:
+				self.setLuminance(0.5)
+		return float(self.__UserSetting.value("BasicInfo/Luminance"))
+	
+	def setLuminance(self,luminance:float):
+		self.__UserSetting.setValue("BasicInfo/Luminance",str(luminance))
+	
+	def Contrast(self):
+		if self.__UserSetting.value("BasicInfo/Contrast")==None:
+			self.setContrast(0.5)
+		else:
+			Contrast=float(self.__UserSetting.value("BasicInfo/Contrast"))
+			if not 0<=Contrast<=1:
+				self.setContrast(0.5)
+		return float(self.__UserSetting.value("BasicInfo/Contrast"))
+	
+	def setContrast(self,contrast:float):
+		self.__UserSetting.setValue("BasicInfo/Contrast",str(contrast))
 
 	def Language(self):
 		return self.__UserSetting.value("BasicInfo/Language")
