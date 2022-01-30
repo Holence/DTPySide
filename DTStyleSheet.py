@@ -6,23 +6,6 @@ def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:floa
 	sat_offset=new_saturation-0.5
 	lum_offset=new_luminance-0.5
 
-	contrast=contrast-0.5
-	std_lum=max(min(colour.Color(color_list[1]).get_luminance()+lum_offset,1),0)
-
-	for i in range(len(color_list)):
-		color=colour.Color(color_list[i])
-		if new_hue!=-1:
-			color.set_hue((color.get_hue()+hue_offset)%360)
-		
-		new_saturation=max(min(color.get_saturation()+sat_offset,1),0)
-		color.set_saturation(new_saturation)
-		
-		new_luminance=max(min(color.get_luminance()+lum_offset,1),0)
-		new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast,1),0)
-		color.set_luminance(new_luminance)
-		
-		color_list[i]=color.get_web()
-	
 	if reverse:
 		color=colour.Color(color_list[-1])
 		r,g,b=color.get_rgb()
@@ -32,6 +15,29 @@ def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:floa
 		color=colour.Color()
 		color.set_rgb((r,g,b))
 		color_list[-1]=color.get_web()
+	
+	contrast=contrast-0.5
+	std_lum=max(min(colour.Color(color_list[1]).get_luminance()+lum_offset,1),0)
+
+	for i in range(len(color_list)):
+		color=colour.Color(color_list[i])
+		if new_hue!=-1:
+			color.set_hue((color.get_hue()+hue_offset)%360)
+		
+		if i>=len(color_list)-3:
+			new_saturation=max(min(color.get_saturation()+sat_offset*0.5,1),0)
+			new_luminance=max(min(color.get_luminance()+lum_offset*0.5,1),0)
+			new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast*0.5,1),0)
+		else:
+			new_saturation=max(min(color.get_saturation()+sat_offset,1),0)
+			new_luminance=max(min(color.get_luminance()+lum_offset,1),0)
+			new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast,1),0)
+		
+		color.set_saturation(new_saturation)
+		color.set_luminance(new_luminance)
+		
+		color_list[i]=color.get_web()
+	
 	
 	return color_list
 
