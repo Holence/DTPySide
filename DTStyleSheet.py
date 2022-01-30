@@ -1,7 +1,7 @@
 from __future__ import annotations
 from DTPySide import *
 
-def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:float,contrast:float):
+def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:float,contrast:float,reverse:bool):
 	hue_offset=new_hue-colour.Color(color_list[1]).get_hue()
 	sat_offset=new_saturation-0.5
 	lum_offset=new_luminance-0.5
@@ -23,10 +23,20 @@ def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:floa
 		
 		color_list[i]=color.get_web()
 	
+	if reverse:
+		color=colour.Color(color_list[-1])
+		r,g,b=color.get_rgb()
+		r=1-r
+		g=1-g
+		b=1-b
+		color=colour.Color()
+		color.set_rgb((r,g,b))
+		color_list[-1]=color.get_web()
+	
 	return color_list
 
 class DTStyleSheet(str):
-	def __new__(cls,theme:str, hue:float, saturation:float, luminance:float, contrast:float, window_effect:str, font:QFont):
+	def __new__(cls,theme:str, hue:float, saturation:float, luminance:float, contrast:float, reverse:bool, window_effect:str, font:QFont):
 		
 		# font_size=18
 		font_family=font.family()
@@ -40,27 +50,28 @@ class DTStyleSheet(str):
 		# TEXT="#E0E0E0" # 文字
 		# ICONCOLOR="white" # 部分icon的颜色（暂未适配ui文件中指派的icon）
 		
+		white_or_black=["white","black"]
 		if theme=="Dracula":
 			color_list=["#191A21","#21222C","#282A36","#404257", "#A67DB4","#8C6BBB","#E0E0E0"]
-			QIcon.setThemeName("white")
+			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="Dracula2":
 			color_list=["#202329","#282C34","#313341","#404257","#D7AAE6","#BD93F9","#EBEBEB"]
-			QIcon.setThemeName("white")
+			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="Brown":
 			color_list=["#232323","#2A2A2A","#353535","#5c5c5c","#7AB6F3","#2A82DA","#FFFFFF"]
-			QIcon.setThemeName("white")
+			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="Green":
 			color_list=["#17241F","#294137","#3F6151","#5D796C","#C6CA8F","#A5AD79","#EEF1E0"]
-			QIcon.setThemeName("white")
+			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="Cyan":
 			color_list=["#212A35","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED"]
-			QIcon.setThemeName("white")
+			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="White":
 			color_list=["#aaaaaa","#ffffff","#dddddd","#cccccc","#eeeeee","#dae3ea","#333333"]
-			QIcon.setThemeName("black")
+			QIcon.setThemeName(white_or_black[not reverse])
 		
 		if hue!=-1 or saturation!=0.5 or luminance!=0.5 or contrast!=0.5:
-			color_list=changeColor(color_list,hue,saturation,luminance,contrast)
+			color_list=changeColor(color_list,hue,saturation,luminance,contrast,reverse)
 		DEEPDARK,BACKGROUND,SOFTDARK,DIM,PRESSED,FOCUSED,TEXT=color_list
 		ICONCOLOR=QIcon.themeName()
 

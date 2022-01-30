@@ -78,7 +78,7 @@ class DTAPP(QApplication):
 		"""设置MainwWindow的Window Effect和Theme
 		"""
 		
-		self.setStyleSheet(DTStyleSheet(self.Theme(), self.Hue(), self.Saturation(), self.Luminance(), self.Contrast(), self.WindowEffect(), self.Font()))
+		self.setStyleSheet(DTStyleSheet(self.Theme(), self.Hue(), self.Saturation(), self.Luminance(), self.Contrast(), self.Reverse(), self.WindowEffect(), self.Font()))
 	
 	def hasTanslation(self):
 		return hasattr(self,"translation")
@@ -149,6 +149,7 @@ class DTAPP(QApplication):
 		self.setSaturation(0.5)
 		self.setLuminance(0.5)
 		self.setContrast(0.5)
+		self.setReverse(False)
 		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
 	
 	def Hue(self):
@@ -198,6 +199,17 @@ class DTAPP(QApplication):
 	
 	def setContrast(self,contrast:float):
 		self.__UserSetting.setValue("BasicInfo/Contrast",str(contrast))
+
+	def Reverse(self):
+		if self.__UserSetting.value("BasicInfo/Reverse")==None:
+			self.setReverse(False)
+		
+		Reverse = self.__UserSetting.value("BasicInfo/Reverse")
+		Reverse = True if Reverse=="True" else False
+		return Reverse
+
+	def setReverse(self,reverse:bool):
+		self.__UserSetting.setValue("BasicInfo/Reverse",str(reverse))
 
 	def Language(self):
 		return self.__UserSetting.value("BasicInfo/Language")

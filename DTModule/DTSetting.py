@@ -107,6 +107,9 @@ class DTSetting(Ui_DTSetting,QWidget):
 		
 		self.updateColorPreview()
 
+		if self.app.Reverse():
+			self.checkBox_reverse.setCheckState(Qt.Checked)
+
 		if self.app.hasTanslation():
 			self.comboBox_language.addItems(self.app.translation_module.Language_Dict.keys())
 			self.comboBox_country.addItems(self.app.translation_module.Country_Dict.keys())
@@ -147,6 +150,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.pushButton_saturation_reset.clicked.connect(self.SaturationReset)
 		self.pushButton_luminance_reset.clicked.connect(self.LuminanceReset)
 		self.pushButton_contrast_reset.clicked.connect(self.ContrastReset)
+		
+		self.checkBox_reverse.stateChanged.connect(self.ReverseSetting)
 	
 		if self.app.hasTanslation():
 			self.comboBox_language.currentIndexChanged.connect(self.LanguageSetting)
@@ -174,8 +179,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 		if ok:
 			self.app.setFont(font)
 			# DTFrame.DTMessageBox(self,"Information","Font changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Font().key().split(",")[0],DTIcon.Information())
-			self.app.restart()
-			
+			self.app.restart()	
 	
 	def ScaleSetting(self):
 		self.app.setScale(round(self.spinBox_scale.value(),1))
@@ -220,7 +224,6 @@ class DTSetting(Ui_DTSetting,QWidget):
 			background:qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(%s, %s, %s, 255));
 		}
 		"""%(r,g,b))
-		
 
 	def ColorSetting(self):
 		if self.app.Hue()==-1 and self.slider_Hue.value()==0:
@@ -231,7 +234,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.app.setLuminance(float(self.slider_luminance.value()/self.slider_luminance.maximum()))
 		self.app.setContrast(float(self.slider_contrast.value()/self.slider_contrast.maximum()))
 		self.app.initializeWindowStyle()
-	
+
 	def HueReset(self):
 		self.app.setHue(-1)
 		self.slider_Hue.setValue(0)
@@ -254,6 +257,15 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.slider_contrast.setValue(int(self.slider_contrast.maximum()/2))
 		self.app.initializeWindowStyle()
 
+	def ReverseSetting(self):
+		dlg=DTFrame.DTConfirmBox(self,"Warning","You want to change text and icon from dark to light (or from light to dark)?\n\nApp will restart after the change.")
+		if dlg.exec_():
+			if self.checkBox_reverse.checkState()==Qt.Checked:
+				self.app.setReverse(True)
+			else:
+				self.app.setReverse(False)
+			self.app.restart()
+	
 	def LanguageSetting(self):
 		self.app.setLanguage(self.comboBox_language.currentText())
 		# DTFrame.DTMessageBox(self,"Information","Language changed to \"%s\" successfully!\n\nApp will be restart for better experience."%self.app.Language(),DTIcon.Information())

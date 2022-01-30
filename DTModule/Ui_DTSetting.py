@@ -205,43 +205,22 @@ class Ui_DTSetting(object):
 
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_2.addItem(self.horizontalSpacer_2, 2, 3, 1, 1)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_2.addItem(self.horizontalSpacer_3, 4, 3, 1, 1)
+
+        self.label_contrast = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_contrast.setObjectName(u"label_contrast")
+
+        self.gridLayout_2.addWidget(self.label_contrast, 6, 1, 1, 1)
+
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.gridLayout_2.addItem(self.horizontalSpacer_4, 6, 3, 1, 1)
-
-        self.pushButton_hue_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
-        self.pushButton_hue_reset.setObjectName(u"pushButton_hue_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_hue_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_hue_reset.setSizePolicy(sizePolicy1)
-
-        self.gridLayout_2.addWidget(self.pushButton_hue_reset, 0, 2, 1, 1)
-
-        self.slider_luminance = QSlider(self.scrollAreaWidgetContentsBasicInfo)
-        self.slider_luminance.setObjectName(u"slider_luminance")
-        self.slider_luminance.setMaximum(500)
-        self.slider_luminance.setPageStep(1)
-        self.slider_luminance.setOrientation(Qt.Horizontal)
-
-        self.gridLayout_2.addWidget(self.slider_luminance, 5, 1, 1, 3)
-
-        self.pushButton_contrast_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
-        self.pushButton_contrast_reset.setObjectName(u"pushButton_contrast_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_contrast_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_contrast_reset.setSizePolicy(sizePolicy1)
-
-        self.gridLayout_2.addWidget(self.pushButton_contrast_reset, 6, 2, 1, 1)
-
-        self.label_hue = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_hue.setObjectName(u"label_hue")
-
-        self.gridLayout_2.addWidget(self.label_hue, 0, 1, 1, 1)
-
-        self.pushButton_saturation_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
-        self.pushButton_saturation_reset.setObjectName(u"pushButton_saturation_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_saturation_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_saturation_reset.setSizePolicy(sizePolicy1)
-
-        self.gridLayout_2.addWidget(self.pushButton_saturation_reset, 2, 2, 1, 1)
 
         self.slider_Hue = QSlider(self.scrollAreaWidgetContentsBasicInfo)
         self.slider_Hue.setObjectName(u"slider_Hue")
@@ -249,35 +228,6 @@ class Ui_DTSetting(object):
         self.slider_Hue.setOrientation(Qt.Horizontal)
 
         self.gridLayout_2.addWidget(self.slider_Hue, 1, 1, 1, 3)
-
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_2.addItem(self.horizontalSpacer_3, 4, 3, 1, 1)
-
-        self.label_saturation = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_saturation.setObjectName(u"label_saturation")
-
-        self.gridLayout_2.addWidget(self.label_saturation, 2, 1, 1, 1)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_2.addItem(self.horizontalSpacer, 0, 3, 1, 1)
-
-        self.label_contrast = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_contrast.setObjectName(u"label_contrast")
-
-        self.gridLayout_2.addWidget(self.label_contrast, 6, 1, 1, 1)
-
-        self.pushButton_luminance_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
-        self.pushButton_luminance_reset.setObjectName(u"pushButton_luminance_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_luminance_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_luminance_reset.setSizePolicy(sizePolicy1)
-
-        self.gridLayout_2.addWidget(self.pushButton_luminance_reset, 4, 2, 1, 1)
-
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_2.addItem(self.horizontalSpacer_2, 2, 3, 1, 1)
 
         self.slider_contrast = QSlider(self.scrollAreaWidgetContentsBasicInfo)
         self.slider_contrast.setObjectName(u"slider_contrast")
@@ -300,9 +250,64 @@ class Ui_DTSetting(object):
 
         self.gridLayout_2.addWidget(self.label_luminance, 4, 1, 1, 1)
 
+        self.pushButton_hue_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
+        self.pushButton_hue_reset.setObjectName(u"pushButton_hue_reset")
+        sizePolicy1.setHeightForWidth(self.pushButton_hue_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_hue_reset.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_2.addWidget(self.pushButton_hue_reset, 0, 2, 1, 1)
+
+        self.pushButton_luminance_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
+        self.pushButton_luminance_reset.setObjectName(u"pushButton_luminance_reset")
+        sizePolicy1.setHeightForWidth(self.pushButton_luminance_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_luminance_reset.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_2.addWidget(self.pushButton_luminance_reset, 4, 2, 1, 1)
+
+        self.pushButton_saturation_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
+        self.pushButton_saturation_reset.setObjectName(u"pushButton_saturation_reset")
+        sizePolicy1.setHeightForWidth(self.pushButton_saturation_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_saturation_reset.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_2.addWidget(self.pushButton_saturation_reset, 2, 2, 1, 1)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_2.addItem(self.horizontalSpacer, 0, 3, 1, 1)
+
         self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
         self.gridLayout_2.addItem(self.horizontalSpacer_5, 0, 0, 1, 1)
+
+        self.slider_luminance = QSlider(self.scrollAreaWidgetContentsBasicInfo)
+        self.slider_luminance.setObjectName(u"slider_luminance")
+        self.slider_luminance.setMaximum(500)
+        self.slider_luminance.setPageStep(1)
+        self.slider_luminance.setOrientation(Qt.Horizontal)
+
+        self.gridLayout_2.addWidget(self.slider_luminance, 5, 1, 1, 3)
+
+        self.label_saturation = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_saturation.setObjectName(u"label_saturation")
+
+        self.gridLayout_2.addWidget(self.label_saturation, 2, 1, 1, 1)
+
+        self.label_hue = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_hue.setObjectName(u"label_hue")
+
+        self.gridLayout_2.addWidget(self.label_hue, 0, 1, 1, 1)
+
+        self.pushButton_contrast_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
+        self.pushButton_contrast_reset.setObjectName(u"pushButton_contrast_reset")
+        sizePolicy1.setHeightForWidth(self.pushButton_contrast_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_contrast_reset.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_2.addWidget(self.pushButton_contrast_reset, 6, 2, 1, 1)
+
+        self.checkBox_reverse = QCheckBox(self.scrollAreaWidgetContentsBasicInfo)
+        self.checkBox_reverse.setObjectName(u"checkBox_reverse")
+
+        self.gridLayout_2.addWidget(self.checkBox_reverse, 4, 0, 1, 1)
 
 
         self.gridLayout.addLayout(self.gridLayout_2, 12, 0, 1, 1)
@@ -339,13 +344,14 @@ class Ui_DTSetting(object):
         self.label_color_preview.setText("")
         self.label_country.setText(QCoreApplication.translate("DTSetting", u"Country", None))
         self.label_font.setText(QCoreApplication.translate("DTSetting", u"Font (font-size is fixed)", None))
+        self.label_contrast.setText(QCoreApplication.translate("DTSetting", u"Contrast", None))
+        self.label_luminance.setText(QCoreApplication.translate("DTSetting", u"Luminance", None))
         self.pushButton_hue_reset.setText("")
-        self.pushButton_contrast_reset.setText("")
-        self.label_hue.setText(QCoreApplication.translate("DTSetting", u"Hue", None))
+        self.pushButton_luminance_reset.setText("")
         self.pushButton_saturation_reset.setText("")
         self.label_saturation.setText(QCoreApplication.translate("DTSetting", u"Saturation", None))
-        self.label_contrast.setText(QCoreApplication.translate("DTSetting", u"Contrast", None))
-        self.pushButton_luminance_reset.setText("")
-        self.label_luminance.setText(QCoreApplication.translate("DTSetting", u"Luminance", None))
+        self.label_hue.setText(QCoreApplication.translate("DTSetting", u"Hue", None))
+        self.pushButton_contrast_reset.setText("")
+        self.checkBox_reverse.setText(QCoreApplication.translate("DTSetting", u"Reverse", None))
     # retranslateUi
 
