@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+- Added requirements
+
 ## 0.0.3
 
 - Added some source files
