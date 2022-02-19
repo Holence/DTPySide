@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
+- DTHorizontalTabel now supports sorting
+
 ## 0.0.5
 
 - TrayIcon showMessage and messageClicked's slot are now built in DTApp
