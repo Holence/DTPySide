@@ -1,7 +1,7 @@
 import setuptools
 import os
 
-BUILDING_DIR="D:\\DTPySide"
+BUILDING_DIR=r"C:\D\DTPySide"
 
 long_description=""
 with open(os.path.join(BUILDING_DIR, 'README.md'), "r", encoding="utf-8") as fh:
@@ -42,6 +42,6 @@ setuptools.setup(
         "PySide2",
         "pywin32",
         "requests",
-        "urllib3==1.25.11"
+        "urllib3"
     ]
 )
