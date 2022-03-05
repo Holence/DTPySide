@@ -21,7 +21,7 @@ class Ui_DTSetting(object):
     def setupUi(self, DTSetting):
         if not DTSetting.objectName():
             DTSetting.setObjectName(u"DTSetting")
-        DTSetting.resize(963, 597)
+        DTSetting.resize(976, 666)
         self.horizontalLayout = QHBoxLayout(DTSetting)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -48,118 +48,19 @@ class Ui_DTSetting(object):
         self.scrollAreaBasicInfo.setWidgetResizable(True)
         self.scrollAreaWidgetContentsBasicInfo = QWidget()
         self.scrollAreaWidgetContentsBasicInfo.setObjectName(u"scrollAreaWidgetContentsBasicInfo")
-        self.scrollAreaWidgetContentsBasicInfo.setGeometry(QRect(0, 0, 935, 597))
+        self.scrollAreaWidgetContentsBasicInfo.setGeometry(QRect(0, 0, 948, 666))
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContentsBasicInfo)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 15, 0)
-        self.lineEdit_password = QLineEdit(self.scrollAreaWidgetContentsBasicInfo)
-        self.lineEdit_password.setObjectName(u"lineEdit_password")
-
-        self.gridLayout.addWidget(self.lineEdit_password, 1, 0, 1, 1)
-
-        self.label_password = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_password.setObjectName(u"label_password")
-
-        self.gridLayout.addWidget(self.label_password, 0, 0, 1, 1)
-
-        self.label_scale = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_scale.setObjectName(u"label_scale")
-
-        self.gridLayout.addWidget(self.label_scale, 6, 0, 1, 1)
-
-        self.comboBox_window_effect = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
-        self.comboBox_window_effect.addItem("")
-        self.comboBox_window_effect.addItem("")
-        self.comboBox_window_effect.addItem("")
-        self.comboBox_window_effect.setObjectName(u"comboBox_window_effect")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.comboBox_window_effect.sizePolicy().hasHeightForWidth())
-        self.comboBox_window_effect.setSizePolicy(sizePolicy)
-
-        self.gridLayout.addWidget(self.comboBox_window_effect, 9, 0, 1, 1)
-
-        self.comboBox_language = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
-        self.comboBox_language.setObjectName(u"comboBox_language")
-        sizePolicy.setHeightForWidth(self.comboBox_language.sizePolicy().hasHeightForWidth())
-        self.comboBox_language.setSizePolicy(sizePolicy)
-
-        self.gridLayout.addWidget(self.comboBox_language, 14, 0, 1, 1)
-
-        self.label_theme = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_theme.setObjectName(u"label_theme")
-
-        self.gridLayout.addWidget(self.label_theme, 10, 0, 1, 1)
-
-        self.label_window_effect = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_window_effect.setObjectName(u"label_window_effect")
-
-        self.gridLayout.addWidget(self.label_window_effect, 8, 0, 1, 1)
-
-        self.comboBox_theme = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
-        self.comboBox_theme.setObjectName(u"comboBox_theme")
-        sizePolicy.setHeightForWidth(self.comboBox_theme.sizePolicy().hasHeightForWidth())
-        self.comboBox_theme.setSizePolicy(sizePolicy)
-
-        self.gridLayout.addWidget(self.comboBox_theme, 11, 0, 1, 1)
-
-        self.pushButton_backup = DTApplyButton(self.scrollAreaWidgetContentsBasicInfo)
-        self.pushButton_backup.setObjectName(u"pushButton_backup")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.pushButton_backup.sizePolicy().hasHeightForWidth())
-        self.pushButton_backup.setSizePolicy(sizePolicy1)
-
-        self.gridLayout.addWidget(self.pushButton_backup, 3, 1, 1, 1)
-
         self.pushButton_scale = DTApplyButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_scale.setObjectName(u"pushButton_scale")
-        sizePolicy1.setHeightForWidth(self.pushButton_scale.sizePolicy().hasHeightForWidth())
-        self.pushButton_scale.setSizePolicy(sizePolicy1)
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_scale.sizePolicy().hasHeightForWidth())
+        self.pushButton_scale.setSizePolicy(sizePolicy)
 
-        self.gridLayout.addWidget(self.pushButton_scale, 7, 1, 1, 1)
-
-        self.label_language = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_language.setObjectName(u"label_language")
-
-        self.gridLayout.addWidget(self.label_language, 13, 0, 1, 1)
-
-        self.verticalSpacer = QSpacerItem(20, 258, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout.addItem(self.verticalSpacer, 17, 1, 1, 1)
-
-        self.pushButton_font = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
-        self.pushButton_font.setObjectName(u"pushButton_font")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.pushButton_font.sizePolicy().hasHeightForWidth())
-        self.pushButton_font.setSizePolicy(sizePolicy2)
-
-        self.gridLayout.addWidget(self.pushButton_font, 5, 0, 1, 1)
-
-        self.comboBox_country = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
-        self.comboBox_country.setObjectName(u"comboBox_country")
-        sizePolicy.setHeightForWidth(self.comboBox_country.sizePolicy().hasHeightForWidth())
-        self.comboBox_country.setSizePolicy(sizePolicy)
-
-        self.gridLayout.addWidget(self.comboBox_country, 16, 0, 1, 1)
-
-        self.spinBox_scale = QDoubleSpinBox(self.scrollAreaWidgetContentsBasicInfo)
-        self.spinBox_scale.setObjectName(u"spinBox_scale")
-        self.spinBox_scale.setDecimals(1)
-        self.spinBox_scale.setMinimum(1.000000000000000)
-        self.spinBox_scale.setMaximum(10.000000000000000)
-        self.spinBox_scale.setSingleStep(0.100000000000000)
-
-        self.gridLayout.addWidget(self.spinBox_scale, 7, 0, 1, 1)
-
-        self.label_backup = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_backup.setObjectName(u"label_backup")
-
-        self.gridLayout.addWidget(self.label_backup, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_scale, 9, 1, 1, 1)
 
         self.verticalLayout_color = QVBoxLayout()
         self.verticalLayout_color.setSpacing(6)
@@ -170,8 +71,8 @@ class Ui_DTSetting(object):
 
         self.label_color_preview = QLabel(self.scrollAreaWidgetContentsBasicInfo)
         self.label_color_preview.setObjectName(u"label_color_preview")
-        sizePolicy1.setHeightForWidth(self.label_color_preview.sizePolicy().hasHeightForWidth())
-        self.label_color_preview.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.label_color_preview.sizePolicy().hasHeightForWidth())
+        self.label_color_preview.setSizePolicy(sizePolicy)
         self.label_color_preview.setMinimumSize(QSize(36, 36))
         self.label_color_preview.setMaximumSize(QSize(36, 36))
 
@@ -179,29 +80,54 @@ class Ui_DTSetting(object):
 
         self.pushButton_color = DTApplyButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_color.setObjectName(u"pushButton_color")
-        sizePolicy1.setHeightForWidth(self.pushButton_color.sizePolicy().hasHeightForWidth())
-        self.pushButton_color.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_color.sizePolicy().hasHeightForWidth())
+        self.pushButton_color.setSizePolicy(sizePolicy)
 
         self.verticalLayout_color.addWidget(self.pushButton_color)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_color, 12, 1, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_color, 14, 1, 1, 1)
 
-        self.lineEdit_backup = QLineEdit(self.scrollAreaWidgetContentsBasicInfo)
-        self.lineEdit_backup.setObjectName(u"lineEdit_backup")
-        self.lineEdit_backup.setReadOnly(True)
+        self.pushButton_font = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
+        self.pushButton_font.setObjectName(u"pushButton_font")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.pushButton_font.sizePolicy().hasHeightForWidth())
+        self.pushButton_font.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.lineEdit_backup, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_font, 7, 0, 1, 1)
 
-        self.label_country = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_country.setObjectName(u"label_country")
+        self.label_theme = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_theme.setObjectName(u"label_theme")
 
-        self.gridLayout.addWidget(self.label_country, 15, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_theme, 12, 0, 1, 1)
 
-        self.label_font = QLabel(self.scrollAreaWidgetContentsBasicInfo)
-        self.label_font.setObjectName(u"label_font")
+        self.verticalSpacer = QSpacerItem(20, 258, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.gridLayout.addWidget(self.label_font, 4, 0, 1, 1)
+        self.gridLayout.addItem(self.verticalSpacer, 19, 1, 1, 1)
+
+        self.lineEdit_password = QLineEdit(self.scrollAreaWidgetContentsBasicInfo)
+        self.lineEdit_password.setObjectName(u"lineEdit_password")
+
+        self.gridLayout.addWidget(self.lineEdit_password, 1, 0, 1, 1)
+
+        self.comboBox_language = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_language.setObjectName(u"comboBox_language")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.comboBox_language.sizePolicy().hasHeightForWidth())
+        self.comboBox_language.setSizePolicy(sizePolicy2)
+
+        self.gridLayout.addWidget(self.comboBox_language, 16, 0, 1, 1)
+
+        self.comboBox_theme = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_theme.setObjectName(u"comboBox_theme")
+        sizePolicy2.setHeightForWidth(self.comboBox_theme.sizePolicy().hasHeightForWidth())
+        self.comboBox_theme.setSizePolicy(sizePolicy2)
+
+        self.gridLayout.addWidget(self.comboBox_theme, 13, 0, 1, 1)
 
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
@@ -252,22 +178,22 @@ class Ui_DTSetting(object):
 
         self.pushButton_hue_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_hue_reset.setObjectName(u"pushButton_hue_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_hue_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_hue_reset.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_hue_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_hue_reset.setSizePolicy(sizePolicy)
 
         self.gridLayout_2.addWidget(self.pushButton_hue_reset, 0, 2, 1, 1)
 
         self.pushButton_luminance_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_luminance_reset.setObjectName(u"pushButton_luminance_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_luminance_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_luminance_reset.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_luminance_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_luminance_reset.setSizePolicy(sizePolicy)
 
         self.gridLayout_2.addWidget(self.pushButton_luminance_reset, 4, 2, 1, 1)
 
         self.pushButton_saturation_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_saturation_reset.setObjectName(u"pushButton_saturation_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_saturation_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_saturation_reset.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_saturation_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_saturation_reset.setSizePolicy(sizePolicy)
 
         self.gridLayout_2.addWidget(self.pushButton_saturation_reset, 2, 2, 1, 1)
 
@@ -299,8 +225,8 @@ class Ui_DTSetting(object):
 
         self.pushButton_contrast_reset = QPushButton(self.scrollAreaWidgetContentsBasicInfo)
         self.pushButton_contrast_reset.setObjectName(u"pushButton_contrast_reset")
-        sizePolicy1.setHeightForWidth(self.pushButton_contrast_reset.sizePolicy().hasHeightForWidth())
-        self.pushButton_contrast_reset.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.pushButton_contrast_reset.sizePolicy().hasHeightForWidth())
+        self.pushButton_contrast_reset.setSizePolicy(sizePolicy)
 
         self.gridLayout_2.addWidget(self.pushButton_contrast_reset, 6, 2, 1, 1)
 
@@ -310,7 +236,99 @@ class Ui_DTSetting(object):
         self.gridLayout_2.addWidget(self.checkBox_reverse, 4, 0, 1, 1)
 
 
-        self.gridLayout.addLayout(self.gridLayout_2, 12, 0, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_2, 14, 0, 1, 1)
+
+        self.pushButton_backup = DTApplyButton(self.scrollAreaWidgetContentsBasicInfo)
+        self.pushButton_backup.setObjectName(u"pushButton_backup")
+        sizePolicy.setHeightForWidth(self.pushButton_backup.sizePolicy().hasHeightForWidth())
+        self.pushButton_backup.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.pushButton_backup, 5, 1, 1, 1)
+
+        self.label_country = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_country.setObjectName(u"label_country")
+
+        self.gridLayout.addWidget(self.label_country, 17, 0, 1, 1)
+
+        self.label_scale = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_scale.setObjectName(u"label_scale")
+
+        self.gridLayout.addWidget(self.label_scale, 8, 0, 1, 1)
+
+        self.label_window_effect = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_window_effect.setObjectName(u"label_window_effect")
+
+        self.gridLayout.addWidget(self.label_window_effect, 10, 0, 1, 1)
+
+        self.label_backup = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_backup.setObjectName(u"label_backup")
+
+        self.gridLayout.addWidget(self.label_backup, 4, 0, 1, 1)
+
+        self.label_language = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_language.setObjectName(u"label_language")
+
+        self.gridLayout.addWidget(self.label_language, 15, 0, 1, 1)
+
+        self.lineEdit_backup = QLineEdit(self.scrollAreaWidgetContentsBasicInfo)
+        self.lineEdit_backup.setObjectName(u"lineEdit_backup")
+        self.lineEdit_backup.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.lineEdit_backup, 5, 0, 1, 1)
+
+        self.comboBox_country = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_country.setObjectName(u"comboBox_country")
+        sizePolicy2.setHeightForWidth(self.comboBox_country.sizePolicy().hasHeightForWidth())
+        self.comboBox_country.setSizePolicy(sizePolicy2)
+
+        self.gridLayout.addWidget(self.comboBox_country, 18, 0, 1, 1)
+
+        self.label_font = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_font.setObjectName(u"label_font")
+
+        self.gridLayout.addWidget(self.label_font, 6, 0, 1, 1)
+
+        self.spinBox_scale = QDoubleSpinBox(self.scrollAreaWidgetContentsBasicInfo)
+        self.spinBox_scale.setObjectName(u"spinBox_scale")
+        self.spinBox_scale.setDecimals(1)
+        self.spinBox_scale.setMinimum(1.000000000000000)
+        self.spinBox_scale.setMaximum(10.000000000000000)
+        self.spinBox_scale.setSingleStep(0.100000000000000)
+
+        self.gridLayout.addWidget(self.spinBox_scale, 9, 0, 1, 1)
+
+        self.comboBox_window_effect = LazyCombobox(self.scrollAreaWidgetContentsBasicInfo)
+        self.comboBox_window_effect.addItem("")
+        self.comboBox_window_effect.addItem("")
+        self.comboBox_window_effect.addItem("")
+        self.comboBox_window_effect.setObjectName(u"comboBox_window_effect")
+        sizePolicy2.setHeightForWidth(self.comboBox_window_effect.sizePolicy().hasHeightForWidth())
+        self.comboBox_window_effect.setSizePolicy(sizePolicy2)
+
+        self.gridLayout.addWidget(self.comboBox_window_effect, 11, 0, 1, 1)
+
+        self.label_password = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_password.setObjectName(u"label_password")
+
+        self.gridLayout.addWidget(self.label_password, 0, 0, 1, 1)
+
+        self.label_data_dir = QLabel(self.scrollAreaWidgetContentsBasicInfo)
+        self.label_data_dir.setObjectName(u"label_data_dir")
+
+        self.gridLayout.addWidget(self.label_data_dir, 2, 0, 1, 1)
+
+        self.lineEdit_data_dir = QLineEdit(self.scrollAreaWidgetContentsBasicInfo)
+        self.lineEdit_data_dir.setObjectName(u"lineEdit_data_dir")
+        self.lineEdit_data_dir.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.lineEdit_data_dir, 3, 0, 1, 1)
+
+        self.pushButton_data_dir = DTApplyButton(self.scrollAreaWidgetContentsBasicInfo)
+        self.pushButton_data_dir.setObjectName(u"pushButton_data_dir")
+        sizePolicy.setHeightForWidth(self.pushButton_data_dir.sizePolicy().hasHeightForWidth())
+        self.pushButton_data_dir.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.pushButton_data_dir, 3, 1, 1, 1)
 
         self.scrollAreaBasicInfo.setWidget(self.scrollAreaWidgetContentsBasicInfo)
 
@@ -331,19 +349,8 @@ class Ui_DTSetting(object):
 
     def retranslateUi(self, DTSetting):
         DTSetting.setWindowTitle(QCoreApplication.translate("DTSetting", u"DTSetting", None))
-        self.label_password.setText(QCoreApplication.translate("DTSetting", u"Password", None))
-        self.label_scale.setText(QCoreApplication.translate("DTSetting", u"Scale (Change this according to your screen DPI)", None))
-        self.comboBox_window_effect.setItemText(0, QCoreApplication.translate("DTSetting", u"Normal", None))
-        self.comboBox_window_effect.setItemText(1, QCoreApplication.translate("DTSetting", u"Aero", None))
-        self.comboBox_window_effect.setItemText(2, QCoreApplication.translate("DTSetting", u"Acrylic", None))
-
-        self.label_theme.setText(QCoreApplication.translate("DTSetting", u"Theme", None))
-        self.label_window_effect.setText(QCoreApplication.translate("DTSetting", u"Window Effect", None))
-        self.label_language.setText(QCoreApplication.translate("DTSetting", u"Language", None))
-        self.label_backup.setText(QCoreApplication.translate("DTSetting", u"Backup Dst", None))
         self.label_color_preview.setText("")
-        self.label_country.setText(QCoreApplication.translate("DTSetting", u"Country", None))
-        self.label_font.setText(QCoreApplication.translate("DTSetting", u"Font (font-size is fixed)", None))
+        self.label_theme.setText(QCoreApplication.translate("DTSetting", u"Theme", None))
         self.label_contrast.setText(QCoreApplication.translate("DTSetting", u"Contrast", None))
         self.label_luminance.setText(QCoreApplication.translate("DTSetting", u"Luminance", None))
         self.pushButton_hue_reset.setText("")
@@ -353,5 +360,17 @@ class Ui_DTSetting(object):
         self.label_hue.setText(QCoreApplication.translate("DTSetting", u"Hue", None))
         self.pushButton_contrast_reset.setText("")
         self.checkBox_reverse.setText(QCoreApplication.translate("DTSetting", u"Reverse", None))
+        self.label_country.setText(QCoreApplication.translate("DTSetting", u"Country", None))
+        self.label_scale.setText(QCoreApplication.translate("DTSetting", u"Scale (Change this according to your screen DPI)", None))
+        self.label_window_effect.setText(QCoreApplication.translate("DTSetting", u"Window Effect", None))
+        self.label_backup.setText(QCoreApplication.translate("DTSetting", u"Backup Dst", None))
+        self.label_language.setText(QCoreApplication.translate("DTSetting", u"Language", None))
+        self.label_font.setText(QCoreApplication.translate("DTSetting", u"Font (font-size is fixed)", None))
+        self.comboBox_window_effect.setItemText(0, QCoreApplication.translate("DTSetting", u"Normal", None))
+        self.comboBox_window_effect.setItemText(1, QCoreApplication.translate("DTSetting", u"Aero", None))
+        self.comboBox_window_effect.setItemText(2, QCoreApplication.translate("DTSetting", u"Acrylic", None))
+
+        self.label_password.setText(QCoreApplication.translate("DTSetting", u"Password", None))
+        self.label_data_dir.setText(QCoreApplication.translate("DTSetting", u"Data Dir", None))
     # retranslateUi
 

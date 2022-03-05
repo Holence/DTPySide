@@ -248,17 +248,47 @@ class DTAPP(QApplication):
 	def setLoginEnable(self, bool=True):
 		self.__LoginEnable=bool
 	
+	def setDataDir(self, new_dir:str):
+		if os.path.exists(new_dir):
+			old_dir=self.DataDir()
+			try:
+				for file in self.DataList():		
+					old_file_dir=os.path.join(old_dir,file)
+					file_dst=os.path.join(new_dir,file)
+					shutil.move(old_file_dir,file_dst)
+			except Exception as e:
+				DTFrame.DTMessageBox(None,"Error",e,DTIcon.Error())
+			self.__UserSetting.setValue("BasicInfo/DataDir",Fernet_Encrypt(self.__password,new_dir))
+		else:
+			DTFrame.DTMessageBox(None,"Error","Data Dir does not exsit!",DTIcon.Error())
+	
+	def DataDir(self):
+		if self.__UserSetting.value("BasicInfo/DataDir")==None:
+			self.__UserSetting.setValue("BasicInfo/DataDir",Fernet_Encrypt(self.__password,os.getcwd()))
+		
+		return Fernet_Decrypt(self.__password,self.__UserSetting.value("BasicInfo/DataDir"))
+
+	def setDataList(self, data_list:list):
+		"""程序中对app设置，data文件列表（应该是DataDir下的文件，与load、save、backup相关）
+
+		Args:
+			data_list (list): data文件列表
+		"""
+		self.__DataList=data_list
+	
+	def DataList(self):
+		return self.__DataList
+	
 	def isBackupEnable(self):
 		return self.__BackupEnable
 	
 	def setBackupEnable(self, bool=True):
-		"""设置是否开启备份功能
+		"""设置是否开启备份功能，备份文件的列表即为main中setDataList设置的文件列表
 
 		Args:
 			bool (bool, optional): Defaults to True.
 		"""		
 		self.__BackupEnable=bool
-		self.setBackupList([])
 	
 	def setBackupDst(self, dst:str):
 		"""设置面板中设置备份地址
@@ -272,21 +302,10 @@ class DTAPP(QApplication):
 			else:
 				DTFrame.DTMessageBox(None,"Error","Backup Dst does not exsit!",DTIcon.Error())
 		else:
-			raise("Please setBackupEnable before setBackupList.")
+			raise("Please setBackupEnable before setBackupDst.")
 	
 	def BackupDst(self):
 		return Fernet_Decrypt(self.__password,self.__UserSetting.value("BasicInfo/BackupDst"))
-
-	def setBackupList(self, backup_list:list):
-		"""程序中对app设置，要备份的文件的url列表
-
-		Args:
-			backup_list (list): 要备份的文件的url列表
-		"""
-		self.__BackupList=backup_list
-	
-	def BackupList(self):
-		return self.__BackupList
 
 	def password(self):
 		return self.__password

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.7
+
+- Add DataDir option
+
 ## 0.0.6
 
 - DTHorizontalTabel now supports sorting

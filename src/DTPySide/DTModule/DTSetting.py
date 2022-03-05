@@ -27,6 +27,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.lineEdit_password.hide()
 			self.label_password.hide()
 		
+		self.lineEdit_data_dir.setText(self.app.DataDir())
+
 		if self.app.isBackupEnable():
 			dst=self.app.BackupDst()
 			if dst==False:
@@ -37,7 +39,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.label_backup.hide()
 			self.lineEdit_backup.hide()
 			self.pushButton_backup.hide()
-		
+
 		# font
 		self.pushButton_font.setText(self.app.Font().key().split(",")[0])
 		self.pushButton_font.setStyleSheet("font-family:%s"%self.app.Font().key().split(",")[0])
@@ -129,6 +131,8 @@ class DTSetting(Ui_DTSetting,QWidget):
 		if self.app.isLoginEnable():
 			self.lineEdit_password.editingFinished.connect(self.PasswordSetting)
 		
+		self.pushButton_data_dir.clicked.connect(self.DataDirSetting)
+		
 		if self.app.isBackupEnable():
 			self.pushButton_backup.clicked.connect(self.BackupSetting)
 		
@@ -165,6 +169,34 @@ class DTSetting(Ui_DTSetting,QWidget):
 			DTFrame.DTMessageBox(self,"Information","Password reseted to \"%s\" successfully!"%self.app.password(),DTIcon.Information())
 		except:
 			DTFrame.DTMessageBox(self,"Warning","Error occur during password reseting!",DTIcon.Error())
+
+	def DataDirSetting(self):
+		dlg=QFileDialog(self)
+		data_dir=dlg.getExistingDirectory()
+		if data_dir:
+
+			warning_list=[]
+			for file in self.app.DataList():
+				if file in os.listdir(data_dir):
+					warning_list.append(file)
+			
+			flag=True
+			if warning_list!=[]:
+				if DTFrame.DTConfirmBox(
+					self,
+					"Warning",
+					"There are already files with the same names in the new Data Dir: \n\n%s\n\nDo you want to overwrite them?"%data_dir,
+					icon=DTIcon.Warning(),
+					detail="\n".join(warning_list)
+				).exec_():
+					flag=True
+				else:
+					flag=False
+			
+			if flag==True:
+				self.app.setDataDir(data_dir)
+				self.lineEdit_data_dir.setText(self.app.DataDir())
+				DTFrame.DTMessageBox(self,"Information","Data Dir changed to\n\n \"%s\" \n\nsuccessfully!"%self.app.DataDir(),DTIcon.Information())
 
 	def BackupSetting(self):
 		dlg=QFileDialog(self)

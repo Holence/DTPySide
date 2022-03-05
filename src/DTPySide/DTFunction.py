@@ -111,6 +111,9 @@ def Fernet_Encrypt_Save(password,data,file_path):
 		fer=Fernet(key)
 		encrypt_data=fer.encrypt(data)
 
+		if not os.path.exists(os.path.dirname(file_path)):
+			os.makedirs(os.path.dirname(file_path))
+		
 		with open(file_path,"wb") as f:
 			f.write(encrypt_data)
 		

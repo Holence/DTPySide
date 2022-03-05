@@ -154,9 +154,13 @@ class DTMainSession(DTFrame.DTMainWindow):
 				action.setVisible(False)
 	
 	def loadData(self):
+		"""这里请用self.app.DataDir获取Data的路径
+		"""
 		pass
 
 	def saveData(self):
+		"""这里请用self.app.DataDir获取Data的路径
+		"""
 		pass
 	
 	def saveWindowStatus(self):
@@ -171,16 +175,17 @@ class DTMainSession(DTFrame.DTMainWindow):
 		# 可以implement这个函数，比如先保存一下
 
 		class BackUpThread(QThread):
-			def __init__(self, parent, backup_list):
+			def __init__(self, parent, data_dir, data_list):
 				super().__init__(parent=parent)
-				self.backup_list=backup_list
+				self.data_dir=data_dir
+				self.data_list=data_list
 			
 			def run(self):
 				if not os.path.exists(new_folder_dst):
 					os.makedirs(new_folder_dst)
-				for url in self.backup_list:
-					file_dst=os.path.join(new_folder_dst,os.path.basename(url))
-					shutil.copyfile(url,file_dst)
+				for file in self.data_list:
+					file_dst=os.path.join(new_folder_dst,file)
+					shutil.copyfile(os.path.join(self.data_dir,file),file_dst)
 		
 		backup_dst=self.app.BackupDst()
 		if backup_dst==False:
@@ -189,7 +194,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 			DTFrame.DTMessageBox(self,"Warning","Backup Dst %s does not exsit!"%backup_dst,DTIcon.Warning())
 		else:
 			new_folder_dst=os.path.join(backup_dst,WhatDayIsToday(1).toString("yyyyMMdd")).replace("/","\\")
-			self.backup_thread=BackUpThread(self, self.app.BackupList())
+			self.backup_thread=BackUpThread(self, self.app.DataDir(), self.app.DataList())
 			self.backup_thread.finished.connect(self.backup_thread.deleteLater)
 			self.backup_thread.finished.connect(lambda:self.app.showMessage("Information", "Data backup completed.", DTIcon.Information(), clicked_slot=lambda:os.popen("explorer /select,\"%s\""%new_folder_dst)))
 			self.backup_thread.start()
