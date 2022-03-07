@@ -106,17 +106,13 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 	
 	def windowToggleFullscreen(self):
 		"切换主窗体的全屏与否"
-		print(self.isFullScreen())
+		
 		if self.isFullScreen():
 			self.showNormal()
 			self.TitleBar.show()
-			# self.TitleBar.btn_maximize.show()
-			# self.TitleBar.btn_minimize.show()
 		else:
 			self.showFullScreen()
 			self.TitleBar.hide()
-			# self.TitleBar.btn_maximize.hide()
-			# self.TitleBar.btn_minimize.hide()
 
 	def setWindowTitle(self,title):
 		super().setWindowTitle(title)
