@@ -59,9 +59,10 @@ class DTAPP(QApplication):
 		self.setApplicationVersion("0.0.0.0")
 		self.setAuthor("鍵山狐")
 		self.setOrganizationName("Dongli Teahouse")
-		self.setOrganizationDomain("www.dongliteahouse.com")
+		self.setOrganizationDomain("dongliteahouse.wordpress.com")
 		self.setContact("Holence08@gmail.com")
 		
+		self.setDataList(None)
 		self.setLoginEnable(False)
 		self.setBackupEnable(False)
 	
@@ -113,36 +114,36 @@ class DTAPP(QApplication):
 		self.installTranslator(self.translation)
 	
 	def Font(self) -> QFont:
-		if self.__UserSetting.value("BasicInfo/Font")==None:
+		if self.UserSetting().value("BasicInfo/Font")==None:
 			font=QFont()
 			font.setFamily("Meiryo UI")
 			font.setPointSize(18)
 			self.setFont(font)
-		return self.__UserSetting.value("BasicInfo/Font")
+		return self.UserSetting().value("BasicInfo/Font")
 	
 	def setFont(self, font:QFont):
-		self.__UserSetting.setValue("BasicInfo/Font",font)
+		self.UserSetting().setValue("BasicInfo/Font",font)
 
 	def Scale(self):
-		if self.__UserSetting.value("BasicInfo/Scale")==None or float(self.__UserSetting.value("BasicInfo/Scale"))<1:
+		if self.UserSetting().value("BasicInfo/Scale")==None or float(self.UserSetting().value("BasicInfo/Scale"))<1:
 			self.setScale(1.0)
-		return float(self.__UserSetting.value("BasicInfo/Scale"))
+		return float(self.UserSetting().value("BasicInfo/Scale"))
 	
 	def setScale(self, scale:float):
-		self.__UserSetting.setValue("BasicInfo/Scale",str(scale))
+		self.UserSetting().setValue("BasicInfo/Scale",str(scale))
 	
 	def WindowEffect(self):
-		if self.__UserSetting.value("BasicInfo/WindowEffect") not in ["Normal","Aero","Acrylic"]:
+		if self.UserSetting().value("BasicInfo/WindowEffect") not in ["Normal","Aero","Acrylic"]:
 			self.setWindowEffect("Normal")
-		return self.__UserSetting.value("BasicInfo/WindowEffect")
+		return self.UserSetting().value("BasicInfo/WindowEffect")
 	
 	def setWindowEffect(self, WindowEffect:str):
-		self.__UserSetting.setValue("BasicInfo/WindowEffect",WindowEffect)
+		self.UserSetting().setValue("BasicInfo/WindowEffect",WindowEffect)
 	
 	def Theme(self):
-		if self.__UserSetting.value("BasicInfo/Theme") not in self.ThemeList:
+		if self.UserSetting().value("BasicInfo/Theme") not in self.ThemeList:
 			self.setTheme("Dracula")
-		return self.__UserSetting.value("BasicInfo/Theme")
+		return self.UserSetting().value("BasicInfo/Theme")
 	
 	def setTheme(self, Theme:str):
 		self.setHue(-1)
@@ -150,94 +151,94 @@ class DTAPP(QApplication):
 		self.setLuminance(0.5)
 		self.setContrast(0.5)
 		self.setReverse(False)
-		self.__UserSetting.setValue("BasicInfo/Theme",Theme)
+		self.UserSetting().setValue("BasicInfo/Theme",Theme)
 	
 	def Hue(self):
-		if self.__UserSetting.value("BasicInfo/Hue")==None:
+		if self.UserSetting().value("BasicInfo/Hue")==None:
 			self.setHue(-1)
 		else:
-			Hue=float(self.__UserSetting.value("BasicInfo/Hue"))
+			Hue=float(self.UserSetting().value("BasicInfo/Hue"))
 			if not 0<=Hue<=1 and Hue!=-1:
 				self.setHue(-1)
-		return float(self.__UserSetting.value("BasicInfo/Hue"))
+		return float(self.UserSetting().value("BasicInfo/Hue"))
 	
 	def setHue(self, hue:float):
-		self.__UserSetting.setValue("BasicInfo/Hue",str(hue))
+		self.UserSetting().setValue("BasicInfo/Hue",str(hue))
 
 	def Saturation(self):
-		if self.__UserSetting.value("BasicInfo/Saturation")==None:
+		if self.UserSetting().value("BasicInfo/Saturation")==None:
 			self.setSaturation(0.5)
 		else:
-			Saturation=float(self.__UserSetting.value("BasicInfo/Saturation"))
+			Saturation=float(self.UserSetting().value("BasicInfo/Saturation"))
 			if not 0<=Saturation<=1:
 				self.setSaturation(0.5)
-		return float(self.__UserSetting.value("BasicInfo/Saturation"))
+		return float(self.UserSetting().value("BasicInfo/Saturation"))
 	
 	def setSaturation(self, saturation:float):
-		self.__UserSetting.setValue("BasicInfo/Saturation",str(saturation))
+		self.UserSetting().setValue("BasicInfo/Saturation",str(saturation))
 
 	def Luminance(self):
-		if self.__UserSetting.value("BasicInfo/Luminance")==None:
+		if self.UserSetting().value("BasicInfo/Luminance")==None:
 			self.setLuminance(0.5)
 		else:
-			Luminance=float(self.__UserSetting.value("BasicInfo/Luminance"))
+			Luminance=float(self.UserSetting().value("BasicInfo/Luminance"))
 			if not 0<=Luminance<=1:
 				self.setLuminance(0.5)
-		return float(self.__UserSetting.value("BasicInfo/Luminance"))
+		return float(self.UserSetting().value("BasicInfo/Luminance"))
 	
 	def setLuminance(self, luminance:float):
-		self.__UserSetting.setValue("BasicInfo/Luminance",str(luminance))
+		self.UserSetting().setValue("BasicInfo/Luminance",str(luminance))
 	
 	def Contrast(self):
-		if self.__UserSetting.value("BasicInfo/Contrast")==None:
+		if self.UserSetting().value("BasicInfo/Contrast")==None:
 			self.setContrast(0.5)
 		else:
-			Contrast=float(self.__UserSetting.value("BasicInfo/Contrast"))
+			Contrast=float(self.UserSetting().value("BasicInfo/Contrast"))
 			if not 0<=Contrast<=1:
 				self.setContrast(0.5)
-		return float(self.__UserSetting.value("BasicInfo/Contrast"))
+		return float(self.UserSetting().value("BasicInfo/Contrast"))
 	
 	def setContrast(self, contrast:float):
-		self.__UserSetting.setValue("BasicInfo/Contrast",str(contrast))
+		self.UserSetting().setValue("BasicInfo/Contrast",str(contrast))
 
 	def Reverse(self):
-		if self.__UserSetting.value("BasicInfo/Reverse")==None:
+		if self.UserSetting().value("BasicInfo/Reverse")==None:
 			self.setReverse(False)
 		
-		Reverse = self.__UserSetting.value("BasicInfo/Reverse")
+		Reverse = self.UserSetting().value("BasicInfo/Reverse")
 		Reverse = True if Reverse=="True" else False
 		return Reverse
 
 	def setReverse(self, reverse:bool):
-		self.__UserSetting.setValue("BasicInfo/Reverse",str(reverse))
+		self.UserSetting().setValue("BasicInfo/Reverse",str(reverse))
 
 	def Language(self):
-		return self.__UserSetting.value("BasicInfo/Language")
+		return self.UserSetting().value("BasicInfo/Language")
 	
 	def setLanguage(self, Language:str):
-		self.__UserSetting.setValue("BasicInfo/Language",Language)
+		self.UserSetting().setValue("BasicInfo/Language",Language)
 	
 	def Country(self):
-		return self.__UserSetting.value("BasicInfo/Country")
+		return self.UserSetting().value("BasicInfo/Country")
 	
 	def setCountry(self, Country:str):
-		self.__UserSetting.setValue("BasicInfo/Country",Country)
+		self.UserSetting().setValue("BasicInfo/Country",Country)
 
 	def setApplicationName(self, str):
 		super().setApplicationName(str)
-		self.__UserSetting.setValue("MetaData/ApplicationName",self.applicationName())
+		self.UserSetting().setValue("MetaData/ApplicationName",self.applicationName())
 	
 	def setApplicationVersion(self, str):
 		super().setApplicationVersion(str)
-		self.__UserSetting.setValue("MetaData/ApplicationVersion",self.applicationVersion())
+		self.UserSetting().setValue("MetaData/ApplicationVersion",self.applicationVersion())
 	
 	def setOrganizationName(self, str):
 		super().setOrganizationName(str)
-		self.__UserSetting.setValue("MetaData/OrganizationName",self.organizationName())
+		self.UserSetting().setValue("MetaData/OrganizationName",self.organizationName())
 	
 	def setOrganizationDomain(self, str):
 		super().setOrganizationDomain(str)
-		self.__UserSetting.setValue("MetaData/OrganizationDomain",self.organizationDomain())
+		self.UserSetting().setValue("MetaData/OrganizationDomain",self.organizationDomain())
 
 	def UserSetting(self):
 		return self.__UserSetting
@@ -258,15 +259,24 @@ class DTAPP(QApplication):
 					shutil.move(old_file_dir,file_dst)
 			except Exception as e:
 				DTFrame.DTMessageBox(None,"Error",e,DTIcon.Error())
-			self.__UserSetting.setValue("BasicInfo/DataDir",Fernet_Encrypt(self.__password,new_dir))
+			
+			if self.isLoginEnable():
+				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),new_dir))
+			else:
+				self.UserSetting().setValue("BasicInfo/DataDir",new_dir)
 		else:
 			DTFrame.DTMessageBox(None,"Error","Data Dir does not exsit!",DTIcon.Error())
 	
 	def DataDir(self):
-		if self.__UserSetting.value("BasicInfo/DataDir")==None:
-			self.__UserSetting.setValue("BasicInfo/DataDir",Fernet_Encrypt(self.__password,os.getcwd()))
+		if self.isLoginEnable():
+			if self.UserSetting().value("BasicInfo/DataDir")==None:
+				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),os.getcwd()))
 		
-		return Fernet_Decrypt(self.__password,self.__UserSetting.value("BasicInfo/DataDir"))
+			return Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/DataDir"))
+		else:
+			if self.UserSetting().value("BasicInfo/DataDir")==None:
+				self.UserSetting().setValue("BasicInfo/DataDir",os.getcwd())
+			return self.UserSetting().value("BasicInfo/DataDir")
 
 	def setDataList(self, data_list:list):
 		"""程序中对app设置，data文件列表（应该是DataDir下的文件，与load、save、backup相关）
@@ -287,8 +297,11 @@ class DTAPP(QApplication):
 
 		Args:
 			bool (bool, optional): Defaults to True.
-		"""		
-		self.__BackupEnable=bool
+		"""
+		if self.DataList()==None and bool==True:
+			raise("Please setDataList before setBackEnable.")
+		else:
+			self.__BackupEnable=bool
 	
 	def setBackupDst(self, dst:str):
 		"""设置面板中设置备份地址
@@ -298,33 +311,42 @@ class DTAPP(QApplication):
 		"""
 		if self.isBackupEnable():
 			if os.path.exists(dst):
-				self.__UserSetting.setValue("BasicInfo/BackupDst",Fernet_Encrypt(self.__password,dst))
+				if self.isLoginEnable():
+					self.UserSetting().setValue("BasicInfo/BackupDst",Fernet_Encrypt(self.password(),dst))
+				else:
+					self.UserSetting().setValue("BasicInfo/BackupDst",dst)
 			else:
 				DTFrame.DTMessageBox(None,"Error","Backup Dst does not exsit!",DTIcon.Error())
 		else:
 			raise("Please setBackupEnable before setBackupDst.")
 	
 	def BackupDst(self):
-		return Fernet_Decrypt(self.__password,self.__UserSetting.value("BasicInfo/BackupDst"))
+		if self.isLoginEnable():
+			return Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/BackupDst"))
+		else:
+			if self.UserSetting().value("BasicInfo/BackupDst")==None:
+				return False
+			else:
+				return self.UserSetting().value("BasicInfo/BackupDst")
 
 	def password(self):
 		return self.__password
 	
 	def setPassword(self, password):
 		self.__password=password
-		self.__UserSetting.setValue("BasicInfo/Password",Fernet_Encrypt(self.__password,self.__password))
+		self.UserSetting().setValue("BasicInfo/Password",Fernet_Encrypt(self.password(),self.password()))
 
 	def author(self):
-		return self.__UserSetting.value("MetaData/Author")
+		return self.UserSetting().value("MetaData/Author")
 
 	def setAuthor(self, author):
-		self.__UserSetting.setValue("MetaData/Author",author)
+		self.UserSetting().setValue("MetaData/Author",author)
 	
 	def contact(self):
-		return self.__UserSetting.value("MetaData/Contact")
+		return self.UserSetting().value("MetaData/Contact")
 
 	def setContact(self, contact):
-		self.__UserSetting.setValue("MetaData/Contact",contact)
+		self.UserSetting().setValue("MetaData/Contact",contact)
 	
 	def setMainSession(self, mainsession: DTSession.DTMainSession):
 		self.__mainsession=mainsession
@@ -342,13 +364,13 @@ class DTAPP(QApplication):
 		self.__mainsession.saveWindowStatus()
 		self.__mainsession.saveData()
 		self.exit()
-		if self.__LoginEnable==True:
+		if self.isLoginEnable()==True:
 			QProcess.startDetached(sys.executable, sys.argv+[str(Fernet_Encrypt("9961",self.password())), "9961"])
 		else:
 			QProcess.startDetached(sys.executable, sys.argv+["9961"])
 	
 	def __loginIn(self):
-		dlg=DTSession.DTLoginSession(self.__UserSetting.value("BasicInfo/Password"))
+		dlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
 		if dlg.exec_()==0:
 			self.quit()
 			sys.exit()
@@ -361,7 +383,7 @@ class DTAPP(QApplication):
 		
 		# Restart
 		if self.arguments()[-1]=="9961":
-			if self.__LoginEnable==True:
+			if self.isLoginEnable()==True:
 				# print("Args:",self.arguments())
 				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
 				# print("Restart Password:",self.password())
@@ -389,7 +411,7 @@ class DTAPP(QApplication):
 
 		# Restart
 		if self.arguments()[-1]=="9961":
-			if self.__LoginEnable==True:
+			if self.isLoginEnable()==True:
 				# print("Args:",self.arguments())
 				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
 				# print("Restart Password:",self.password())
@@ -402,7 +424,7 @@ class DTAPP(QApplication):
 		
 		# Normal
 		else:
-			if self.__LoginEnable==True:
+			if self.isLoginEnable()==True:
 				self.__loginIn()
 			
 			self.__mainsession.initialize()

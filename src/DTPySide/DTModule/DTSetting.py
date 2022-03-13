@@ -27,15 +27,24 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.lineEdit_password.hide()
 			self.label_password.hide()
 		
-		self.lineEdit_data_dir.setText(self.app.DataDir())
-
-		if self.app.isBackupEnable():
-			dst=self.app.BackupDst()
-			if dst==False:
-				self.lineEdit_backup.setText("")
+		if self.app.DataList()!=None:
+			self.lineEdit_data_dir.setText(self.app.DataDir())
+			
+			if self.app.isBackupEnable():
+				dst=self.app.BackupDst()
+				if dst==False:
+					self.lineEdit_backup.setText("")
+				else:
+					self.lineEdit_backup.setText(dst)
 			else:
-				self.lineEdit_backup.setText(dst)
+				self.label_backup.hide()
+				self.lineEdit_backup.hide()
+				self.pushButton_backup.hide()
+		
 		else:
+			self.lineEdit_data_dir.hide()
+			self.label_data_dir.hide()
+			self.pushButton_data_dir.hide()
 			self.label_backup.hide()
 			self.lineEdit_backup.hide()
 			self.pushButton_backup.hide()
