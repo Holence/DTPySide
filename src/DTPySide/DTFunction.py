@@ -26,8 +26,13 @@ def IconFromCurrentTheme(name):
 	return QIcon(":/icons/%s/%s"%(QIcon.themeName(),name))
 
 def Clear_Layout(layout):
-	for i in reversed(range(layout.count())): 
-		layout.takeAt(i).widget().deleteLater()
+	for i in reversed(range(layout.count())):
+		item=layout.itemAt(i)
+		if item.spacerItem():
+			layout.removeItem(item)
+			del item
+		else:
+			item.widget().deleteLater()
 
 def Font_Resize(font,resize_ratio):
 	new_font=QFont(font)

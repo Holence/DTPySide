@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.11
+
+- Bugs fixed
+
 ## 0.0.10
 
 - Bugs fixed

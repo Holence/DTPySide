@@ -169,8 +169,11 @@ class DTMainSession(DTFrame.DTMainWindow):
 	
 	def saveAllEncryptData(self):
 		"saveData或者UserSetting中有加密的保存项目就要放到这里（更改密码的时候会调用这个函数）"
-		pass
-	
+		if self.app.DataDir()!=None:
+			self.app.setDataDir(self.app.DataDir())
+		if self.app.isBackupEnable() and self.app.BackupDst()!=None:
+			self.app.setBackupDst(self.app.BackupDst())
+		
 	def backup(self):
 		# 可以implement这个函数，比如先保存一下
 
@@ -188,7 +191,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 					shutil.copyfile(os.path.join(self.data_dir,file),file_dst)
 		
 		backup_dst=self.app.BackupDst()
-		if backup_dst==False:
+		if backup_dst==None:
 			DTFrame.DTMessageBox(self,"Warning","Please set backup dst first!",DTIcon.Warning())
 		elif not os.path.exists(backup_dst):
 			DTFrame.DTMessageBox(self,"Warning","Backup Dst %s does not exsit!"%backup_dst,DTIcon.Warning())

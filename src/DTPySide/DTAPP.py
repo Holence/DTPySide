@@ -62,7 +62,7 @@ class DTAPP(QApplication):
 		self.setOrganizationDomain("dongliteahouse.wordpress.com")
 		self.setContact("Holence08@gmail.com")
 		
-		self.setDataList(None)
+		self.setDataList([])
 		self.setLoginEnable(False)
 		self.setBackupEnable(False)
 	
@@ -260,23 +260,22 @@ class DTAPP(QApplication):
 			except Exception as e:
 				DTFrame.DTMessageBox(None,"Error",e,DTIcon.Error())
 			
+			self.__data_dir=new_dir
 			if self.isLoginEnable():
-				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),new_dir))
+				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),self.__data_dir))
 			else:
-				self.UserSetting().setValue("BasicInfo/DataDir",new_dir)
+				self.UserSetting().setValue("BasicInfo/DataDir",self.__data_dir)
 		else:
 			DTFrame.DTMessageBox(None,"Error","Data Dir does not exsit!",DTIcon.Error())
 	
 	def DataDir(self):
-		if self.isLoginEnable():
-			if self.UserSetting().value("BasicInfo/DataDir")==None:
-				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),os.getcwd()))
-		
-			return Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/DataDir"))
-		else:
-			if self.UserSetting().value("BasicInfo/DataDir")==None:
-				self.UserSetting().setValue("BasicInfo/DataDir",os.getcwd())
-			return self.UserSetting().value("BasicInfo/DataDir")
+		if self.UserSetting().value("BasicInfo/DataDir")==None:
+			self.__data_dir=os.getcwd()
+			if self.isLoginEnable():
+				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),self.__data_dir))
+			else:
+				self.UserSetting().setValue("BasicInfo/DataDir",self.__data_dir)
+		return self.__data_dir
 
 	def setDataList(self, data_list:list):
 		"""程序中对app设置，data文件列表（应该是DataDir下的文件，与load、save、backup相关）
@@ -298,7 +297,7 @@ class DTAPP(QApplication):
 		Args:
 			bool (bool, optional): Defaults to True.
 		"""
-		if self.DataList()==None and bool==True:
+		if self.DataList()==[] and bool==True:
 			raise("Please setDataList before setBackEnable.")
 		else:
 			self.__BackupEnable=bool
@@ -311,23 +310,18 @@ class DTAPP(QApplication):
 		"""
 		if self.isBackupEnable():
 			if os.path.exists(dst):
+				self.__backup_dst=dst
 				if self.isLoginEnable():
-					self.UserSetting().setValue("BasicInfo/BackupDst",Fernet_Encrypt(self.password(),dst))
+					self.UserSetting().setValue("BasicInfo/BackupDst",Fernet_Encrypt(self.password(),self.__backup_dst))
 				else:
-					self.UserSetting().setValue("BasicInfo/BackupDst",dst)
+					self.UserSetting().setValue("BasicInfo/BackupDst",self.__backup_dst)
 			else:
 				DTFrame.DTMessageBox(None,"Error","Backup Dst does not exsit!",DTIcon.Error())
 		else:
 			raise("Please setBackupEnable before setBackupDst.")
 	
 	def BackupDst(self):
-		if self.isLoginEnable():
-			return Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/BackupDst"))
-		else:
-			if self.UserSetting().value("BasicInfo/BackupDst")==None:
-				return False
-			else:
-				return self.UserSetting().value("BasicInfo/BackupDst")
+		return self.__backup_dst
 
 	def password(self):
 		return self.__password
@@ -377,6 +371,18 @@ class DTAPP(QApplication):
 		else:
 			self.setPassword(dlg.input_password)
 	
+	def __loadEncryptedData(self):
+		if self.isLoginEnable():
+			self.__data_dir=Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/DataDir"))
+			if self.__data_dir==False:
+				self.__data_dir=None
+			self.__backup_dst=Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/BackupDst"))
+			if self.__backup_dst==False:
+				self.__backup_dst=None
+		else:
+			self.__data_dir=self.UserSetting().value("BasicInfo/DataDir")
+			self.__backup_dst=self.UserSetting().value("BasicInfo/BackupDst")
+			
 	def debugRun(self,password,loginEnable,show=True):
 		
 		self.setLoginEnable(loginEnable)
@@ -388,9 +394,11 @@ class DTAPP(QApplication):
 				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
 				# print("Restart Password:",self.password())
 
+			self.__loadEncryptedData()
+			
 			self.__mainsession.initialize()
 			self.__mainsession.show()
-			
+
 			self.initializeTrayIcon()
 			self.exec_()
 		
@@ -398,10 +406,12 @@ class DTAPP(QApplication):
 		else:
 			self.setPassword(password)
 
+			self.__loadEncryptedData()
+
 			self.__mainsession.initialize()
 			if show==True:
 				self.__mainsession.show()
-			
+
 			self.initializeTrayIcon()
 			self.exec_()
 
@@ -416,9 +426,11 @@ class DTAPP(QApplication):
 				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
 				# print("Restart Password:",self.password())
 
+			self.__loadEncryptedData()
+
 			self.__mainsession.initialize()
 			self.__mainsession.show()
-			
+
 			self.initializeTrayIcon()
 			self.exec_()
 		
@@ -427,10 +439,11 @@ class DTAPP(QApplication):
 			if self.isLoginEnable()==True:
 				self.__loginIn()
 			
+			self.__loadEncryptedData()
+			
 			self.__mainsession.initialize()
 			if show==True:
 				self.__mainsession.show()
 			
 			self.initializeTrayIcon()
-			
 			self.exec_()
