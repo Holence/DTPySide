@@ -54,7 +54,7 @@
       <number>32</number>
      </property>
      <property name="bottomMargin">
-      <number>25</number>
+      <number>10</number>
      </property>
     </layout>
    </item>

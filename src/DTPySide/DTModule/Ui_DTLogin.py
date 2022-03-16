@@ -18,11 +18,11 @@ class Ui_DTLogin(object):
     def setupUi(self, DTLogin):
         if not DTLogin.objectName():
             DTLogin.setObjectName(u"DTLogin")
-        DTLogin.resize(222, 38)
+        DTLogin.resize(221, 50)
         self.horizontalLayout = QHBoxLayout(DTLogin)
         self.horizontalLayout.setSpacing(7)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(6, 10, 0, 0)
+        self.horizontalLayout.setContentsMargins(6, 10, 0, 15)
         self.label_lock = QLabel(DTLogin)
         self.label_lock.setObjectName(u"label_lock")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)

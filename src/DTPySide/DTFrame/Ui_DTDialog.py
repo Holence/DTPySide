@@ -37,7 +37,7 @@ class Ui_DTDialog(object):
 
         self.centralWidget = QHBoxLayout()
         self.centralWidget.setObjectName(u"centralWidget")
-        self.centralWidget.setContentsMargins(9, 10, 32, 25)
+        self.centralWidget.setContentsMargins(9, 10, 32, 10)
 
         self.verticalLayout.addLayout(self.centralWidget)
 

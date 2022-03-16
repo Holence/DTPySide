@@ -38,7 +38,7 @@ class DTStyleSheet(str):
 		{{
 			color: {TEXT};
 			font-family: {font_family};
-			font-size: 18pt;
+			font-size: 16pt;
 			selection-background-color: {FOCUSED};
 			selection-color: {TEXT};
 		}}
@@ -306,7 +306,7 @@ class DTStyleSheet(str):
 			border: 1px solid transparent;
 			border-radius: 3px;
 			background-color: {SOFTDARK};
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 			min-height: 27px;
 		}}
@@ -331,7 +331,7 @@ class DTStyleSheet(str):
 		}}
 		
 		QToolButton {{
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 			height: 27px;
 		}}
@@ -385,7 +385,7 @@ class DTStyleSheet(str):
 
 		QRadioButton{{
 			background: transparent;
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 		}}
 		QRadioButton::indicator {{
@@ -402,7 +402,7 @@ class DTStyleSheet(str):
 		}}
 
 		QCheckBox{{
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 			background: transparent;
 		}}
@@ -460,7 +460,7 @@ class DTStyleSheet(str):
 		/* SpinBox DateTime */
 
 		QSpinBox, QDoubleSpinBox, QDateEdit, QTimeEdit, QDateTimeEdit{{
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			background-color: {SOFTDARK};
 			border-radius: 6px;
 			height: 36px;
@@ -620,7 +620,7 @@ class DTStyleSheet(str):
 			border: 1px solid transparent;
 		}}
 		QToolBox::tab {{
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 			background: {SOFTDARK};
 			border: 1px solid {DEEPDARK};
@@ -653,7 +653,7 @@ class DTStyleSheet(str):
 			left: 0px;
 		}}
 		QTabBar::tab {{
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 			background: {SOFTDARK};
 			border-color: transparent;
@@ -763,7 +763,7 @@ class DTStyleSheet(str):
 
 		/* header row */
 		QCalendarWidget QWidget {{
-			font-family: "微软雅黑";
+			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 			alternate-background-color: {SOFTDARK};
 		}}
