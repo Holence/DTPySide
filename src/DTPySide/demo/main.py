@@ -7,7 +7,7 @@ def run():
 	app=DTAPP(sys.argv)
 	
 	app.setAuthor("Holence")
-	app.setApplicationName("Dongli Teahouse PySide Demo")
+	app.setApplicationName("DTPySide Demo")
 	app.setLoginEnable(True)
 	app.loadTranslation()
 	mainsession=DemoMainSession(app)

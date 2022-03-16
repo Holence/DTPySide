@@ -28,9 +28,9 @@ class Ui_DTTitleBar(object):
         self.TitleBarFrame.setObjectName(u"TitleBarFrame")
         self.TitleBarFrame.setStyleSheet(u"")
         self.horizontalLayout_2 = QHBoxLayout(self.TitleBarFrame)
-        self.horizontalLayout_2.setSpacing(6)
+        self.horizontalLayout_2.setSpacing(4)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(8, 3, 8, 3)
+        self.horizontalLayout_2.setContentsMargins(9, 3, 9, 3)
         self.title_icon = QPushButton(self.TitleBarFrame)
         self.title_icon.setObjectName(u"title_icon")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -41,7 +41,6 @@ class Ui_DTTitleBar(object):
         self.title_icon.setMinimumSize(QSize(36, 36))
         self.title_icon.setMaximumSize(QSize(36, 36))
         self.title_icon.setStyleSheet(u"")
-        self.title_icon.setIconSize(QSize(36, 36))
 
         self.horizontalLayout_2.addWidget(self.title_icon)
 
@@ -105,7 +104,6 @@ class Ui_DTTitleBar(object):
 
     def retranslateUi(self, DTTitleBar):
         DTTitleBar.setWindowTitle(QCoreApplication.translate("DTTitleBar", u"DTTitleBar", None))
-        self.title_icon.setText("")
         self.label_titlebar.setText(QCoreApplication.translate("DTTitleBar", u"DT", None))
         self.btn_minimize.setText("")
         self.btn_maximize.setText("")

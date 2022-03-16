@@ -75,12 +75,93 @@ class DTAPP(QApplication):
 		
 		self.TrayIcon.show()
 
-	def initializeWindowStyle(self):
-		"""设置MainwWindow的Window Effect和Theme
+	def initializeWindowStyle(self, refresh=False):
+		"""生成color_list，并设置MainwWindow的Window Effect和Theme
 		"""
+
+		def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:float,contrast:float,reverse:bool):
+			hue_offset=new_hue-colour.Color(color_list[1]).get_hue()
+			sat_offset=new_saturation-0.5
+			lum_offset=new_luminance-0.5
+
+			if reverse:
+				color=colour.Color(color_list[-1])
+				r,g,b=color.get_rgb()
+				r=1-r
+				g=1-g
+				b=1-b
+				color=colour.Color()
+				color.set_rgb((r,g,b))
+				color_list[-1]=color.get_web()
+			
+			contrast=contrast-0.5
+			std_lum=max(min(colour.Color(color_list[1]).get_luminance()+lum_offset,1),0)
+
+			for i in range(len(color_list)):
+				color=colour.Color(color_list[i])
+				if new_hue!=-1:
+					color.set_hue((color.get_hue()+hue_offset)%360)
+				
+				if i>=len(color_list)-3:
+					new_saturation=max(min(color.get_saturation()+sat_offset*0.5,1),0)
+					new_luminance=max(min(color.get_luminance()+lum_offset*0.5,1),0)
+					new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast*0.5,1),0)
+				else:
+					new_saturation=max(min(color.get_saturation()+sat_offset,1),0)
+					new_luminance=max(min(color.get_luminance()+lum_offset,1),0)
+					new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast,1),0)
+				
+				color.set_saturation(new_saturation)
+				color.set_luminance(new_luminance)
+				
+				color_list[i]=color.get_web()
+			
+			return color_list
+
+		# DEEPDARK="#191A21" # Border和GroupBox、TitleBarFrame的Background
+		# BACKGROUND="#21222C" # background
+		# SOFTDARK="#282A36" # LineEdit、QPushButton的背景
+		# DIM="#404257" # disable的文字、Itemview的item的背景
+		# PRESSED = "#A67DB4" # Button Clicked 
+		# FOCUSED="#8C6BBB" # Button Hover、text selection
+		# TEXT="#E0E0E0" # 文字
+		# ICONCOLOR="white" # 部分icon的颜色（暂未适配ui文件中指派的icon）
 		
-		self.setStyleSheet(DTStyleSheet(self.Theme(), self.Hue(), self.Saturation(), self.Luminance(), self.Contrast(), self.Reverse(), self.WindowEffect(), self.Font()))
-	
+		white_or_black=["white","black"]
+		theme=self.Theme()
+		hue=self.Hue()
+		saturation=self.Saturation()
+		luminance=self.Luminance()
+		contrast=self.Contrast()
+		reverse=self.Reverse()
+
+		if theme=="Dracula":
+			self.color_list=["#191A21","#21222C","#282A36","#404257", "#A67DB4","#8C6BBB","#E0E0E0"]
+			QIcon.setThemeName(white_or_black[reverse])
+		elif theme=="Dracula2":
+			self.color_list=["#202329","#282C34","#313341","#404257","#D7AAE6","#BD93F9","#EBEBEB"]
+			QIcon.setThemeName(white_or_black[reverse])
+		elif theme=="Brown":
+			self.color_list=["#202020","#2A2A2A","#353535","#5c5c5c","#7AB6F3","#2A82DA","#FFFFFF"]
+			QIcon.setThemeName(white_or_black[reverse])
+		elif theme=="Green":
+			self.color_list=["#17241F","#294137","#3F6151","#5D796C","#C6CA8F","#A5AD79","#EEF1E0"]
+			QIcon.setThemeName(white_or_black[reverse])
+		elif theme=="Cyan":
+			self.color_list=["#1C242D","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED"]
+			QIcon.setThemeName(white_or_black[reverse])
+		elif theme=="White":
+			self.color_list=["#aaaaaa","#ffffff","#dddddd","#cccccc","#eeeeee","#dae3ea","#333333"]
+			QIcon.setThemeName(white_or_black[not reverse])
+		
+		if hue!=-1 or saturation!=0.5 or luminance!=0.5 or contrast!=0.5:
+			self.color_list=changeColor(self.color_list,hue,saturation,luminance,contrast,reverse)
+
+		self.setStyleSheet(DTStyleSheet(self.color_list, self.WindowEffect(), self.Font()))
+
+		if refresh==True:
+			self.__mainsession.refresh()
+
 	def hasTanslation(self):
 		return hasattr(self,"translation")
 

@@ -19,7 +19,7 @@ class Ui_DTDialog(object):
     def setupUi(self, DTDialog):
         if not DTDialog.objectName():
             DTDialog.setObjectName(u"DTDialog")
-        DTDialog.resize(433, 332)
+        DTDialog.resize(433, 314)
         DTDialog.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(DTDialog)
         self.verticalLayout.setSpacing(0)
@@ -37,7 +37,7 @@ class Ui_DTDialog(object):
 
         self.centralWidget = QHBoxLayout()
         self.centralWidget.setObjectName(u"centralWidget")
-        self.centralWidget.setContentsMargins(8, 10, 32, 25)
+        self.centralWidget.setContentsMargins(9, 10, 32, 25)
 
         self.verticalLayout.addLayout(self.centralWidget)
 

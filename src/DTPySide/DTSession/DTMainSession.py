@@ -107,7 +107,10 @@ class DTMainSession(DTFrame.DTMainWindow):
 		self._MainMenu.addAction(self.actionBoss_Key)
 		self._MainMenu.addAction(self.actionExit)
 		
-	
+	def refresh(self):
+		""""改变颜色后，可能有些依赖于app.color_list的颜色要更新，在这里添加对所有窗体的刷新操作"
+		"""
+		pass
 	
 	def windowResurrection(self,reason):
 		"双击TrayIcon还原主窗体"
@@ -210,7 +213,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 			about_text+="%s: %s\n"%(key,self.UserSetting().value(key))
 		self.UserSetting().endGroup()
 
-		DTFrame.DTMessageBox(self,"About",about_text[:-1])
+		DTFrame.DTMessageBox(self,"About",about_text[:-1],icon=DTIcon.Holo01())
 	
 	def setting(self):
 		"请在继承的DTSettingSession中做到实时保存设定"

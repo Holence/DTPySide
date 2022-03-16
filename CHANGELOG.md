@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0
+
+- Ui improved
+- DTApp now contains color_list
+
 ## 0.0.11
 
 - Bugs fixed

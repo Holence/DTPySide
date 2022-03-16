@@ -274,29 +274,29 @@ class DTSetting(Ui_DTSetting,QWidget):
 		self.app.setSaturation(float(self.slider_saturation.value()/self.slider_saturation.maximum()))
 		self.app.setLuminance(float(self.slider_luminance.value()/self.slider_luminance.maximum()))
 		self.app.setContrast(float(self.slider_contrast.value()/self.slider_contrast.maximum()))
-		self.app.initializeWindowStyle()
+		self.app.initializeWindowStyle(refresh=True)
 
 	def HueReset(self):
 		self.app.setHue(-1)
 		self.slider_Hue.setValue(0)
-		self.app.initializeWindowStyle()
+		self.app.initializeWindowStyle(refresh=True)
 		self.updateColorPreview()
 		self.updateSaturationSlider()
 	
 	def SaturationReset(self):
 		self.app.setSaturation(0.5)
 		self.slider_saturation.setValue(int(self.slider_saturation.maximum()/2))
-		self.app.initializeWindowStyle()
+		self.app.initializeWindowStyle(refresh=True)
 	
 	def LuminanceReset(self):
 		self.app.setLuminance(0.5)
 		self.slider_luminance.setValue(int(self.slider_luminance.maximum()/2))
-		self.app.initializeWindowStyle()
+		self.app.initializeWindowStyle(refresh=True)
 	
 	def ContrastReset(self):
 		self.app.setContrast(0.5)
 		self.slider_contrast.setValue(int(self.slider_contrast.maximum()/2))
-		self.app.initializeWindowStyle()
+		self.app.initializeWindowStyle(refresh=True)
 
 	def ReverseSetting(self):
 		dlg=DTFrame.DTConfirmBox(self,"Warning","You want to change text and icon from dark to light (or from light to dark)?\n\nApp will restart after the change.")

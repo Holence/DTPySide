@@ -17,6 +17,7 @@ class DTMessageBox(DTDialog):
 		self.setCentralWidget(self.module)
 
 		self.module.label_text.setText(text)
+		# self.module.label_text.setOpenExternalLinks(True)
 
 		if detail=="":
 			self.module.textBrowser.hide()
@@ -31,8 +32,8 @@ class DTMessageBox(DTDialog):
 			icon_pic=icon.pixmap(QSize(64,64))
 			self.module.label_icon.setPixmap(icon_pic)
 		else:
-			self.module.label_icon.setVisible(False)
-			self.module.horizontalLayout.setContentsMargins(45,10,0,5)
+			self.module.label_icon.hide()
+			self.module.horizontalLayout.setContentsMargins(30,10,0,5)
 
 		self.adjustSize()
 		self.exec_()

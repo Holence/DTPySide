@@ -22,7 +22,7 @@ class Ui_DTLogin(object):
         self.horizontalLayout = QHBoxLayout(DTLogin)
         self.horizontalLayout.setSpacing(7)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(7, 10, 0, 0)
+        self.horizontalLayout.setContentsMargins(6, 10, 0, 0)
         self.label_lock = QLabel(DTLogin)
         self.label_lock.setObjectName(u"label_lock")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)

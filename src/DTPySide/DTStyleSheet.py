@@ -1,84 +1,14 @@
 from __future__ import annotations
 from DTPySide import *
 
-def changeColor(color_list,new_hue:float,new_saturation:float,new_luminance:float,contrast:float,reverse:bool):
-	hue_offset=new_hue-colour.Color(color_list[1]).get_hue()
-	sat_offset=new_saturation-0.5
-	lum_offset=new_luminance-0.5
-
-	if reverse:
-		color=colour.Color(color_list[-1])
-		r,g,b=color.get_rgb()
-		r=1-r
-		g=1-g
-		b=1-b
-		color=colour.Color()
-		color.set_rgb((r,g,b))
-		color_list[-1]=color.get_web()
-	
-	contrast=contrast-0.5
-	std_lum=max(min(colour.Color(color_list[1]).get_luminance()+lum_offset,1),0)
-
-	for i in range(len(color_list)):
-		color=colour.Color(color_list[i])
-		if new_hue!=-1:
-			color.set_hue((color.get_hue()+hue_offset)%360)
-		
-		if i>=len(color_list)-3:
-			new_saturation=max(min(color.get_saturation()+sat_offset*0.5,1),0)
-			new_luminance=max(min(color.get_luminance()+lum_offset*0.5,1),0)
-			new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast*0.5,1),0)
-		else:
-			new_saturation=max(min(color.get_saturation()+sat_offset,1),0)
-			new_luminance=max(min(color.get_luminance()+lum_offset,1),0)
-			new_luminance=max(min(new_luminance+(new_luminance-std_lum)*contrast,1),0)
-		
-		color.set_saturation(new_saturation)
-		color.set_luminance(new_luminance)
-		
-		color_list[i]=color.get_web()
-	
-	
-	return color_list
-
 class DTStyleSheet(str):
-	def __new__(cls,theme:str, hue:float, saturation:float, luminance:float, contrast:float, reverse:bool, window_effect:str, font:QFont):
+	def __new__(cls, color_list, window_effect:str, font:QFont):
 		
 		# font_size=18
 		font_family=font.family()
-		
-		# DEEPDARK="#191A21" # Border和GroupBox、TitleBarFrame的Background
-		# BACKGROUND="#21222C" # background
-		# SOFTDARK="#282A36" # LineEdit、QPushButton的背景
-		# DIM="#404257" # disable的文字、Itemview的item的背景
-		# PRESSED = "#A67DB4" # Button Clicked 
-		# FOCUSED="#8C6BBB" # Button Hover、text selection
-		# TEXT="#E0E0E0" # 文字
-		# ICONCOLOR="white" # 部分icon的颜色（暂未适配ui文件中指派的icon）
-		
-		white_or_black=["white","black"]
-		if theme=="Dracula":
-			color_list=["#191A21","#21222C","#282A36","#404257", "#A67DB4","#8C6BBB","#E0E0E0"]
-			QIcon.setThemeName(white_or_black[reverse])
-		elif theme=="Dracula2":
-			color_list=["#202329","#282C34","#313341","#404257","#D7AAE6","#BD93F9","#EBEBEB"]
-			QIcon.setThemeName(white_or_black[reverse])
-		elif theme=="Brown":
-			color_list=["#232323","#2A2A2A","#353535","#5c5c5c","#7AB6F3","#2A82DA","#FFFFFF"]
-			QIcon.setThemeName(white_or_black[reverse])
-		elif theme=="Green":
-			color_list=["#17241F","#294137","#3F6151","#5D796C","#C6CA8F","#A5AD79","#EEF1E0"]
-			QIcon.setThemeName(white_or_black[reverse])
-		elif theme=="Cyan":
-			color_list=["#212A35","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED"]
-			QIcon.setThemeName(white_or_black[reverse])
-		elif theme=="White":
-			color_list=["#aaaaaa","#ffffff","#dddddd","#cccccc","#eeeeee","#dae3ea","#333333"]
-			QIcon.setThemeName(white_or_black[not reverse])
-		
-		if hue!=-1 or saturation!=0.5 or luminance!=0.5 or contrast!=0.5:
-			color_list=changeColor(color_list,hue,saturation,luminance,contrast,reverse)
+
 		DEEPDARK,BACKGROUND,SOFTDARK,DIM,PRESSED,FOCUSED,TEXT=color_list
+		
 		ICONCOLOR=QIcon.themeName()
 
 		stylesheet=""
@@ -132,16 +62,31 @@ class DTStyleSheet(str):
 			font-family: "微软雅黑";
 			font-size: 9pt;
 		}}
-		/* TitleBar */
 
-		DTLogin QLineEdit {{
+		/* Login */
+		DTLoginSession QLineEdit {{
 			font-size: 12pt;
 		}}
-		
-		DTTitleBar QLabel {{
+
+		DTLoginSession DTTitleBar QLabel {{
 			font-family: "Segoe UI";
 			font-size: 20pt;
 		}}
+
+		DTLoginSession DTTitleBar #title_icon{{
+			icon-size: 36px;
+			max-height: 36px;
+			min-height: 36px;
+			min-width: 36px;
+			max-width: 36px;
+		}}
+		
+		/* TitleBar */
+		DTTitleBar QLabel {{
+			font-family: "Segoe UI";
+			font-size: 20px;
+		}}
+		
 		DTTitleBar QPushButton {{
 			border: none;
 			background-color: transparent;
@@ -163,11 +108,11 @@ class DTStyleSheet(str):
 		}}
 
 		DTTitleBar #title_icon{{
-			icon-size: 36px;
-			max-height: 36px;
-			min-height: 36px;
-			min-width: 36px;
-			max-width: 36px;
+			icon-size: 26px;
+			max-height: 26px;
+			min-height: 26px;
+			min-width: 26px;
+			max-width: 26px;
 		}}
 		DTTitleBar #title_icon:hover{{
 			background-color: transparent;
@@ -331,13 +276,13 @@ class DTStyleSheet(str):
 		
 		QLineEdit {{
 			background: {SOFTDARK};
-			border: 1px solid {DEEPDARK};
 			border-radius: 6px;
 			height: 36px;
 		}}
 
 
 		QLineEdit:focus{{
+			border: 1px solid;
 			border-color: {FOCUSED};
 		}}
 
@@ -345,23 +290,20 @@ class DTStyleSheet(str):
 			color: {DIM};
 		}}
 
-		QTextEdit, QPlainTextEdit{{
+		QTextEdit, QPlainTextEdit, QTextBrowser{{
+			border-radius: 6px;
 			background-color: {SOFTDARK};
-			border: 1px solid {DEEPDARK};
 		}}
-		QTextEdit:focus, QPlainTextEdit:focus{{
+		QTextEdit:focus, QPlainTextEdit:focus, QTextBrowser:focus{{
+			border: 1px solid;
 			border-color: {FOCUSED};
-		}}
-
-		QTextBrowser:focus{{
-			border-color: {DEEPDARK};
 		}}
 
 		/* Button */
 
 
 		QPushButton {{
-			border: 1px solid {DEEPDARK};
+			border: 1px solid transparent;
 			border-radius: 3px;
 			background-color: {SOFTDARK};
 			font-family: "微软雅黑";
@@ -371,14 +313,13 @@ class DTStyleSheet(str):
 
 		QPushButton:hover{{
 			background-color: {FOCUSED};
-			border-color: {DEEPDARK};
+			border-color: {FOCUSED};
 		}}
 
 		QPushButton:pressed
 		{{
-			border-width: 1px;
 			background-color: {PRESSED};
-			border-color: {DEEPDARK};
+			border-color: {FOCUSED};
 		}}
 
 		QPushButton:focus, QPushButton:default {{
@@ -488,19 +429,19 @@ class DTStyleSheet(str):
 
 		QComboBox{{
 			background-color: {SOFTDARK};
-			border: 1px solid {DEEPDARK};
 			border-radius: 6px;
 			height: 36px;
 		}}
 		QComboBox:focus{{
-			border-color: {DEEPDARK};
+			border: 1px solid;
+			border-color: {FOCUSED};
 		}}
 		QComboBox QAbstractItemView{{
 			background-color: {DEEPDARK};
 		}}
 		QComboBox::drop-down{{
 			background-color: {SOFTDARK};
-			border: 1px solid {DEEPDARK};
+			border: 1px solid transparent;
 			border-top-right-radius: 6px;
 			border-bottom-right-radius: 6px;
 			subcontrol-origin: padding;
@@ -533,7 +474,7 @@ class DTStyleSheet(str):
 			subcontrol-origin: border;
 			subcontrol-position: top right;
 			width: 18px;
-			border: 1px solid {DEEPDARK};
+			border: 2px ridge transparent;
 			border-top-right-radius: 6px;
 			margin-top: 1px;
 			margin-right: 1px;
@@ -550,7 +491,7 @@ class DTStyleSheet(str):
 			subcontrol-origin: border;
 			subcontrol-position: bottom right;
 			width: 18px;
-			border: 1px solid {DEEPDARK};
+			border: 2px ridge transparent;
 			border-bottom-right-radius: 6px;
 			margin-bottom: 1px;
 			margin-right: 1px;
@@ -568,12 +509,12 @@ class DTStyleSheet(str):
 
 		QProgressBar {{
 			background-color: {SOFTDARK};
-			border: 1px solid {DEEPDARK};
-			border-radius: 4px;
+			border-radius: 6px;
 			text-align: center;
 		}}
 
 		QProgressBar::chunk {{
+			border-radius: 6px;
 			background-color: {FOCUSED};
 		}}
 
@@ -664,7 +605,7 @@ class DTStyleSheet(str):
 
 		QGroupBox {{
 			background-color: {DEEPDARK};
-			border: 1px solid {DEEPDARK};
+			border: 1px solid transparent;
 			border-radius: 4px;
 			margin-top:1em;
 		}}
@@ -676,7 +617,7 @@ class DTStyleSheet(str):
 		/* ToolBox */
 
 		QToolBox{{
-			border: 1px solid {DEEPDARK};
+			border: 1px solid transparent;
 		}}
 		QToolBox::tab {{
 			font-family: "微软雅黑";
@@ -705,7 +646,8 @@ class DTStyleSheet(str):
 			margin-top:10px;
 		}}
 		QTabWidget::pane{{
-			border: 1px solid {DEEPDARK};
+			margin-top:5px;
+			border: none;
 		}}
 		QTabWidget::tab-bar {{
 			left: 0px;
@@ -714,34 +656,24 @@ class DTStyleSheet(str):
 			font-family: "微软雅黑";
 			font-size: 12pt;
 			background: {SOFTDARK};
-			border: 1px solid {DEEPDARK};
+			border-color: transparent;
+			border-radius: 4px;
+			left: -8px;
+			margin-left: 8px;
 		}}
 		QTabBar::tab:hover {{
 			background: {FOCUSED};
-			border-color: transparent;
 		}}
 		QTabBar::tab:selected {{
 			background: {FOCUSED};
-			border-color: {DEEPDARK};
 		}}
 		QTabBar::tab:pressed {{
 			background: {PRESSED};
-			border-color: transparent;
 		}}
-		QTabBar::tab:focus {{
-			border-color: {DEEPDARK};
-		}}
-		QTabBar::tab:top{{
-			border-bottom: transparent;
-		}}
-		QTabBar::tab:bottom{{
-			border-top: transparent;
-		}}
-		QTabBar::tab:left{{
-			border-right: transparent;
-		}}
-		QTabBar::tab:right{{
-			border-left: transparent;
+		
+		/*别显示左右的按钮了，滚轮滚就行了*/
+		QTabBar::scroller {{
+			width: 0px;
 		}}
 
 
@@ -755,7 +687,6 @@ class DTStyleSheet(str):
 		
 		QHeaderView {{
 			border: none;
-
 		}}
 		QHeaderView::section, QTableCornerButton::section {{
 			/*设置表头属性*/ /*表格左上角小框框*/
@@ -781,7 +712,8 @@ class DTStyleSheet(str):
 		QTableWidget, QTableView
 		{{
 			gridline-color: {DEEPDARK}; /*表格中的网格线条颜色*/
-			border:1px solid {DEEPDARK}; /*边框线的宽度、颜色*/
+			border-color: transparent; /*边框线的宽度、颜色*/
+			border-radius: 6px;
 		}}
 		
 
@@ -791,7 +723,8 @@ class DTStyleSheet(str):
 		}}
 
 		QListView, QTreeView, QTableView {{
-			border:1px solid {DEEPDARK};
+			border-color: transparent; /*边框线的宽度、颜色*/
+			border-radius: 6px;
 		}}
 		
 
