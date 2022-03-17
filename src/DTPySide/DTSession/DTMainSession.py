@@ -64,7 +64,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 			self.resize(self.UserSetting().value("WindowStatus/Size"))
 			self.move(self.UserSetting().value("WindowStatus/Pos"))
 		except:
-			pass
+			self.resize(self.minimumWidth(),self.minimumHeight())
 	
 	def initializeSignal(self):
 		"""主窗体的action向function链接
