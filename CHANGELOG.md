@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0a2
+
+- Ui improved
+
 ## 0.1.0a1
 
 - Ui improved

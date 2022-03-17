@@ -38,7 +38,7 @@ class DTStyleSheet(str):
 		{{
 			color: {TEXT};
 			font-family: {font_family};
-			font-size: 16pt;
+			font-size: 14pt;
 			selection-background-color: {FOCUSED};
 			selection-color: {TEXT};
 		}}
@@ -180,12 +180,14 @@ class DTStyleSheet(str):
 		/* MenuBar Menu */
 		QMenuBar {{
 			background-color: {BACKGROUND};
+			font-size: 10pt;
 			spacing: 1px;
 			border-bottom: 1px solid {DEEPDARK};
 		}}
 
 		QMenuBar::item{{
 			background: transparent;
+			font-size: 10pt;
 			padding: 1px 8px;
 		}}
 
@@ -202,7 +204,7 @@ class DTStyleSheet(str):
 
 		QMenu {{
 			font-family: "微软雅黑";
-			font-size: 12pt;
+			font-size: 10pt;
 			background-color: {BACKGROUND};
 			border: 1px solid {DEEPDARK};
 			margin: 1px;
@@ -211,7 +213,7 @@ class DTStyleSheet(str):
 
 		QMenu::item{{
 			font-family: "微软雅黑";
-			font-size: 12pt;
+			font-size: 10pt;
 			padding: 2px 25px 2px 15px;
 			border: 1px solid transparent;
 			margin: 1px;
@@ -276,6 +278,7 @@ class DTStyleSheet(str):
 		
 		QLineEdit {{
 			background: {SOFTDARK};
+			font-size: 12pt;
 			border-radius: 6px;
 			height: 36px;
 		}}
@@ -292,6 +295,7 @@ class DTStyleSheet(str):
 
 		QTextEdit, QPlainTextEdit, QTextBrowser{{
 			border-radius: 6px;
+			font-size: 14pt;
 			background-color: {SOFTDARK};
 		}}
 		QTextEdit:focus, QPlainTextEdit:focus, QTextBrowser:focus{{
@@ -430,6 +434,7 @@ class DTStyleSheet(str):
 		QComboBox{{
 			background-color: {SOFTDARK};
 			border-radius: 6px;
+			font-size: 12pt;
 			height: 36px;
 		}}
 		QComboBox:focus{{
@@ -462,6 +467,7 @@ class DTStyleSheet(str):
 		QSpinBox, QDoubleSpinBox, QDateEdit, QTimeEdit, QDateTimeEdit{{
 			font-family: {font_family}; /*"微软雅黑";*/
 			background-color: {SOFTDARK};
+			font-size: 12pt;
 			border-radius: 6px;
 			height: 36px;
 		}}
@@ -687,6 +693,7 @@ class DTStyleSheet(str):
 		
 		QHeaderView {{
 			border: none;
+			font-size: 10pt;
 		}}
 		QHeaderView::section, QTableCornerButton::section {{
 			/*设置表头属性*/ /*表格左上角小框框*/
@@ -711,6 +718,7 @@ class DTStyleSheet(str):
 
 		QTableWidget, QTableView
 		{{
+			font-size: 12pt;
 			gridline-color: {DEEPDARK}; /*表格中的网格线条颜色*/
 			border-color: transparent; /*边框线的宽度、颜色*/
 			border-radius: 6px;
@@ -723,12 +731,14 @@ class DTStyleSheet(str):
 		}}
 
 		QListView, QTreeView, QTableView {{
+			font-size: 12pt;
 			border-color: transparent; /*边框线的宽度、颜色*/
 			border-radius: 6px;
 		}}
 		
 
 		QListView::item, QTreeView::item, QTableView::item{{
+			font-size: 12pt;
 			background: {DIM};
 			outline-style: none;
 			border-left: 2px solid {PRESSED};

@@ -289,6 +289,7 @@ class WidgetGallery(QWidget):
 
         self._systeminfo_textbrowser = QTextBrowser()
         init_widget(self._systeminfo_textbrowser, "systemInfoTextBrowser")
+        self.update_systeminfo()
 
         result.addItem(embed_into_hbox_layout(text_edit), "Text Edit")
         result.addItem(embed_into_hbox_layout(plain_textedit),
