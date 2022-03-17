@@ -245,9 +245,9 @@ class DTStyleSheet(str):
 		}}
 		QMenu::icon:checked {{ /* appearance of a 'checked' icon */
 			background: {FOCUSED};
-			border: 1px inset {DEEPDARK};
+			border-color: transparent;
 			border-radius: 3px;
-			padding: 2px;
+			
 		}}
 
 
