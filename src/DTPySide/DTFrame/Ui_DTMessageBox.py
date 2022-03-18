@@ -22,7 +22,7 @@ class Ui_DTMessageBox(object):
         self.horizontalLayout = QHBoxLayout(DTMessageBox)
         self.horizontalLayout.setSpacing(10)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(34, 10, 0, 5)
+        self.horizontalLayout.setContentsMargins(0, 10, 0, 0)
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")

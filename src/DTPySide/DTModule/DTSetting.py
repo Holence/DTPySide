@@ -51,7 +51,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 
 		# font
 		self.pushButton_font.setText(self.app.Font().key().split(",")[0])
-		self.pushButton_font.setStyleSheet("font-family:%s"%self.app.Font().key().split(",")[0])
+		self.pushButton_font.setStyleSheet("font-family:%s; min-height:26px; max-height:26px;"%self.app.Font().key().split(",")[0])
 
 		# scale
 		self.spinBox_scale.setValue(self.app.Scale())

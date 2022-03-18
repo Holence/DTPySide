@@ -45,7 +45,7 @@
    <item>
     <layout class="QHBoxLayout" name="centralWidget">
      <property name="leftMargin">
-      <number>9</number>
+      <number>41</number>
      </property>
      <property name="topMargin">
       <number>10</number>
@@ -54,7 +54,7 @@
       <number>32</number>
      </property>
      <property name="bottomMargin">
-      <number>10</number>
+      <number>15</number>
      </property>
     </layout>
    </item>

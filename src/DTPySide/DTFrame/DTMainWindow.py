@@ -86,7 +86,8 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 
 	def windowShowNormal(self):
 		self.showNormal()
-		self.setGeometry(self.x(),self.y(),1200,900)
+		self.resize(self.minimumWidth(),self.minimumHeight())
+		MoveToCenterOfScreen(self)
 
 	def windowToggleStayonTop(self):
 		"切换主窗体的置顶与否"

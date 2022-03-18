@@ -6,9 +6,9 @@ class DTLoginSession(DTFrame.DTDialog):
 	def __init__(self,locked_password,title="Login"):
 		super().__init__(None,title)
 		self.__LoginModule=DTModule.DTLogin(self)
+		self.centralWidget.setContentsMargins(QMargins(9,10,32,10))
 		self.setCentralWidget(self.__LoginModule)
 		self.setWindowTitle(title)
-
 		self.buttonBox.button(QDialogButtonBox.Ok).setDefault(True)
 
 		# 获取UserSetting.ini中的加密密码

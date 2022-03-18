@@ -158,14 +158,15 @@ class DTStyleSheet(str):
 
 		QSplitter::handle{{
 			border: 1px solid transparent;
-			border-radius: 7px;
+			margin: 2px;
+			border-radius: 6px;
 		}}
 		QSplitter::handle:horizontal{{
-			width: 12px;
+			width: 6px;
 			image: url(:/icons/{ICONCOLOR}/more-vertical.svg);
 		}}
 		QSplitter::handle:vertical{{
-			height: 12px;
+			height: 6px;
 			image: url(:/icons/{ICONCOLOR}/more-horizontal.svg);
 		}}
 		QSplitter::handle:hover{{
@@ -206,7 +207,6 @@ class DTStyleSheet(str):
 			font-family: "微软雅黑";
 			font-size: 10pt;
 			background-color: {BACKGROUND};
-			border: 1px solid {DEEPDARK};
 			margin: 1px;
 			padding: 1px;
 		}}
@@ -245,9 +245,9 @@ class DTStyleSheet(str):
 		}}
 		QMenu::icon:checked {{ /* appearance of a 'checked' icon */
 			background: {FOCUSED};
-			border-color: transparent;
+			border: 1px inset {DEEPDARK};
 			border-radius: 3px;
-			
+			padding: 2px;
 		}}
 
 
@@ -265,7 +265,6 @@ class DTStyleSheet(str):
 
 		QLabel {{
 			background: transparent;
-			border: 1px solid transparent;
 		}}
 
 		QToolTip {{
@@ -280,7 +279,7 @@ class DTStyleSheet(str):
 			background: {SOFTDARK};
 			font-size: 12pt;
 			border-radius: 6px;
-			height: 36px;
+			height: 26px;
 		}}
 
 
@@ -312,7 +311,7 @@ class DTStyleSheet(str):
 			background-color: {SOFTDARK};
 			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
-			min-height: 27px;
+			min-height: 26px;
 		}}
 
 		QPushButton:hover{{
@@ -435,7 +434,7 @@ class DTStyleSheet(str):
 			background-color: {SOFTDARK};
 			border-radius: 6px;
 			font-size: 12pt;
-			height: 36px;
+			height: 26px;
 		}}
 		QComboBox:focus{{
 			border: 1px solid;
@@ -469,7 +468,7 @@ class DTStyleSheet(str):
 			background-color: {SOFTDARK};
 			font-size: 12pt;
 			border-radius: 6px;
-			height: 36px;
+			height: 26px;
 		}}
 		QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus, QTimeEdit:focus, QDateTimeEdit:focus{{
 			border: 1px solid {FOCUSED};
@@ -629,8 +628,9 @@ class DTStyleSheet(str):
 			font-family: {font_family}; /*"微软雅黑";*/
 			font-size: 12pt;
 			background: {SOFTDARK};
-			border: 1px solid {DEEPDARK};
-			border-radius: 1px;
+			border-color: transparent;
+			border-radius: 6px;
+			padding-left: 4px;
 		}}
 		QToolBox::tab:hover {{
 			background-color: {FOCUSED};

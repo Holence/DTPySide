@@ -8,11 +8,15 @@ class DTSettingSession(DTFrame.DTDialog):
 		
 		# 不要按钮了，实时保存设置
 		self.buttonBox.hide()
-		self.centralWidget.setContentsMargins(QMargins(10,10,32,0))
+		self.centralWidget.setContentsMargins(QMargins(9,10,32,10))
 		self.buttonBoxLayout.setContentsMargins(QMargins(0,0,32,0))
 		
 		self.__SettingModule=DTModule.DTSetting(Headquarter, app)
 		self.setCentralWidget(self.__SettingModule)
+
+		self.resize(self.minimumWidth(),self.minimumHeight())
+		self.adjustSize()
+		MoveToCenterOfScreen(self)
 
 		self.setStyleSheet("QStackedWidget QPushButton{ min-height:36px }")
 	

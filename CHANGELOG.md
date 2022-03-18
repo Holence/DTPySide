@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Ui improved
+- README updated
+
 ## 0.1.0a2
 
 - Ui improved

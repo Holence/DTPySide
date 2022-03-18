@@ -6,5 +6,5 @@ class DemoMainSession2(DTFrame.DTMainWindow):
         super().__init__(Headquarter.app)
         self.CentralWidget=DemoCentralWidget2(Headquarter)
         self.setCentralWidget(self.CentralWidget)
-        self.setGeometry(Headquarter.x()+50,Headquarter.y()+50,Headquarter.width()-100,Headquarter.height()-100)
+        MoveToCenterOfScreen(self)
         self.setWindowTitle("Demo Window 2")

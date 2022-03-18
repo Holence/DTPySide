@@ -36,6 +36,8 @@ class DTMessageBox(DTDialog):
 			self.module.horizontalLayout.setContentsMargins(30,10,0,5)
 
 		self.adjustSize()
+		MoveToCenterOfScreen(self)
+
 		self.exec_()
 
 class DTConfirmBox(DTDialog):
@@ -43,7 +45,7 @@ class DTConfirmBox(DTDialog):
 		super().__init__(parent, title)
 		self.module=MessageModule(self)
 		self.setCentralWidget(self.module)
-		
+
 		self.module.label_text.setText(text)
 
 		if detail=="":
@@ -60,3 +62,4 @@ class DTConfirmBox(DTDialog):
 			self.module.horizontalLayout.setContentsMargins(45,10,0,5)
 
 		self.adjustSize()
+		MoveToCenterOfScreen(self)

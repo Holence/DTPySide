@@ -10,6 +10,9 @@ class DTTree(QTreeWidget):
 
 		self.setExpandsOnDoubleClick(False)
 
+		self.horizontalScrollBar().setVisible(False)
+		
+		self.header().setStretchLastSection(True)
 		self.header().setDefaultSectionSize(80)
 		self.header().setMinimumSectionSize(80)
 

@@ -31,6 +31,7 @@ class DTDialog(Ui_DTDialog,QDialog):
 		self.setDefaultButton(QDialogButtonBox.Ok)
 		
 		self.adjustSize()
+		MoveToCenterOfScreen(self)
 
 	def setCentralWidget(self, widget):
 		self.centralWidget.addWidget(widget)

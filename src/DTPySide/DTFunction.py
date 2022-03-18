@@ -22,6 +22,11 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import colour
 
+def MoveToCenterOfScreen(widget:QWidget):
+	"""在initializeWindow中，setCentralWidget之后调用
+	"""
+	widget.move((win32api.GetSystemMetrics(0)-widget.width())//2,(win32api.GetSystemMetrics(1)-widget.height())//2)
+
 def IconFromCurrentTheme(name):
 	return QIcon(":/icons/%s/%s"%(QIcon.themeName(),name))
 

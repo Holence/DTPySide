@@ -95,118 +95,20 @@
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <item row="9" column="1">
-            <widget class="DTApplyButton" name="pushButton_scale">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="14" column="1">
-            <layout class="QVBoxLayout" name="verticalLayout_color">
-             <property name="spacing">
-              <number>6</number>
-             </property>
-             <item>
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_color_preview">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>36</width>
-                 <height>36</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>36</width>
-                 <height>36</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="DTApplyButton" name="pushButton_color">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="7" column="0">
-            <widget class="QPushButton" name="pushButton_font">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="12" column="0">
-            <widget class="QLabel" name="label_theme">
-             <property name="text">
-              <string>Theme</string>
-             </property>
-            </widget>
-           </item>
-           <item row="19" column="1">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>258</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="1" column="0">
             <widget class="QLineEdit" name="lineEdit_password"/>
            </item>
-           <item row="16" column="0">
-            <widget class="LazyCombobox" name="comboBox_language">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_font">
+             <property name="text">
+              <string>Font (font-size is fixed)</string>
              </property>
             </widget>
            </item>
-           <item row="13" column="0">
-            <widget class="LazyCombobox" name="comboBox_theme">
+           <item row="5" column="1">
+            <widget class="DTApplyButton" name="pushButton_backup">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -356,22 +258,6 @@
                </property>
               </spacer>
              </item>
-             <item row="0" column="0">
-              <spacer name="horizontalSpacer_5">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
              <item row="5" column="1" colspan="3">
               <widget class="QSlider" name="slider_luminance">
                <property name="maximum">
@@ -421,8 +307,15 @@
              </item>
             </layout>
            </item>
-           <item row="5" column="1">
-            <widget class="DTApplyButton" name="pushButton_backup">
+           <item row="3" column="0">
+            <widget class="QLineEdit" name="lineEdit_data_dir">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="DTApplyButton" name="pushButton_data_dir">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -431,10 +324,20 @@
              </property>
             </widget>
            </item>
-           <item row="17" column="0">
-            <widget class="QLabel" name="label_country">
-             <property name="text">
-              <string>Country</string>
+           <item row="16" column="0">
+            <widget class="LazyCombobox" name="comboBox_language">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLineEdit" name="lineEdit_backup">
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -452,13 +355,6 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_backup">
-             <property name="text">
-              <string>Backup Dst</string>
-             </property>
-            </widget>
-           </item>
            <item row="15" column="0">
             <widget class="QLabel" name="label_language">
              <property name="text">
@@ -466,10 +362,10 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
-            <widget class="QLineEdit" name="lineEdit_backup">
-             <property name="readOnly">
-              <bool>true</bool>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_data_dir">
+             <property name="text">
+              <string>Data Dir</string>
              </property>
             </widget>
            </item>
@@ -480,29 +376,6 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_font">
-             <property name="text">
-              <string>Font (font-size is fixed)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="0">
-            <widget class="QDoubleSpinBox" name="spinBox_scale">
-             <property name="decimals">
-              <number>1</number>
-             </property>
-             <property name="minimum">
-              <double>1.000000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>10.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.100000000000000</double>
              </property>
             </widget>
            </item>
@@ -531,6 +404,26 @@
              </item>
             </widget>
            </item>
+           <item row="19" column="1">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>258</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_backup">
+             <property name="text">
+              <string>Backup Dst</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_password">
              <property name="text">
@@ -538,22 +431,8 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_data_dir">
-             <property name="text">
-              <string>Data Dir</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLineEdit" name="lineEdit_data_dir">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="DTApplyButton" name="pushButton_data_dir">
+           <item row="9" column="1">
+            <widget class="DTApplyButton" name="pushButton_scale">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -561,6 +440,120 @@
               </sizepolicy>
              </property>
             </widget>
+           </item>
+           <item row="12" column="0">
+            <widget class="QLabel" name="label_theme">
+             <property name="text">
+              <string>Theme</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QPushButton" name="pushButton_font">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="13" column="0">
+            <widget class="LazyCombobox" name="comboBox_theme">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="0">
+            <widget class="QLabel" name="label_country">
+             <property name="text">
+              <string>Country</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0">
+            <widget class="QDoubleSpinBox" name="spinBox_scale">
+             <property name="decimals">
+              <number>1</number>
+             </property>
+             <property name="minimum">
+              <double>1.000000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>10.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.100000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="14" column="1">
+            <layout class="QVBoxLayout" name="verticalLayout_color">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>34</number>
+             </property>
+             <property name="bottomMargin">
+              <number>5</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_color_preview">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>26</width>
+                 <height>26</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>26</width>
+                 <height>26</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="DTApplyButton" name="pushButton_color">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>

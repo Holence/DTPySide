@@ -65,6 +65,8 @@ class DTMainSession(DTFrame.DTMainWindow):
 			self.move(self.UserSetting().value("WindowStatus/Pos"))
 		except:
 			self.resize(self.minimumWidth(),self.minimumHeight())
+			self.adjustSize()
+			MoveToCenterOfScreen(self)
 	
 	def initializeSignal(self):
 		"""主窗体的action向function链接
