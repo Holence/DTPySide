@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Function added
+
 ## 0.1.1
 
 - Ui improved

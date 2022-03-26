@@ -22,6 +22,13 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import colour
 
+def ShowUp(widget:QWidget):
+	"""在initializeWindow中，setCentralWidget之后调用
+	"""
+	widget.show()
+	widget.activateWindow()
+	widget.setWindowState(Qt.WindowActive)
+
 def MoveToCenterOfScreen(widget:QWidget):
 	"""在initializeWindow中，setCentralWidget之后调用
 	"""
@@ -33,6 +40,7 @@ def IconFromCurrentTheme(name):
 def Clear_Layout(layout):
 	for i in reversed(range(layout.count())):
 		item=layout.itemAt(i)
+		
 		if item.spacerItem():
 			layout.removeItem(item)
 			del item
