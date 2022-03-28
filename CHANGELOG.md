@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.1.2
+## 0.1.3a1
 
-- Function added
+- Bug Fixed
 
 ## 0.1.1
 

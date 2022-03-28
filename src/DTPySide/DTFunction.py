@@ -23,11 +23,14 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import colour
 
 def ShowUp(widget:QWidget):
-	"""在initializeWindow中，setCentralWidget之后调用
-	"""
-	widget.show()
+	if widget.isFullScreen():
+		widget.showFullScreen()
+		widget.TitleBar.hide()
+	else:
+		widget.showNormal()
+		widget.TitleBar.show()
+	
 	widget.activateWindow()
-	widget.setWindowState(Qt.WindowActive)
 
 def MoveToCenterOfScreen(widget:QWidget):
 	"""在initializeWindow中，setCentralWidget之后调用
