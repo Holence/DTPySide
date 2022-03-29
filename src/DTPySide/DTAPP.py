@@ -151,7 +151,7 @@ class DTAPP(QApplication):
 			self.color_list=["#1C242D","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED"]
 			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="White":
-			self.color_list=["#aaaaaa","#ffffff","#dddddd","#cccccc","#eeeeee","#dae3ea","#333333"]
+			self.color_list=["#aaaaaa","#ffffff","#dddddd","#9B9B9B","#eeeeee","#dae3ea","#333333"]
 			QIcon.setThemeName(white_or_black[not reverse])
 		
 		if hue!=-1 or saturation!=0.5 or luminance!=0.5 or contrast!=0.5:
