@@ -609,9 +609,8 @@ class DTStyleSheet(str):
 		/* GroupBox */
 
 		QGroupBox {{
-			background-color: {DEEPDARK};
-			border: 1px solid transparent;
-			border-radius: 4px;
+			border: 2px solid {DEEPDARK};
+			border-radius: 6px;
 			margin-top:1em;
 		}}
 		QGroupBox::title {{

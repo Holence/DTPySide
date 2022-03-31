@@ -13,6 +13,8 @@ class DTDialog(Ui_DTDialog,QDialog):
 			super().__init__(parent)
 
 		self.setupUi(self)
+
+		self.TitleBar.btn_close.clicked.connect(self.close)
 		
 		# 现在有全局stylesheet和AA_UseStyleSheetPropagationInWidgetStyles了，就不用一个个写继承字体了
 		# Makes a toplevel window inherit font, palette and locale from its parent.

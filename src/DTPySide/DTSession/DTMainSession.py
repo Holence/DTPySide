@@ -12,14 +12,6 @@ class DTMainSession(DTFrame.DTMainWindow):
 	Returns:
 		没有return: 这里要填啥
 	"""	
-	
-	quitApp=Signal()
-
-	def closeEvent(self,event):
-		super().closeEvent(event)
-		self.saveWindowStatus()
-		self.saveData()
-		self.quitApp.emit()
 
 	def __init__(self, app):
 		"""DTMainSession的构造函数
@@ -73,7 +65,13 @@ class DTMainSession(DTFrame.DTMainWindow):
 		注意：需要拥有全局快捷键的action，需要addAction
 		"""
 		super().initializeSignal()
-		self.actionExit.triggered.connect(self.quitApp.emit)
+		
+		self.actionExit.triggered.connect(self.quit)
+		if self.app.isQuitOnClickX():
+			self.TitleBar.btn_close.clicked.connect(self.quit)
+		else:
+			self.TitleBar.btn_close.clicked.connect(self.close)
+
 		self.actionSetting.triggered.connect(self.setting)
 		self.actionAbout.triggered.connect(self.about)
 		self.actionBoss_Key.triggered.connect(self.bossComing)
@@ -225,3 +223,8 @@ class DTMainSession(DTFrame.DTMainWindow):
 		
 		dlg=DTSession.DTSettingSession(self, self.app)
 		dlg.exec_()
+	
+	def quit(self):
+		self.saveWindowStatus()
+		self.saveData()
+		self.app.quit()

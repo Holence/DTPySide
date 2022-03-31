@@ -45,6 +45,7 @@ class DTAPP(QApplication):
 		
 		# BossKey隐藏主窗口后不退出QApp
 		self.setQuitOnLastWindowClosed(False)
+		self.setQuitOnClickX(True)
 		
 		super().__init__(args)
 		
@@ -324,6 +325,12 @@ class DTAPP(QApplication):
 	def UserSetting(self):
 		return self.__UserSetting
 
+	def setQuitOnClickX(self, bool):
+		self.__quit_on_click_x=bool
+	
+	def isQuitOnClickX(self):
+		return self.__quit_on_click_x
+	
 	def isLoginEnable(self):
 		return self.__LoginEnable
 	
@@ -425,7 +432,6 @@ class DTAPP(QApplication):
 	
 	def setMainSession(self, mainsession: DTSession.DTMainSession):
 		self.__mainsession=mainsession
-		self.__mainsession.quitApp.connect(self.quit)
 	
 	def showMessage(self, title:str, msg:str, icon:QIcon, msecs:int=1000, clicked_slot=None):
 		self.TrayIcon.showMessage(title, msg, icon, msecs)
@@ -438,6 +444,7 @@ class DTAPP(QApplication):
 	def restart(self):
 		self.__mainsession.saveWindowStatus()
 		self.__mainsession.saveData()
+		self.__mainsession.close()
 		self.exit()
 		if self.isLoginEnable()==True:
 			QProcess.startDetached(sys.executable, sys.argv+[str(Fernet_Encrypt("9961",self.password())), "9961"])

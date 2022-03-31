@@ -8,8 +8,6 @@ class DTTitleBar(Ui_DTTitleBar,QWidget):
 		self.setupUi(self)
 		self.full=True
 
-		self.btn_close.clicked.connect(self.window().close)
-
 		self.maximize_icon=IconFromCurrentTheme("window-maximize.svg")
 		self.restore_icon=IconFromCurrentTheme("window-restore.svg")
 		

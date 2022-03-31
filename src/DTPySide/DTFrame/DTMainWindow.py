@@ -39,6 +39,9 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		"""主窗体的action向function链接
 		注意：需要拥有全局快捷键的action，需要addAction
 		"""
+		
+		self.TitleBar.btn_close.clicked.connect(self.close)
+		
 		self.actionWindow_Toggle_Fullscreen.triggered.connect(self.windowToggleFullscreen)
 		self.addAction(self.actionWindow_Toggle_Fullscreen)
 
