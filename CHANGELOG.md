@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4a1
+
+- bugs fixed
+
 ## 0.1.3
 
 - Added QuitOnClickX option (if set to False, then the app will not quit when mainsession's titlebar's x button is clicked)

@@ -129,7 +129,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 
 						#成功登回
 						if self.ResurrectionDlg.exec_():
-							self.showNormal()
+							self.show()
 							# 恢复self._MainMenu里的其他action
 							for action in self._MainMenu.actions()[:-1]:
 								action.setVisible(True)
@@ -142,11 +142,11 @@ class DTMainSession(DTFrame.DTMainWindow):
 				
 				# 无Login选项
 				else:
-					self.showNormal()
+					self.show()
 			
 			# 
 			else:
-				self.showNormal()
+				self.show()
 	
 	def bossComing(self):
 		self.hide()

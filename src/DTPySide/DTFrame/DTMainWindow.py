@@ -105,7 +105,7 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		if self.isFullScreen():
 			self.showFullScreen()
 		else:
-			self.showNormal()
+			self.show()
 		
 	
 	def windowToggleFullscreen(self):

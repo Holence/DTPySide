@@ -22,15 +22,15 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import colour
 
-def ShowUp(widget:QWidget):
-	if widget.isFullScreen():
-		widget.showFullScreen()
-		widget.TitleBar.hide()
+def ShowUp(window:QWidget):
+	if window.isFullScreen():
+		window.showFullScreen()
+		window.TitleBar.hide()
 	else:
-		widget.showNormal()
-		widget.TitleBar.show()
+		window.showNormal()
+		window.TitleBar.show()
 	
-	widget.activateWindow()
+	window.activateWindow()
 
 def MoveToCenterOfScreen(widget:QWidget):
 	"""在initializeWindow中，setCentralWidget之后调用
