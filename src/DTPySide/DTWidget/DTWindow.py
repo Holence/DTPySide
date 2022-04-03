@@ -277,6 +277,8 @@ class DTWindow(QWidget):
 			# 如果关掉的时候是最大化的话，再进行恢复show，就会有bug
 			self.showNormal()
 			self.showMaximized()
+		elif self.isMinimized():
+			ShowUp(self)
 		else:
 			super().show()
 
