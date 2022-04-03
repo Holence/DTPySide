@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.4a12
+## 0.1.4a2
 
 - bug fixed
 
