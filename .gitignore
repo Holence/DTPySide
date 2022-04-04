@@ -1,1 +1,3 @@
 src/DTPySide/icons/
+src/DTPySide.egg-info
+dist
