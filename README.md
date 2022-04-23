@@ -1,4 +1,4 @@
-# DongliTeahousePySideWheel
+# DTPySide
 
 ## Installation
 
