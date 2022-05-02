@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+- Added Base64 Encoding\Decoding method
+- using bz2 compression in Fernet Load\Save
+
 ## 0.1.4a2
 
 - bug fixed

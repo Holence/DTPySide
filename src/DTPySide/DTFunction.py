@@ -21,6 +21,8 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import colour
+import bz2
+import typing
 
 def ShowUp(window:QWidget):
 	if window.isFullScreen():
@@ -124,42 +126,54 @@ def Generate_Key(password):
 	key=base64.urlsafe_b64encode(kdf.derive(password))
 	return key
 
-def Fernet_Encrypt_Save(password,data,file_path):
+def Fernet_Encrypt_Save(password: str, data, file_path):
 	try:
-		data=pickle.dumps(data)
+		if type(data)!=bytes:
+			data=pickle.dumps(data)
+		
 		key=Generate_Key(password)
 
 		fer=Fernet(key)
 		encrypt_data=fer.encrypt(data)
-
-		if not os.path.exists(os.path.dirname(file_path)):
+		
+		if not os.path.exists(os.path.dirname(os.path.abspath(file_path))):
 			os.makedirs(os.path.dirname(file_path))
 		
-		with open(file_path,"wb") as f:
+		with bz2.open(file_path,"wb") as f:
 			f.write(encrypt_data)
 		
 		return True
-	except:
+	except Exception as e:
+		print(e)
 		return False
 
-def Fernet_Decrypt_Load(password,file_path):
+def Fernet_Decrypt_Load(password: str, file_path):
 	try:
 		key=Generate_Key(password)
-	
-		with open(file_path,"rb") as f:
-			data=f.read()
+		
+		try:
+			with bz2.open(file_path,"rb") as f:
+				data=f.read()
+		except:
+			with open(file_path,"rb") as f:
+				data=f.read()
 		
 		fer=Fernet(key)
 		decrypt_data=fer.decrypt(data)
-		decrypt_data=pickle.loads(decrypt_data)
+		try:
+			decrypt_data=pickle.loads(decrypt_data)
+		except:
+			pass
 
 		return decrypt_data
 	except:
 		return False
 
-def Fernet_Encrypt(password,data):
+def Fernet_Encrypt(password: str, data):
 	try:
-		data=pickle.dumps(data)
+		if type(data)!=bytes:
+			data=pickle.dumps(data)
+		
 		key=Generate_Key(password)
 
 		fer=Fernet(key)
@@ -169,19 +183,23 @@ def Fernet_Encrypt(password,data):
 	except:
 		return False
 
-def Fernet_Decrypt(password,data):
+def Fernet_Decrypt(password: str, data: bytes):
 	try:
 		key=Generate_Key(password)
 		
 		fer=Fernet(key)
 		decrypt_data=fer.decrypt(data)
-		decrypt_data=pickle.loads(decrypt_data)
+		
+		try:
+			decrypt_data=pickle.loads(decrypt_data)
+		except:
+			pass
 
 		return decrypt_data
 	except:
 		return False
 
-def Json_Save(data,file_path):
+def Json_Save(data, file_path):
 	try:
 		with open(file_path,"w",encoding="utf-8") as f:
 			json.dump(data,f,ensure_ascii=False,indent=4)
@@ -197,6 +215,39 @@ def Json_Load(file_path):
 		return data
 	except:
 		return False
+
+def Base64_Encode(thing, width=40, encoding_for_str="utf-8") -> str:
+    if type(thing)==bytes:
+        res=base64.b64encode(thing).decode("ascii")
+    elif type(thing)==str:
+        res=base64.b64encode(bytes(thing, encoding_for_str)).decode("ascii")
+    else:
+        res=base64.b64encode(pickle.dumps(thing)).decode("ascii")
+
+    if type(width)==int:
+        return "\n".join([ res[i:i+width] for i in range(0, len(res), width)])
+    else:
+        return res
+
+def Base64_Decode(base64_s: str, TYPE: typing.Union[str,bytes,object], encoding_for_str="utf-8") -> str:
+    res=base64.b64decode(base64_s.strip().replace("\n","").encode("ascii"))
+    if TYPE==bytes:
+        return res
+    elif TYPE==str:
+        return res.decode(encoding_for_str)
+    elif TYPE==object:
+        return pickle.loads(res)
+    else:
+        return res
+
+def Base64_Encode_Save(thing, file_path, width=40, encoding_for_str="utf-8"):
+    with open(file_path, "w") as f:
+        f.write(Base64_Encode(thing, width, encoding_for_str))
+
+def Base64_Decode_Load(file_path, TYPE: typing.Union[str,bytes,object], encoding_for_str="utf-8"):
+    with open(file_path, "r") as f:
+        res=Base64_Decode(f.read(), TYPE, encoding_for_str)
+    return res
 
 def Str_to_AZ(input):
 	
