@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5a1
+
+- UI improved
+
 ## 0.1.4
 
 - Added Base64 Encoding\Decoding method

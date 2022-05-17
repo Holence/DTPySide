@@ -224,7 +224,7 @@ class DTAPP(QApplication):
 	
 	def Theme(self):
 		if self.UserSetting().value("BasicInfo/Theme") not in self.ThemeList:
-			self.setTheme("Dracula")
+			self.setTheme("Cyan")
 		return self.UserSetting().value("BasicInfo/Theme")
 	
 	def setTheme(self, Theme:str):
@@ -484,10 +484,10 @@ class DTAPP(QApplication):
 
 			self.__loadEncryptedData()
 			
+			self.initializeTrayIcon()
 			self.__mainsession.initialize()
 			self.__mainsession.show()
 
-			self.initializeTrayIcon()
 			self.exec_()
 		
 		# Normal
@@ -496,11 +496,11 @@ class DTAPP(QApplication):
 
 			self.__loadEncryptedData()
 
+			self.initializeTrayIcon()
 			self.__mainsession.initialize()
 			if show==True:
 				self.__mainsession.show()
 
-			self.initializeTrayIcon()
 			self.exec_()
 
 	def run(self,show=True):
@@ -516,10 +516,10 @@ class DTAPP(QApplication):
 
 			self.__loadEncryptedData()
 
+			self.initializeTrayIcon()
 			self.__mainsession.initialize()
 			self.__mainsession.show()
 
-			self.initializeTrayIcon()
 			self.exec_()
 		
 		# Normal
@@ -529,9 +529,9 @@ class DTAPP(QApplication):
 			
 			self.__loadEncryptedData()
 			
+			self.initializeTrayIcon()
 			self.__mainsession.initialize()
 			if show==True:
 				self.__mainsession.show()
 			
-			self.initializeTrayIcon()
 			self.exec_()
