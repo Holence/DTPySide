@@ -25,4 +25,4 @@ Some projects made with DTPySide:
 - [DongliTeahouseStudio2](https://github.com/Holence/DongliTeahouseStudio2)
 - [LifeTimeline](https://github.com/Holence/LifeTimeline)
 - [BucketList](https://github.com/Holence/BucketList)
-- [WireSock GUI](https://github.com/Holence/WireSock-GUI)
+- [WireSock GUI](https://github.com/Holence/WireSock-for-Nord)
