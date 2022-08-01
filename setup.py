@@ -42,6 +42,7 @@ setuptools.setup(
         "PySide2",
         "pywin32",
         "requests",
-        "urllib3"
+        "urllib3",
+        "blosc"
     ]
 )
