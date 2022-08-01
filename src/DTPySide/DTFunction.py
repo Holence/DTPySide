@@ -21,7 +21,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import colour
-import bz2
+import bz2, blosc
 import typing
 
 def ShowUp(window:QWidget):
@@ -139,8 +139,8 @@ def Fernet_Encrypt_Save(password: str, data, file_path):
 		if not os.path.exists(os.path.dirname(os.path.abspath(file_path))):
 			os.makedirs(os.path.dirname(file_path))
 		
-		with bz2.open(file_path,"wb") as f:
-			f.write(encrypt_data)
+		with open(file_path,"wb") as f:
+			f.write(blosc.compress(encrypt_data, cname="zlib"))
 		
 		return True
 	except Exception as e:
@@ -152,11 +152,16 @@ def Fernet_Decrypt_Load(password: str, file_path):
 		key=Generate_Key(password)
 		
 		try:
-			with bz2.open(file_path,"rb") as f:
-				data=f.read()
-		except:
 			with open(file_path,"rb") as f:
-				data=f.read()
+				data=blosc.decompress(f.read())
+		except:
+			# 兼容旧版
+			try:
+				with bz2.open(file_path,"rb") as f:
+					data=f.read()
+			except:
+				with open(file_path,"rb") as f:
+					data=f.read()
 		
 		fer=Fernet(key)
 		decrypt_data=fer.decrypt(data)

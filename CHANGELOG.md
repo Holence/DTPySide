@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.6
+
+- Compression method improved
+
 ## 0.1.5a1
 
 - UI improved
