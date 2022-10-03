@@ -50,13 +50,13 @@ class DTAPP(QApplication):
 		super().__init__(args)
 		
 		self.setStyle("Fusion")
-		self.ThemeList=["Dracula","Dracula2","Brown","Green","Cyan","White"]
+		self.ThemeList=["Dracula","Dracula Customized","Brown","Green","Cyan","White"]
 		self.initializeWindowStyle()
 		
 		self.TrayIcon=QSystemTrayIcon(self)
 
 		self.setWindowIcon(DTIcon.HoloIcon1())
-		self.setApplicationName("DT's Project")
+		self.setApplicationName("DTPySide Project")
 		self.setApplicationVersion("0.0.0.0")
 		self.setAuthor("鍵山狐")
 		self.setOrganizationName("Dongli Teahouse")
@@ -149,7 +149,7 @@ class DTAPP(QApplication):
 			self.color_list=["#17241F","#294137","#3F6151","#5D796C","#C6CA8F","#A5AD79","#EEF1E0"]
 			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="Cyan":
-			self.color_list=["#1C242D","#303F53","#3F5670","#5b789e","#B0C8D2","#8BACBC","#EEF4ED"]
+			self.color_list=["#2a3e63","#395693","#456eb8","#8099ce","#cbdbe7","#a1bdd2","#FFFFFF"]
 			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="White":
 			self.color_list=["#aaaaaa","#ffffff","#dddddd","#9B9B9B","#eeeeee","#dae3ea","#333333"]
@@ -452,7 +452,12 @@ class DTAPP(QApplication):
 			QProcess.startDetached(sys.executable, sys.argv+["9961"])
 	
 	def __loginIn(self):
-		dlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
+		locked_password=self.UserSetting().value("BasicInfo/Password")
+		if locked_password:
+			dlg=DTSession.DTLoginSession(locked_password)
+		else:
+			dlg=DTSession.DTLoginSession(locked_password, "Register")
+		
 		if dlg.exec_()==0:
 			self.quit()
 			sys.exit()

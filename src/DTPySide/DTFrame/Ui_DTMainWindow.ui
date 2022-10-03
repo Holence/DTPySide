@@ -147,6 +147,14 @@
     <string>Backup</string>
    </property>
   </action>
+  <action name="actionSecure_Mode">
+   <property name="text">
+    <string>Secure Mode</string>
+   </property>
+   <property name="toolTip">
+    <string>If turned on, open window from tray icon will need password.</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

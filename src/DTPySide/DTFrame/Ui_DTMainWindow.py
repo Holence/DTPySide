@@ -41,6 +41,8 @@ class Ui_DTMainWindow(object):
         self.actionBoss_Key.setObjectName(u"actionBoss_Key")
         self.actionBackup = QAction(DTMainWindow)
         self.actionBackup.setObjectName(u"actionBackup")
+        self.actionSecure_Mode = QAction(DTMainWindow)
+        self.actionSecure_Mode.setObjectName(u"actionSecure_Mode")
         self.verticalLayout = QVBoxLayout(DTMainWindow)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -109,5 +111,9 @@ class Ui_DTMainWindow(object):
         self.actionBoss_Key.setShortcut(QCoreApplication.translate("DTMainWindow", u"F1", None))
 #endif // QT_CONFIG(shortcut)
         self.actionBackup.setText(QCoreApplication.translate("DTMainWindow", u"Backup", None))
+        self.actionSecure_Mode.setText(QCoreApplication.translate("DTMainWindow", u"Secure Mode", None))
+#if QT_CONFIG(tooltip)
+        self.actionSecure_Mode.setToolTip(QCoreApplication.translate("DTMainWindow", u"If turned on, open window from tray icon will need password.", None))
+#endif // QT_CONFIG(tooltip)
     # retranslateUi
 

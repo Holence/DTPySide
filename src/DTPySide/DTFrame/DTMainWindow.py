@@ -29,11 +29,10 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 		self.actionMinimize_Window.setIcon(IconFromCurrentTheme("window-minimize.svg"))
 		self.actionWindow_Toggle_Stay_on_Top.setIcon(IconFromCurrentTheme("arrow-up.svg"))
 		self.actionWindow_Toggle_Fullscreen.setIcon(IconFromCurrentTheme("maximize.svg"))
-		self.actionWindow_Toggle_Fullscreen.setIcon(IconFromCurrentTheme("maximize.svg"))
 		self.actionAbout.setIcon(IconFromCurrentTheme("book.svg"))
 		self.actionBoss_Key.setIcon(IconFromCurrentTheme("users.svg"))
-		self.actionBoss_Key.setIcon(IconFromCurrentTheme("users.svg"))
 		self.actionBackup.setIcon(IconFromCurrentTheme("cloud.svg"))
+		self.actionSecure_Mode.setIcon(IconFromCurrentTheme("toggle-left.svg"))
 	
 	def initializeSignal(self):	
 		"""主窗体的action向function链接
@@ -86,7 +85,7 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 	
 	def insertMenuToMainMenu(self,fore_action,menu):
 		self._MainMenu.insertMenu(fore_action,menu)
-
+	
 	def windowShowNormal(self):
 		self.showNormal()
 		self.resize(self.minimumWidth(),self.minimumHeight())

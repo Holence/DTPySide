@@ -23,7 +23,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 		super().__init__(app)
 
 		self.haveTanslation=hasattr(self.app,"translation")
-			
+	
 	
 	def initialize(self):
 		if self.haveTanslation==False and hasattr(self.app,"translation")==True:
@@ -71,6 +71,9 @@ class DTMainSession(DTFrame.DTMainWindow):
 			self.TitleBar.btn_close.clicked.connect(self.quit)
 		else:
 			self.TitleBar.btn_close.clicked.connect(self.close)
+		
+		if self.app.isLoginEnable():
+			self.actionSecure_Mode.triggered.connect(self.switchSecureMode)
 
 		self.actionSetting.triggered.connect(self.setting)
 		self.actionAbout.triggered.connect(self.about)
@@ -104,6 +107,12 @@ class DTMainSession(DTFrame.DTMainWindow):
 		self.__menu_view.addAction(self.actionMaximize_Window)
 		self.addMenuToMainMenu(self.__menu_view)
 		
+		if self.app.isLoginEnable():
+			self.addActionToMainMenu(self.actionSecure_Mode)
+			self.SecureMode=True
+			self.actionSecure_Mode.setIcon(IconFromCurrentTheme("toggle-right.svg"))
+			self.actionSecure_Mode.setText(QCoreApplication.translate("Lobby", "Secure Mode - On"))
+
 		self._MainMenu.addAction(self.actionBoss_Key)
 		self._MainMenu.addAction(self.actionExit)
 		
@@ -112,46 +121,64 @@ class DTMainSession(DTFrame.DTMainWindow):
 		"""
 		pass
 	
+	def switchSecureMode(self):
+		if self.SecureMode==False:
+			self.SecureMode=True
+			if self.isHidden():
+				for action in self._MainMenu.actions()[:-1]:
+					action.setVisible(False)
+			self.actionSecure_Mode.setIcon(IconFromCurrentTheme("toggle-right.svg"))
+			self.actionSecure_Mode.setText(QCoreApplication.translate("Lobby", "Secure Mode - On"))
+			DTFrame.DTMessageBox(self,"Information","Secure mode is on. Password will be needed when opening window from tray icon.",DTIcon.Happy())
+		else:
+			self.SecureMode=False
+			self.actionSecure_Mode.setIcon(IconFromCurrentTheme("toggle-left.svg"))
+			self.actionSecure_Mode.setText(QCoreApplication.translate("Lobby", "Secure Mode - Off"))
+			DTFrame.DTMessageBox(self,"Information","Secure mode is off. Password will not be needed when opening window from tray icon.",DTIcon.Happy())
+
 	def windowResurrection(self,reason):
 		"双击TrayIcon还原主窗体"
 		
 		from DTPySide import DTSession
 		# 必须在这里再调用一次，如果不写的话，下面会说name 'DTSession' is not defined。不知道为什么啊啊啊，明明都在DTPySide的__init__中导入过了呀？！难道又是同级包内互相调用的问题，还是__feature__的annotation暂时还有bug？
 
-		if reason==QSystemTrayIcon.DoubleClick:
+		if reason==QSystemTrayIcon.Trigger:
 			if self.isHidden():
 				# 有Login选项
-				if self.app.isLoginEnable():
+				if self.app.isLoginEnable() and self.SecureMode:
 
 					# 还未出现Login界面
 					if not hasattr(self,"ResurrectionDlg"):
 						self.ResurrectionDlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
-
+						
 						#成功登回
 						if self.ResurrectionDlg.exec_():
-							self.show()
 							# 恢复self._MainMenu里的其他action
 							for action in self._MainMenu.actions()[:-1]:
 								action.setVisible(True)
+							self.show()
 						
 						del self.ResurrectionDlg
 					
 					# 已经有Login界面了
 					else:
+						self.ResurrectionDlg.activateWindow()
 						pass
 				
 				# 无Login选项
 				else:
 					self.show()
-			
+					self.activateWindow()
+
 			# 
 			else:
 				self.show()
+				self.activateWindow()
 	
 	def bossComing(self):
 		self.hide()
 		
-		if self.app.isLoginEnable():
+		if self.app.isLoginEnable() and self.SecureMode:
 			# Boss键后只显示退出键，self._MainMenu里的其他action隐藏掉
 			for action in self._MainMenu.actions()[:-1]:
 				action.setVisible(False)

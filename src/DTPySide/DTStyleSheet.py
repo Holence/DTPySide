@@ -269,7 +269,9 @@ class DTStyleSheet(str):
 
 		QToolTip {{
 			background: {SOFTDARK};
-			color: {TEXT}
+			color: {TEXT};
+			font-family: {font_family};
+			font-size: 11pt;
 		}}
 
 

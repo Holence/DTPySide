@@ -8,6 +8,9 @@ class DTLoginSession(DTFrame.DTDialog):
 		self.__LoginModule=DTModule.DTLogin(self)
 		self.centralWidget.setContentsMargins(QMargins(9,10,32,10))
 		self.setCentralWidget(self.__LoginModule)
+		self.adjustSize()
+		MoveToCenterOfScreen(self)
+
 		self.setWindowTitle(title)
 		self.buttonBox.button(QDialogButtonBox.Ok).setDefault(True)
 
@@ -24,25 +27,27 @@ class DTLoginSession(DTFrame.DTDialog):
 	def accept(self):
 
 		self.__LoginModule.lineEdit.setReadOnly(True)
+		self.buttonBox.setEnabled(False)
 		self.input_password=self.__LoginModule.lineEdit.text()
 		
 		#新用户
 		if not self.locked_password:
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Lock().pixmap(QSize(64,64)))
-			Delay_Msecs(400)
+			Delay_Msecs(300)
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Unlock().pixmap(QSize(64,64)))
-			Delay_Msecs(600)
+			Delay_Msecs(400)
 			super().accept()
 		
 		elif Fernet_Decrypt(self.input_password,self.locked_password)==self.input_password:
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Lock().pixmap(QSize(64,64)))
-			Delay_Msecs(400)
+			Delay_Msecs(300)
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Unlock().pixmap(QSize(64,64)))
-			Delay_Msecs(600)
+			Delay_Msecs(400)
 			super().accept()
 		else:
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Unhappy().pixmap(QSize(64,64)))
 			self.__LoginModule.lineEdit.setReadOnly(False)
+			self.buttonBox.setEnabled(True)
 	
 	def reject(self):
 		super().reject()

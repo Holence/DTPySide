@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.7a1
+
+- Cyan Theme Imporved
+- Register\Login Title for DTLoginSession
+- Dependency Libraries Simplified (requests, urllib, lxml removed)
+- MoveToCenterOfScreen Fixed
+- StyleSheet for QToolTip added font property
+- added SecureMode for convenience
+- fixed DTLoginSession's pos on app start
+- TrayIcon activating method changed to SingleCLick
+- fixed DTLoginSession's focus problem during windowResurrection
+
 ## 0.1.5
 
 - Compression method improved

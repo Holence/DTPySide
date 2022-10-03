@@ -37,12 +37,9 @@ setuptools.setup(
     install_requires=[
         "colour",
         "cryptography",
-        "lxml",
         "pypinyin",
         "PySide2",
         "pywin32",
-        "requests",
-        "urllib3",
         "blosc"
     ]
 )
