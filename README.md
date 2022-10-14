@@ -6,6 +6,10 @@ Install from PyPI:
 
 `pip install DTPySide`
 
+to get the latest experiences:
+
+`pip install --pre DTPySide`
+
 or build on your own:
 
 `py -m build`
