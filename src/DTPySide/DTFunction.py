@@ -17,212 +17,287 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives.padding import PKCS7
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 import colour
 import bz2, blosc
 import typing
 
 def ShowUp(window:QWidget):
-	if window.isFullScreen():
-		window.showFullScreen()
-		window.TitleBar.hide()
-	else:
-		window.showNormal()
-		window.TitleBar.show()
-	
-	window.activateWindow()
+    if window.isFullScreen():
+        window.showFullScreen()
+        window.TitleBar.hide()
+    else:
+        window.showNormal()
+        window.TitleBar.show()
+    
+    window.activateWindow()
 
 def MoveToCenterOfScreen(widget:QWidget):
-	"""在initializeWindow中，setCentralWidget之后调用
-	"""
-	scale=float(os.environ["QT_SCALE_FACTOR"])
-	widget.move( 
-		int((win32api.GetSystemMetrics(0)-widget.width()*scale)/scale)//2 ,
-		int((win32api.GetSystemMetrics(1)-widget.height()*scale)/scale)//2
-	)
-	
+    """在initializeWindow中，setCentralWidget之后调用
+    """
+    scale=float(os.environ["QT_SCALE_FACTOR"])
+    widget.move( 
+        int((win32api.GetSystemMetrics(0)-widget.width()*scale)/scale)//2 ,
+        int((win32api.GetSystemMetrics(1)-widget.height()*scale)/scale)//2
+    )
+    
 def IconFromCurrentTheme(name):
-	return QIcon(":/icons/%s/%s"%(QIcon.themeName(),name))
+    return QIcon(":/icons/%s/%s"%(QIcon.themeName(),name))
 
 def Clear_Layout(layout):
-	for i in reversed(range(layout.count())):
-		item=layout.itemAt(i)
-		
-		if item.spacerItem():
-			layout.removeItem(item)
-			del item
-		else:
-			item.widget().deleteLater()
+    for i in reversed(range(layout.count())):
+        item=layout.itemAt(i)
+        
+        if item.spacerItem():
+            layout.removeItem(item)
+            del item
+        else:
+            item.widget().deleteLater()
 
 def Font_Resize(font,resize_ratio):
-	new_font=QFont(font)
-	fontsize=font.pointSize()
-	fontsize=int(fontsize*resize_ratio)
-	new_font.setPointSize(fontsize)
-	return new_font
+    new_font=QFont(font)
+    fontsize=font.pointSize()
+    fontsize=int(fontsize*resize_ratio)
+    new_font.setPointSize(fontsize)
+    return new_font
 
 def Delay_Msecs(msecs):
-	"传入int类型的延迟毫秒数msecs"
-	dieTime= QTime.currentTime().addMSecs(msecs)
-	while QTime.currentTime() < dieTime:
-		QCoreApplication.processEvents(QEventLoop.AllEvents, 100)
+    "传入int类型的延迟毫秒数msecs"
+    dieTime= QTime.currentTime().addMSecs(msecs)
+    while QTime.currentTime() < dieTime:
+        QCoreApplication.processEvents(QEventLoop.AllEvents, 100)
 
 def QDate_to_Tuple(date:QDate):
-	return (date.year(),date.month(),date.day())
+    return (date.year(),date.month(),date.day())
 
 def WhatDayIsToday(mode):
-	"""返回年月日
+    """返回年月日
 
-	Args:
-		mode (int, optional):选择返回的类型。
+    Args:
+        mode (int, optional):选择返回的类型。
 
-		0：Tuple
+        0：Tuple
 
-		1: QDate
-	"""
-	today=time.localtime()
-	if mode==0:
-		return today.tm_year,today.tm_mon,today.tm_mday
-	elif mode==1:
-		return QDate(today.tm_year,today.tm_mon,today.tm_mday)
+        1: QDate
+    """
+    today=time.localtime()
+    if mode==0:
+        return today.tm_year,today.tm_mon,today.tm_mday
+    elif mode==1:
+        return QDate(today.tm_year,today.tm_mon,today.tm_mday)
 
 def Generate_ConicalGradientColor(colorList,cube_width):
-	n=len(colorList)
-	if n==0:
-		return QColor("#5B1803")
-	
-	angle=0
-	delta=1/n
-	colors=[]
-	for i in range(n):
-		colors.append((angle,colorList[i]))
-		colors.append((angle+delta-0.01,colorList[i]))
-		angle+=delta
+    n=len(colorList)
+    if n==0:
+        return QColor("#5B1803")
+    
+    angle=0
+    delta=1/n
+    colors=[]
+    for i in range(n):
+        colors.append((angle,colorList[i]))
+        colors.append((angle+delta-0.01,colorList[i]))
+        angle+=delta
 
-	color=QConicalGradient(cube_width/2,cube_width/2,90)
-	color.setStops(colors)
-	return color
+    color=QConicalGradient(cube_width/2,cube_width/2,90)
+    color.setStops(colors)
+    return color
 
 def show_ContextMenu_Beneath(menu,btn):
-	btn_pos=btn.pos()
-	btn_height=btn.height()
-	btn_pos+=QPoint(0,btn_height)
-	true_pos=btn.parentWidget().mapToGlobal(btn_pos)
-	menu.exec_(true_pos)
+    btn_pos=btn.pos()
+    btn_height=btn.height()
+    btn_pos+=QPoint(0,btn_height)
+    true_pos=btn.parentWidget().mapToGlobal(btn_pos)
+    menu.exec_(true_pos)
 
 def show_ContextMenu_Right(menu,btn):
-	btn_pos=btn.pos()
-	btn_height=btn.height()
-	btn_pos+=QPoint(btn_height,0)
-	true_pos=btn.parentWidget().mapToGlobal(btn_pos)
-	menu.exec_(true_pos)
+    btn_pos=btn.pos()
+    btn_height=btn.height()
+    btn_pos+=QPoint(btn_height,0)
+    true_pos=btn.parentWidget().mapToGlobal(btn_pos)
+    menu.exec_(true_pos)
 
 ##################################
 
-def Generate_Key(password):
-	"""
-	根据password生成一个固定的salt，用salt生成一个PBKDF2，用PBKDF2和password生成key
-	所以给定一个固定的password，将返回那个固定的key。
-	"""
-	salt=password.encode()[::-1]
-	password=password.encode()
-	kdf=PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=100000,backend=default_backend())
-	key=base64.urlsafe_b64encode(kdf.derive(password))
-	return key
-
-def Fernet_Encrypt_Save(password: str, data, file_path):
-	try:
-		if type(data)!=bytes:
-			data=pickle.dumps(data)
-		
-		key=Generate_Key(password)
-
-		fer=Fernet(key)
-		encrypt_data=fer.encrypt(data)
-		
-		if not os.path.exists(os.path.dirname(os.path.abspath(file_path))):
-			os.makedirs(os.path.dirname(file_path))
-		
-		with open(file_path,"wb") as f:
-			f.write(blosc.compress(encrypt_data, cname="zlib"))
-		
-		return True
-	except Exception as e:
-		print(e)
-		return False
-
-def Fernet_Decrypt_Load(password: str, file_path):
-	try:
-		key=Generate_Key(password)
-		
-		try:
-			with open(file_path,"rb") as f:
-				data=blosc.decompress(f.read())
-		except:
-			# 兼容旧版
-			try:
-				with bz2.open(file_path,"rb") as f:
-					data=f.read()
-			except:
-				with open(file_path,"rb") as f:
-					data=f.read()
-		
-		fer=Fernet(key)
-		decrypt_data=fer.decrypt(data)
-		try:
-			decrypt_data=pickle.loads(decrypt_data)
-		except:
-			pass
-
-		return decrypt_data
-	except:
-		return False
-
 def Fernet_Encrypt(password: str, data):
-	try:
-		if type(data)!=bytes:
-			data=pickle.dumps(data)
-		
-		key=Generate_Key(password)
+    try:
+        if type(data)!=bytes:
+            data=pickle.dumps(data)
+        
+        salt=password.encode()[::-1]
+        password=password.encode()
+        kdf=PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=100000,backend=default_backend())
+        key=base64.urlsafe_b64encode(kdf.derive(password))
 
-		fer=Fernet(key)
-		encrypt_data=fer.encrypt(data)
-		
-		return encrypt_data
-	except:
-		return False
+        fer=Fernet(key)
+        encrypt_data=fer.encrypt(data)
+        
+        return encrypt_data
+    except:
+        return False
 
 def Fernet_Decrypt(password: str, data: bytes):
-	try:
-		key=Generate_Key(password)
-		
-		fer=Fernet(key)
-		decrypt_data=fer.decrypt(data)
-		
-		try:
-			decrypt_data=pickle.loads(decrypt_data)
-		except:
-			pass
+    try:
+        salt=password.encode()[::-1]
+        password=password.encode()
+        kdf=PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=100000,backend=default_backend())
+        key=base64.urlsafe_b64encode(kdf.derive(password))
+        
+        fer=Fernet(key)
+        decrypt_data=fer.decrypt(data)
+        
+        try:
+            decrypt_data=pickle.loads(decrypt_data)
+        except:
+            pass
 
-		return decrypt_data
-	except:
-		return False
+        return decrypt_data
+    except:
+        return False
+
+def AES_Encrypt(password: str, data):
+    try:
+        if type(data)!=bytes:
+            data=pickle.dumps(data)
+        
+        # generate password
+        salt = os.urandom(16)
+        iv = os.urandom(16)
+        kdf = PBKDF2HMAC(hashes.SHA512(), 32, salt, 480000, backend=default_backend())
+        password = kdf.derive(password.encode())
+
+        # pad data
+        padder = PKCS7(128).padder()
+        data = padder.update(data) + padder.finalize()
+
+        # encrypt
+        cipher = Cipher(algorithms.AES(password), modes.CBC(iv), backend=default_backend())
+        encryptor = cipher.encryptor()
+        encrypt_data = encryptor.update(data) + encryptor.finalize()
+
+        encrypt_data = base64.b64encode(salt + encrypt_data + iv)
+
+        return encrypt_data
+    except:
+        return False
+
+def AES_Decrypt(password: str, data):
+    try:
+        # re-generate password from
+        encrypted_obj = base64.b64decode(data)
+        salt = encrypted_obj[0:16]
+        iv = encrypted_obj[-16:]
+        cypher_text = encrypted_obj[16:-16]
+        kdf = PBKDF2HMAC(hashes.SHA512(), 32, salt, 480000, backend=default_backend())
+        password = kdf.derive(password.encode())
+
+        # decrypt
+        cipher = Cipher(algorithms.AES(password), modes.CBC(iv), backend=default_backend())
+        decryptor = cipher.decryptor()
+        padded_text = decryptor.update(cypher_text) + decryptor.finalize()
+
+        # remove padding
+        unpadder = PKCS7(128).unpadder()
+        decrypt_data = unpadder.update(padded_text) + unpadder.finalize()
+        
+        try:
+            decrypt_data=pickle.loads(decrypt_data)
+        except:
+            pass
+
+        return decrypt_data
+    except:
+        return False
+
+def Symmetric_Encrypt(password: str, data, mode=None):
+    if mode==None:
+        return AES_Encrypt(password, data)
+    else:
+        if mode=="Fernet":
+            return Fernet_Encrypt(password, data)
+        if mode=="AES":
+            return AES_Encrypt(password, data)
+
+def Symmetric_Decrypt(password: str, data, mode=None):
+    if mode==None:
+        res = AES_Decrypt(password, data)
+        if not res:
+            return Fernet_Decrypt(password, data)
+        else:
+            return res
+    else:
+        if mode=="Fernet":
+            return Fernet_Decrypt(password, data)
+        if mode=="AES":
+            return AES_Decrypt(password, data)
+
+def Symmetric_Encrypt_Save(password: str, data, file_path, mode=None):
+    try:
+        if mode==None:
+            enc_data=AES_Encrypt(password, data)
+        else:
+            if mode=="Fernet":
+                enc_data=Fernet_Encrypt(password, data)
+            if mode=="AES":
+                enc_data=AES_Encrypt(password, data)
+        
+        if not os.path.exists(os.path.dirname(os.path.abspath(file_path))):
+            os.makedirs(os.path.dirname(file_path))
+        
+        with open(file_path,"wb") as f:
+            f.write(blosc.compress(enc_data, cname="zlib"))
+        
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+def Symmetric_Decrypt_Load(password: str, file_path, mode=None):
+    try:
+        try:
+            with open(file_path,"rb") as f:
+                data=blosc.decompress(f.read())
+        except:
+            # 兼容旧版
+            try:
+                with bz2.open(file_path,"rb") as f:
+                    data=f.read()
+            except:
+                with open(file_path,"rb") as f:
+                    data=f.read()
+        
+        if mode==None:
+            decrypt_data = AES_Decrypt(password, data)
+            if not decrypt_data:
+                decrypt_data = Fernet_Decrypt(password, data)
+        else:
+            if mode=="Fernet":
+                decrypt_data = Fernet_Decrypt(password, data)
+            if mode=="AES":
+                decrypt_data = AES_Decrypt(password, data)
+
+        return decrypt_data
+    except:
+        return False
+    
 
 def Json_Save(data, file_path):
-	try:
-		with open(file_path,"w",encoding="utf-8") as f:
-			json.dump(data,f,ensure_ascii=False,indent=4)
-		
-		return True
-	except:
-		return False
+    try:
+        with open(file_path,"w",encoding="utf-8") as f:
+            json.dump(data,f,ensure_ascii=False,indent=4)
+        
+        return True
+    except:
+        return False
 
 def Json_Load(file_path):
-	try:
-		with open(file_path,"r",encoding="utf-8") as f:
-			data=json.load(f)
-		return data
-	except:
-		return False
+    try:
+        with open(file_path,"r",encoding="utf-8") as f:
+            data=json.load(f)
+        return data
+    except:
+        return False
 
 def Base64_Encode(thing, width=40, encoding_for_str="utf-8") -> str:
     if type(thing)==bytes:
@@ -258,167 +333,167 @@ def Base64_Decode_Load(file_path, TYPE: typing.Union[str,bytes,object], encoding
     return res
 
 def Str_to_AZ(input):
-	
-	def cn_to_az(last_name):
-		rows = pypinyin.pinyin(last_name, style=pypinyin.NORMAL)
-		return ''.join(row[0][0] for row in rows if len(row) > 0)
+    
+    def cn_to_az(last_name):
+        rows = pypinyin.pinyin(last_name, style=pypinyin.NORMAL)
+        return ''.join(row[0][0] for row in rows if len(row) > 0)
 
-	def jp_to_az(i):
-		jp1=["”","“","《","》","あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん","が","ぎ","ぐ","げ","ご","ざ","じ","ず","ぜ","ぞ","だ","ぢ","づ","で","ど","ば","び","ぶ","べ","ぼ","ぱ","ぴ","ぷ","ぺ","ぽ"]
-		jp2=["”","“","《","》","ア","イ","ウ","エ","オ","カ","キ","ク","ケ","コ","サ","シ","ス","セ","ソ","タ","チ","ツ","テ","ト","ナ","ニ","ヌ","ネ","ノ","ハ","ヒ","フ","ヘ","ホ","マ","ミ","ム","メ","モ","ヤ","ユ","ヨ","ラ","リ","ル","レ","ロ","ワ","ヲ","ン","ガ","ギ","グ","ゲ","ゴ","ザ","ジ","ズ","ゼ","ゾ","ダ","ヂ","ヅ","デ","ド","バ","ビ","ブ","ベ","ボ","パ","ピ","プ","ペ","ポ"]
-		az=["”","“","《","》","a","i","u","e","o","ka","ki","ku","ke","ko","sa","si","su","se","so","ta","ti","tu","te","to","na","ni","nu","ne","no","ha","hi","hu","he","ho","ma","mi","mu","me","mo","ya","yu","yo","ra","ri","ru","re","ro","wa","wo","n","ga","gi","gu","ge","go","za","ji","zu","ze","zo","da","di","du","de","do","ba","bi","bu","be","bo","pa","pi","pu","pe","po"]
-		try:
-			n=jp1.index(i)
-			return az[n]
-		except:
-			try:
-				n=jp2.index(i)
-				return az[n]
-			except:
-				pass
-				# print("%s	假名好像不完整\n"%i)
-		return ""
-	
-	output=""
-	
-	#用unicode划分语言区
-	for i in input:
-		if re.match(r"[\u0000-\u007F]",i):#英
-			output+=i.lower()
-		elif re.match(r"[\u4E00-\u9FFF]",i):#中
-			output+=cn_to_az(i[0])
-		elif re.match(r"[\u0800-\u4DFF]",i):#日，\u4E00是中文的一
-			output+=jp_to_az(i)
-		# if re.match(r"[\uAC00-\uD7FF]",c)#韩
-		else:
-			output+=i
-		
-	return output
+    def jp_to_az(i):
+        jp1=["”","“","《","》","あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん","が","ぎ","ぐ","げ","ご","ざ","じ","ず","ぜ","ぞ","だ","ぢ","づ","で","ど","ば","び","ぶ","べ","ぼ","ぱ","ぴ","ぷ","ぺ","ぽ"]
+        jp2=["”","“","《","》","ア","イ","ウ","エ","オ","カ","キ","ク","ケ","コ","サ","シ","ス","セ","ソ","タ","チ","ツ","テ","ト","ナ","ニ","ヌ","ネ","ノ","ハ","ヒ","フ","ヘ","ホ","マ","ミ","ム","メ","モ","ヤ","ユ","ヨ","ラ","リ","ル","レ","ロ","ワ","ヲ","ン","ガ","ギ","グ","ゲ","ゴ","ザ","ジ","ズ","ゼ","ゾ","ダ","ヂ","ヅ","デ","ド","バ","ビ","ブ","ベ","ボ","パ","ピ","プ","ペ","ポ"]
+        az=["”","“","《","》","a","i","u","e","o","ka","ki","ku","ke","ko","sa","si","su","se","so","ta","ti","tu","te","to","na","ni","nu","ne","no","ha","hi","hu","he","ho","ma","mi","mu","me","mo","ya","yu","yo","ra","ri","ru","re","ro","wa","wo","n","ga","gi","gu","ge","go","za","ji","zu","ze","zo","da","di","du","de","do","ba","bi","bu","be","bo","pa","pi","pu","pe","po"]
+        try:
+            n=jp1.index(i)
+            return az[n]
+        except:
+            try:
+                n=jp2.index(i)
+                return az[n]
+            except:
+                pass
+                # print("%s	假名好像不完整\n"%i)
+        return ""
+    
+    output=""
+    
+    #用unicode划分语言区
+    for i in input:
+        if re.match(r"[\u0000-\u007F]",i):#英
+            output+=i.lower()
+        elif re.match(r"[\u4E00-\u9FFF]",i):#中
+            output+=cn_to_az(i[0])
+        elif re.match(r"[\u0800-\u4DFF]",i):#日，\u4E00是中文的一
+            output+=jp_to_az(i)
+        # if re.match(r"[\uAC00-\uD7FF]",c)#韩
+        else:
+            output+=i
+        
+    return output
 
 ##################################
 
 def List_Intersection(a:list, b:list) -> list:
-	return list(set(a).intersection(set(b)))
+    return list(set(a).intersection(set(b)))
 
 def List_Union(a:list, b:list) -> list:
-	return list(set(a).union(set(b)))
+    return list(set(a).union(set(b)))
 
 def List_Difference(a:list, b:list) -> list:
-	return list(set(a).difference(set(b)))
-	
+    return list(set(a).difference(set(b)))
+    
 def List_Symmetric_Difference(a:list, b:list) -> list:
-	return list(set(a).symmetric_difference(set(b)))
+    return list(set(a).symmetric_difference(set(b)))
 
 def List_Intersection_Full(a:list, b:list) -> list:
-	c=[]
-	for i in a:
-		if i in b:
-			c.append(i)
-	return c
+    c=[]
+    for i in a:
+        if i in b:
+            c.append(i)
+    return c
 
 def List_Union_Full(a:list, b:list) -> list:
-	c=copy.deepcopy(a)
-	for i in b:
-		if i not in c:
-			c.append(i)
-	return c
+    c=copy.deepcopy(a)
+    for i in b:
+        if i not in c:
+            c.append(i)
+    return c
 
 def List_Difference_Full(a:list, b:list) -> list:
-	c=[]
-	for i in a:
-		if i not in b:
-			c.append(i)
-	return c
+    c=[]
+    for i in a:
+        if i not in b:
+            c.append(i)
+    return c
 
 def List_Symmetric_Difference_Full(a:list, b:list) -> list:
-	c=[]
-	for i in a:
-		if i not in b:
-			c.append(i)
-	for i in b:
-		if i not in a:
-			c.append(i)
-	return c
+    c=[]
+    for i in a:
+        if i not in b:
+            c.append(i)
+    for i in b:
+        if i not in a:
+            c.append(i)
+    return c
 
 ##################################
 
 def Delete_to_Recyclebin(dir):
-	"删除成功返回True"
-	result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
-	return result[0]==0
+    "删除成功返回True"
+    result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
+    return result[0]==0
 
 def Win32_Shellcopy(src, dest):
-	"""
-	Copy files and directories using Windows shell.
+    """
+    Copy files and directories using Windows shell.
 
-	:param src: Path or a list of paths to copy. Filename portion of a path
-				(but not directory portion) can contain wildcards ``*`` and
-				``?``.
-	:param dst: destination directory.
-	:returns: ``True`` if the operation completed successfully,
-			  ``False`` if it was aborted by user (completed partially).
-	:raises: ``WindowsError`` if anything went wrong. Typically, when source
-			 file was not found.
+    :param src: Path or a list of paths to copy. Filename portion of a path
+                (but not directory portion) can contain wildcards ``*`` and
+                ``?``.
+    :param dst: destination directory.
+    :returns: ``True`` if the operation completed successfully,
+              ``False`` if it was aborted by user (completed partially).
+    :raises: ``WindowsError`` if anything went wrong. Typically, when source
+             file was not found.
 
-	.. seealso:
-		`SHFileperation on MSDN <http://msdn.microsoft.com/en-us/library/windows/desktop/bb762164(v=vs.85).aspx>`
-	"""
-	if isinstance(src, str):
-		src = os.path.abspath(src)
-	else:  # iterable
-		src = '\0'.join(os.path.abspath(path) for path in src)
+    .. seealso:
+        `SHFileperation on MSDN <http://msdn.microsoft.com/en-us/library/windows/desktop/bb762164(v=vs.85).aspx>`
+    """
+    if isinstance(src, str):
+        src = os.path.abspath(src)
+    else:  # iterable
+        src = '\0'.join(os.path.abspath(path) for path in src)
 
-	result, aborted = shell.SHFileOperation((
-		0,
-		shellcon.FO_COPY,
-		src,
-		os.path.abspath(dest),
-		shellcon.FOF_NOCONFIRMMKDIR,  # flags
-		None,
-		None))
+    result, aborted = shell.SHFileOperation((
+        0,
+        shellcon.FO_COPY,
+        src,
+        os.path.abspath(dest),
+        shellcon.FOF_NOCONFIRMMKDIR,  # flags
+        None,
+        None))
 
-	if not aborted and result != 0:
-		# Note: raising a WindowsError with correct error code is quite
-		# difficult due to SHFileOperation historical idiosyncrasies.
-		# Therefore we simply pass a message.
-		raise WindowsError('SHFileOperation failed: 0x%08x' % result)
+    if not aborted and result != 0:
+        # Note: raising a WindowsError with correct error code is quite
+        # difficult due to SHFileOperation historical idiosyncrasies.
+        # Therefore we simply pass a message.
+        raise WindowsError('SHFileOperation failed: 0x%08x' % result)
 
-	return not aborted
+    return not aborted
 
 def Win32_Shellmove(src, dest):
-	"""
-	Move files and directories using Windows shell.
+    """
+    Move files and directories using Windows shell.
 
-	:param src: Path or a list of paths to move. Filename portion of a path
-				(but not directory portion) can contain wildcards ``*`` and
-				``?``.
-	:param dst: destination directory.
-	:returns: ``True`` if the operation completed successfully,
-			  ``False`` if it was aborted by user (completed partially).
-	:raises: ``WindowsError`` if anything went wrong. Typically, when source
-			 file was not found.
+    :param src: Path or a list of paths to move. Filename portion of a path
+                (but not directory portion) can contain wildcards ``*`` and
+                ``?``.
+    :param dst: destination directory.
+    :returns: ``True`` if the operation completed successfully,
+              ``False`` if it was aborted by user (completed partially).
+    :raises: ``WindowsError`` if anything went wrong. Typically, when source
+             file was not found.
 
-	.. seealso:
-		`SHFileperation on MSDN <http://msdn.microsoft.com/en-us/library/windows/desktop/bb762164(v=vs.85).aspx>`
-	"""
-	if isinstance(src, str):
-		src = os.path.abspath(src)
-	else:  # iterable
-		src = '\0'.join(os.path.abspath(path) for path in src)
+    .. seealso:
+        `SHFileperation on MSDN <http://msdn.microsoft.com/en-us/library/windows/desktop/bb762164(v=vs.85).aspx>`
+    """
+    if isinstance(src, str):
+        src = os.path.abspath(src)
+    else:  # iterable
+        src = '\0'.join(os.path.abspath(path) for path in src)
 
-	result, aborted = shell.SHFileOperation((
-		0,
-		shellcon.FO_MOVE,
-		src,
-		os.path.abspath(dest),
-		shellcon.FOF_NOCONFIRMMKDIR,  # flags
-		None,
-		None))
+    result, aborted = shell.SHFileOperation((
+        0,
+        shellcon.FO_MOVE,
+        src,
+        os.path.abspath(dest),
+        shellcon.FOF_NOCONFIRMMKDIR,  # flags
+        None,
+        None))
 
-	if not aborted and result != 0:
-		# Note: raising a WindowsError with correct error code is quite
-		# difficult due to SHFileOperation historical idiosyncrasies.
-		# Therefore we simply pass a message.
-		raise WindowsError('SHFileOperation failed: 0x%08x' % result)
+    if not aborted and result != 0:
+        # Note: raising a WindowsError with correct error code is quite
+        # difficult due to SHFileOperation historical idiosyncrasies.
+        # Therefore we simply pass a message.
+        raise WindowsError('SHFileOperation failed: 0x%08x' % result)
 
-	return not aborted
+    return not aborted

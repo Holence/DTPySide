@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.7a2
+
+- Added AES Encryption\Decryption
+- You can now use Symmetric_Encrypt\Symmetric_Decrypt with assigned mode
+
 ## 0.1.7a1
 
 - Cyan Theme Imporved
