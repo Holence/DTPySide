@@ -350,7 +350,7 @@ class DTAPP(QApplication):
 			
 			self.__data_dir=new_dir
 			if self.isLoginEnable():
-				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),self.__data_dir))
+				self.UserSetting().setValue("BasicInfo/DataDir",Symmetric_Encrypt(self.password(),self.__data_dir))
 			else:
 				self.UserSetting().setValue("BasicInfo/DataDir",self.__data_dir)
 		else:
@@ -360,7 +360,7 @@ class DTAPP(QApplication):
 		if self.UserSetting().value("BasicInfo/DataDir")==None:
 			self.__data_dir=os.getcwd()
 			if self.isLoginEnable():
-				self.UserSetting().setValue("BasicInfo/DataDir",Fernet_Encrypt(self.password(),self.__data_dir))
+				self.UserSetting().setValue("BasicInfo/DataDir",Symmetric_Encrypt(self.password(),self.__data_dir))
 			else:
 				self.UserSetting().setValue("BasicInfo/DataDir",self.__data_dir)
 		return self.__data_dir
@@ -400,7 +400,7 @@ class DTAPP(QApplication):
 			if os.path.exists(dst):
 				self.__backup_dst=dst
 				if self.isLoginEnable():
-					self.UserSetting().setValue("BasicInfo/BackupDst",Fernet_Encrypt(self.password(),self.__backup_dst))
+					self.UserSetting().setValue("BasicInfo/BackupDst",Symmetric_Encrypt(self.password(),self.__backup_dst))
 				else:
 					self.UserSetting().setValue("BasicInfo/BackupDst",self.__backup_dst)
 			else:
@@ -416,7 +416,7 @@ class DTAPP(QApplication):
 	
 	def setPassword(self, password):
 		self.__password=password
-		self.UserSetting().setValue("BasicInfo/Password",Fernet_Encrypt(self.password(),self.password()))
+		self.UserSetting().setValue("BasicInfo/Password",Symmetric_Encrypt(self.password(),self.password()))
 
 	def author(self):
 		return self.UserSetting().value("MetaData/Author")
@@ -447,7 +447,7 @@ class DTAPP(QApplication):
 		self.__mainsession.close()
 		self.exit()
 		if self.isLoginEnable()==True:
-			QProcess.startDetached(sys.executable, sys.argv+[str(Fernet_Encrypt("9961",self.password())), "9961"])
+			QProcess.startDetached(sys.executable, sys.argv+[str(Symmetric_Encrypt("9961",self.password())), "9961"])
 		else:
 			QProcess.startDetached(sys.executable, sys.argv+["9961"])
 	
@@ -466,10 +466,10 @@ class DTAPP(QApplication):
 	
 	def __loadEncryptedData(self):
 		if self.isLoginEnable():
-			self.__data_dir=Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/DataDir"))
+			self.__data_dir=Symmetric_Decrypt(self.password(),self.UserSetting().value("BasicInfo/DataDir"))
 			if self.__data_dir==False:
 				self.__data_dir=None
-			self.__backup_dst=Fernet_Decrypt(self.password(),self.UserSetting().value("BasicInfo/BackupDst"))
+			self.__backup_dst=Symmetric_Decrypt(self.password(),self.UserSetting().value("BasicInfo/BackupDst"))
 			if self.__backup_dst==False:
 				self.__backup_dst=None
 		else:
@@ -484,7 +484,7 @@ class DTAPP(QApplication):
 		if self.arguments()[-1]=="9961":
 			if self.isLoginEnable()==True:
 				# print("Args:",self.arguments())
-				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
+				self.setPassword(Symmetric_Decrypt("9961", eval(self.arguments()[-2])))
 				# print("Restart Password:",self.password())
 
 			self.__loadEncryptedData()
@@ -516,7 +516,7 @@ class DTAPP(QApplication):
 		if self.arguments()[-1]=="9961":
 			if self.isLoginEnable()==True:
 				# print("Args:",self.arguments())
-				self.setPassword(Fernet_Decrypt("9961", eval(self.arguments()[-2])))
+				self.setPassword(Symmetric_Decrypt("9961", eval(self.arguments()[-2])))
 				# print("Restart Password:",self.password())
 
 			self.__loadEncryptedData()

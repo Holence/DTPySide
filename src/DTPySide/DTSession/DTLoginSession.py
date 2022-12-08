@@ -38,7 +38,7 @@ class DTLoginSession(DTFrame.DTDialog):
 			Delay_Msecs(400)
 			super().accept()
 		
-		elif Fernet_Decrypt(self.input_password,self.locked_password)==self.input_password:
+		elif Symmetric_Decrypt(self.input_password,self.locked_password)==self.input_password:
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Lock().pixmap(QSize(64,64)))
 			Delay_Msecs(300)
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Unlock().pixmap(QSize(64,64)))

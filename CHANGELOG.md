@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.7
+
+- password authentication is now using AES
+
 ## 0.1.7a2
 
 - Added AES Encryption\Decryption
