@@ -21,9 +21,9 @@ setuptools.setup(
     description="A PySide framework for constructing customizable GUI software.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Holence/DongliTeahousePySide",
+    url="https://github.com/Holence/DTPySide",
     project_urls={
-        "Bug Tracker": "https://github.com/Holence/DongliTeahousePySide/issues",
+        "Bug Tracker": "https://github.com/Holence/DTPySide/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
