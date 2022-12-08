@@ -222,7 +222,7 @@ def Symmetric_Encrypt(password: str, data, mode=None):
 def Symmetric_Decrypt(password: str, data, mode=None):
     if mode==None:
         res = AES_Decrypt(password, data)
-        if not res:
+        if res is False:
             return Fernet_Decrypt(password, data)
         else:
             return res
@@ -269,7 +269,7 @@ def Symmetric_Decrypt_Load(password: str, file_path, mode=None):
         
         if mode==None:
             decrypt_data = AES_Decrypt(password, data)
-            if not decrypt_data:
+            if decrypt_data is False:
                 decrypt_data = Fernet_Decrypt(password, data)
         else:
             if mode=="Fernet":

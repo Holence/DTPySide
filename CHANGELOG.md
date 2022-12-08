@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.7
+## 0.1.8
 
 - password authentication is now using AES
 
