@@ -596,17 +596,10 @@ class DTStyleSheet(str):
 
 		/* DockWidget*/
 
-		QDockWidget, QDockWidget > QWidget /*not work*/
-		{{
-			border-color: {DEEPDARK}; /*qt bug*/
-			background: transparent;
+		QDockWidget{{
+			border: 2px solid {DEEPDARK};
+			background: {BACKGROUND};
 		}}
-		QDockWidget::title {{
-			border-bottom: 1px solid {DEEPDARK};
-			text-align: left;
-			padding: 6px;
-		}}
-
 
 		/* GroupBox */
 

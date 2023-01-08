@@ -1,5 +1,6 @@
 from DTPySide.DTWidget.DTCapsuleButton import DTCapsuleButton
 from DTPySide.DTWidget.DTApplyButton import DTApplyButton
+from DTPySide.DTWidget.DTDockWidget import DTDockWidget
 from DTPySide.DTWidget.DTSettingButton import DTSettingButton
 from DTPySide.DTWidget.DTTitleBar import DTTitleBar
 from DTPySide.DTWidget.DTToolTip import DTToolTip

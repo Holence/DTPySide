@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9a
+
+- added a dock widget
+
 ## 0.1.8
 
 - password authentication is now using AES
