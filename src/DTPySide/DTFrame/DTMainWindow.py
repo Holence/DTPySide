@@ -133,6 +133,12 @@ class DTMainWindow(Ui_DTMainWindow,DTWidget.DTWindow):
 	def setPassword(self,password):
 		self.app.setPassword(password)
 	
+	def iteration(self):
+		return self.app.iteration()
+	
+	def setIteration(self,iteration):
+		self.app.setIteration(iteration)
+	
 	def UserSetting(self):
 		return self.app.UserSetting()
 

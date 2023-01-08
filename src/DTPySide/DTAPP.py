@@ -341,7 +341,7 @@ class DTAPP(QApplication):
 		if os.path.exists(new_dir):
 			old_dir=self.DataDir()
 			try:
-				for file in self.DataList():		
+				for file in self.DataList():
 					old_file_dir=os.path.join(old_dir,file)
 					file_dst=os.path.join(new_dir,file)
 					shutil.move(old_file_dir,file_dst)
@@ -350,7 +350,7 @@ class DTAPP(QApplication):
 			
 			self.__data_dir=new_dir
 			if self.isLoginEnable():
-				self.UserSetting().setValue("BasicInfo/DataDir",Symmetric_Encrypt(self.password(),self.__data_dir))
+				self.UserSetting().setValue("BasicInfo/DataDir",Symmetric_Encrypt(self.password(), self.__data_dir, iteration=self.iteration()))
 			else:
 				self.UserSetting().setValue("BasicInfo/DataDir",self.__data_dir)
 		else:
@@ -360,7 +360,7 @@ class DTAPP(QApplication):
 		if self.UserSetting().value("BasicInfo/DataDir")==None:
 			self.__data_dir=os.getcwd()
 			if self.isLoginEnable():
-				self.UserSetting().setValue("BasicInfo/DataDir",Symmetric_Encrypt(self.password(),self.__data_dir))
+				self.UserSetting().setValue("BasicInfo/DataDir",Symmetric_Encrypt(self.password(), self.__data_dir, iteration=self.iteration()))
 			else:
 				self.UserSetting().setValue("BasicInfo/DataDir",self.__data_dir)
 		return self.__data_dir
@@ -400,7 +400,7 @@ class DTAPP(QApplication):
 			if os.path.exists(dst):
 				self.__backup_dst=dst
 				if self.isLoginEnable():
-					self.UserSetting().setValue("BasicInfo/BackupDst",Symmetric_Encrypt(self.password(),self.__backup_dst))
+					self.UserSetting().setValue("BasicInfo/BackupDst",Symmetric_Encrypt(self.password(), self.__backup_dst, iteration=self.iteration()))
 				else:
 					self.UserSetting().setValue("BasicInfo/BackupDst",self.__backup_dst)
 			else:
@@ -416,7 +416,15 @@ class DTAPP(QApplication):
 	
 	def setPassword(self, password):
 		self.__password=password
-		self.UserSetting().setValue("BasicInfo/Password",Symmetric_Encrypt(self.password(),self.password()))
+		self.UserSetting().setValue("BasicInfo/Password",Symmetric_Encrypt(self.password(), self.password(), iteration=self.iteration()))
+
+	def iteration(self):
+		if self.UserSetting().value("BasicInfo/Iteration")==None or int(self.UserSetting().value("BasicInfo/Iteration"))<1:
+			self.setIteration(48000)
+		return int(self.UserSetting().value("BasicInfo/Iteration"))
+	
+	def setIteration(self, iteration):
+		self.UserSetting().setValue("BasicInfo/Iteration", iteration)
 
 	def author(self):
 		return self.UserSetting().value("MetaData/Author")
@@ -447,16 +455,16 @@ class DTAPP(QApplication):
 		self.__mainsession.close()
 		self.exit()
 		if self.isLoginEnable()==True:
-			QProcess.startDetached(sys.executable, sys.argv+[str(Symmetric_Encrypt("9961",self.password())), "9961"])
+			QProcess.startDetached(sys.executable, sys.argv+[str(Symmetric_Encrypt("9961", self.password(), iteration=self.iteration())), "9961"])
 		else:
 			QProcess.startDetached(sys.executable, sys.argv+["9961"])
 	
 	def __loginIn(self):
 		locked_password=self.UserSetting().value("BasicInfo/Password")
 		if locked_password:
-			dlg=DTSession.DTLoginSession(locked_password)
+			dlg=DTSession.DTLoginSession(locked_password, self.iteration())
 		else:
-			dlg=DTSession.DTLoginSession(locked_password, "Register")
+			dlg=DTSession.DTLoginSession(locked_password, self.iteration(), "Register")
 		
 		if dlg.exec_()==0:
 			self.quit()
@@ -466,10 +474,10 @@ class DTAPP(QApplication):
 	
 	def __loadEncryptedData(self):
 		if self.isLoginEnable():
-			self.__data_dir=Symmetric_Decrypt(self.password(),self.UserSetting().value("BasicInfo/DataDir"))
+			self.__data_dir=Symmetric_Decrypt(self.password(), self.UserSetting().value("BasicInfo/DataDir"), iteration=self.iteration())
 			if self.__data_dir==False:
 				self.__data_dir=None
-			self.__backup_dst=Symmetric_Decrypt(self.password(),self.UserSetting().value("BasicInfo/BackupDst"))
+			self.__backup_dst=Symmetric_Decrypt(self.password(), self.UserSetting().value("BasicInfo/BackupDst"), iteration=self.iteration())
 			if self.__backup_dst==False:
 				self.__backup_dst=None
 		else:
@@ -484,7 +492,7 @@ class DTAPP(QApplication):
 		if self.arguments()[-1]=="9961":
 			if self.isLoginEnable()==True:
 				# print("Args:",self.arguments())
-				self.setPassword(Symmetric_Decrypt("9961", eval(self.arguments()[-2])))
+				self.setPassword(Symmetric_Decrypt("9961", eval(self.arguments()[-2]), iteration=self.iteration()))
 				# print("Restart Password:",self.password())
 
 			self.__loadEncryptedData()
@@ -516,7 +524,7 @@ class DTAPP(QApplication):
 		if self.arguments()[-1]=="9961":
 			if self.isLoginEnable()==True:
 				# print("Args:",self.arguments())
-				self.setPassword(Symmetric_Decrypt("9961", eval(self.arguments()[-2])))
+				self.setPassword(Symmetric_Decrypt("9961", eval(self.arguments()[-2]), iteration=self.iteration()))
 				# print("Restart Password:",self.password())
 
 			self.__loadEncryptedData()

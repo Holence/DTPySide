@@ -3,8 +3,10 @@ from DTPySide import *
 
 # Login 
 class DTLoginSession(DTFrame.DTDialog):
-	def __init__(self,locked_password,title="Login"):
+	def __init__(self, locked_password, iteration, title="Login"):
 		super().__init__(None,title)
+		self.iteration=iteration
+
 		self.__LoginModule=DTModule.DTLogin(self)
 		self.centralWidget.setContentsMargins(QMargins(9,10,32,10))
 		self.setCentralWidget(self.__LoginModule)
@@ -38,7 +40,7 @@ class DTLoginSession(DTFrame.DTDialog):
 			Delay_Msecs(400)
 			super().accept()
 		
-		elif Symmetric_Decrypt(self.input_password,self.locked_password)==self.input_password:
+		elif Symmetric_Decrypt(self.input_password, self.locked_password, iteration=self.iteration)==self.input_password:
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Lock().pixmap(QSize(64,64)))
 			Delay_Msecs(300)
 			self.__LoginModule.label_lock.setPixmap(DTIcon.Unlock().pixmap(QSize(64,64)))

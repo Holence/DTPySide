@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9a1
+
+- You can now set iteration for PBKDF2HMAC key generation in Setting
+
 ## 0.1.9a
 
 - added a dock widget

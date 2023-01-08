@@ -54,7 +54,7 @@ class DTStyleSheet(str):
 
 		QDialog {{
 			border: 2px solid {DEEPDARK};
-			border-radius: 1px;
+			border-radius: 2px;
 		}}
 
 		#DTMainWindow #statusBar{{
@@ -596,9 +596,8 @@ class DTStyleSheet(str):
 
 		/* DockWidget*/
 
-		QDockWidget{{
-			border: 2px solid {DEEPDARK};
-			background: {BACKGROUND};
+		QDockWidget > QWidget {{
+			border: transparent;
 		}}
 
 		/* GroupBox */

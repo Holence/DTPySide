@@ -23,9 +23,12 @@ class DTSetting(Ui_DTSetting,QWidget):
 		
 		if self.app.isLoginEnable():
 			self.lineEdit_password.setText(self.app.password())
+			self.spinBox_iteration.setValue(self.app.iteration())
 		else:
 			self.lineEdit_password.hide()
 			self.label_password.hide()
+			self.spinBox_iteration.hide()
+			self.label_iteration.hide()
 		
 		if self.app.DataList()!=[]:
 			self.lineEdit_data_dir.setText(self.app.DataDir())
@@ -139,6 +142,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 	
 		if self.app.isLoginEnable():
 			self.lineEdit_password.editingFinished.connect(self.PasswordSetting)
+			self.pushButton_iteration.clicked.connect(self.IterationSetting)
 		
 		self.pushButton_data_dir.clicked.connect(self.DataDirSetting)
 		
@@ -176,6 +180,16 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.app.setPassword(self.lineEdit_password.text())
 			self.Headquarter.saveAllEncryptData()
 			DTFrame.DTMessageBox(self,"Information","Password reseted to \"%s\" successfully!"%self.app.password(),DTIcon.Information())
+		except:
+			DTFrame.DTMessageBox(self,"Warning","Error occur during password reseting!",DTIcon.Error())
+
+	def IterationSetting(self):
+		
+		try:
+			self.app.setIteration(self.spinBox_iteration.value())
+			self.app.setPassword(self.lineEdit_password.text())
+			self.Headquarter.saveAllEncryptData()
+			DTFrame.DTMessageBox(self,"Information","Iteration seted to \"%s\" successfully!"%self.app.iteration(),DTIcon.Information())
 		except:
 			DTFrame.DTMessageBox(self,"Warning","Error occur during password reseting!",DTIcon.Error())
 

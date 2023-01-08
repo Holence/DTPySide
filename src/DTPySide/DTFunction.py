@@ -120,14 +120,14 @@ def show_ContextMenu_Right(menu,btn):
 
 ##################################
 
-def Fernet_Encrypt(password: str, data):
+def Fernet_Encrypt(password: str, data, iteration=100000):
     try:
         if type(data)!=bytes:
             data=pickle.dumps(data)
         
         salt=password.encode()[::-1]
         password=password.encode()
-        kdf=PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=100000,backend=default_backend())
+        kdf=PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=iteration,backend=default_backend())
         key=base64.urlsafe_b64encode(kdf.derive(password))
 
         fer=Fernet(key)
@@ -137,11 +137,11 @@ def Fernet_Encrypt(password: str, data):
     except:
         return False
 
-def Fernet_Decrypt(password: str, data: bytes):
+def Fernet_Decrypt(password: str, data: bytes, iteration=100000):
     try:
         salt=password.encode()[::-1]
         password=password.encode()
-        kdf=PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=100000,backend=default_backend())
+        kdf=PBKDF2HMAC(algorithm=hashes.SHA256(),length=32,salt=salt,iterations=iteration,backend=default_backend())
         key=base64.urlsafe_b64encode(kdf.derive(password))
         
         fer=Fernet(key)
@@ -156,7 +156,7 @@ def Fernet_Decrypt(password: str, data: bytes):
     except:
         return False
 
-def AES_Encrypt(password: str, data):
+def AES_Encrypt(password: str, data, iteration=48000):
     try:
         if type(data)!=bytes:
             data=pickle.dumps(data)
@@ -164,7 +164,7 @@ def AES_Encrypt(password: str, data):
         # generate password
         salt = os.urandom(16)
         iv = os.urandom(16)
-        kdf = PBKDF2HMAC(hashes.SHA512(), 32, salt, 480000, backend=default_backend())
+        kdf = PBKDF2HMAC(hashes.SHA512(), 32, salt, iteration, backend=default_backend())
         password = kdf.derive(password.encode())
 
         # pad data
@@ -182,14 +182,14 @@ def AES_Encrypt(password: str, data):
     except:
         return False
 
-def AES_Decrypt(password: str, data):
+def AES_Decrypt(password: str, data, iteration=48000):
     try:
         # re-generate password from
         encrypted_obj = base64.b64decode(data)
         salt = encrypted_obj[0:16]
         iv = encrypted_obj[-16:]
         cypher_text = encrypted_obj[16:-16]
-        kdf = PBKDF2HMAC(hashes.SHA512(), 32, salt, 480000, backend=default_backend())
+        kdf = PBKDF2HMAC(hashes.SHA512(), 32, salt, iteration, backend=default_backend())
         password = kdf.derive(password.encode())
 
         # decrypt
@@ -210,37 +210,37 @@ def AES_Decrypt(password: str, data):
     except:
         return False
 
-def Symmetric_Encrypt(password: str, data, mode=None):
+def Symmetric_Encrypt(password: str, data, mode=None, iteration=48000):
     if mode==None:
-        return AES_Encrypt(password, data)
+        return AES_Encrypt(password, data, iteration)
     else:
         if mode=="Fernet":
-            return Fernet_Encrypt(password, data)
+            return Fernet_Encrypt(password, data, iteration)
         if mode=="AES":
-            return AES_Encrypt(password, data)
+            return AES_Encrypt(password, data, iteration)
 
-def Symmetric_Decrypt(password: str, data, mode=None):
+def Symmetric_Decrypt(password: str, data, mode=None, iteration=48000):
     if mode==None:
-        res = AES_Decrypt(password, data)
+        res = AES_Decrypt(password, data, iteration)
         if res is False:
-            return Fernet_Decrypt(password, data)
+            return Fernet_Decrypt(password, data, iteration)
         else:
             return res
     else:
         if mode=="Fernet":
-            return Fernet_Decrypt(password, data)
+            return Fernet_Decrypt(password, data, iteration)
         if mode=="AES":
-            return AES_Decrypt(password, data)
+            return AES_Decrypt(password, data, iteration)
 
-def Symmetric_Encrypt_Save(password: str, data, file_path, mode=None):
+def Symmetric_Encrypt_Save(password: str, data, file_path, mode=None, iteration=48000):
     try:
         if mode==None:
-            enc_data=AES_Encrypt(password, data)
+            enc_data=AES_Encrypt(password, data, iteration)
         else:
             if mode=="Fernet":
-                enc_data=Fernet_Encrypt(password, data)
+                enc_data=Fernet_Encrypt(password, data, iteration)
             if mode=="AES":
-                enc_data=AES_Encrypt(password, data)
+                enc_data=AES_Encrypt(password, data, iteration)
         
         if not os.path.exists(os.path.dirname(os.path.abspath(file_path))):
             os.makedirs(os.path.dirname(file_path))
@@ -253,7 +253,7 @@ def Symmetric_Encrypt_Save(password: str, data, file_path, mode=None):
         print(e)
         return False
 
-def Symmetric_Decrypt_Load(password: str, file_path, mode=None):
+def Symmetric_Decrypt_Load(password: str, file_path, mode=None, iteration=48000):
     try:
         try:
             with open(file_path,"rb") as f:
@@ -268,14 +268,14 @@ def Symmetric_Decrypt_Load(password: str, file_path, mode=None):
                     data=f.read()
         
         if mode==None:
-            decrypt_data = AES_Decrypt(password, data)
+            decrypt_data = AES_Decrypt(password, data, iteration)
             if decrypt_data is False:
-                decrypt_data = Fernet_Decrypt(password, data)
+                decrypt_data = Fernet_Decrypt(password, data, iteration)
         else:
             if mode=="Fernet":
-                decrypt_data = Fernet_Decrypt(password, data)
+                decrypt_data = Fernet_Decrypt(password, data, iteration)
             if mode=="AES":
-                decrypt_data = AES_Decrypt(password, data)
+                decrypt_data = AES_Decrypt(password, data, iteration)
 
         return decrypt_data
     except:

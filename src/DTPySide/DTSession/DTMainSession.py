@@ -149,7 +149,7 @@ class DTMainSession(DTFrame.DTMainWindow):
 
 					# 还未出现Login界面
 					if not hasattr(self,"ResurrectionDlg"):
-						self.ResurrectionDlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"))
+						self.ResurrectionDlg=DTSession.DTLoginSession(self.UserSetting().value("BasicInfo/Password"), self.app.iteration())
 						
 						#成功登回
 						if self.ResurrectionDlg.exec_():
