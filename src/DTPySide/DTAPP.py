@@ -139,7 +139,7 @@ class DTAPP(QApplication):
 		if theme=="Dracula":
 			self.color_list=["#191A21","#21222C","#282A36","#404257", "#A67DB4","#8C6BBB","#E0E0E0"]
 			QIcon.setThemeName(white_or_black[reverse])
-		elif theme=="Dracula2":
+		elif theme=="Dracula Customized":
 			self.color_list=["#202329","#282C34","#313341","#404257","#D7AAE6","#BD93F9","#EBEBEB"]
 			QIcon.setThemeName(white_or_black[reverse])
 		elif theme=="Brown":
