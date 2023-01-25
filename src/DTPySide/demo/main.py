@@ -10,7 +10,7 @@ def run():
 	app.setApplicationName("DTPySide Demo")
 	app.setLoginEnable(True)
 	app.loadTranslation()
-	app.setQuitOnClickX(False)
+	app.setQuitOnClickX(True)
 	mainsession=DemoMainSession(app)
 	app.setMainSession(mainsession)
 	# app.debugRun("123",True)

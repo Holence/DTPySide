@@ -13,6 +13,11 @@ class DTMainSession(DTFrame.DTMainWindow):
 		没有return: 这里要填啥
 	"""	
 
+	def closeEvent(self, event):
+		super().closeEvent(event)
+		if self.app.isQuitOnClickX() and sys.platform == "linux":
+			self.quit()
+
 	def __init__(self, app):
 		"""DTMainSession的构造函数
 
@@ -67,10 +72,16 @@ class DTMainSession(DTFrame.DTMainWindow):
 		super().initializeSignal()
 		
 		self.actionExit.triggered.connect(self.quit)
-		if self.app.isQuitOnClickX():
-			self.TitleBar.btn_close.clicked.connect(self.quit)
-		else:
-			self.TitleBar.btn_close.clicked.connect(self.close)
+
+		if sys.platform == "win32":
+			if self.app.isQuitOnClickX():
+				self.TitleBar.btn_close.clicked.connect(self.quit)
+			else:
+				self.TitleBar.btn_close.clicked.connect(self.close)
+		elif sys.platform == "linux":
+			self.actionOpenWindow=QAction("Open Window")
+			self.actionOpenWindow.setIcon(IconFromCurrentTheme("window-restore.svg"))
+			self.actionOpenWindow.triggered.connect(self.show)
 		
 		if self.app.isLoginEnable():
 			self.actionSecure_Mode.triggered.connect(self.switchSecureMode)
@@ -86,15 +97,19 @@ class DTMainSession(DTFrame.DTMainWindow):
 	def initializeMenu(self):
 		"制定menu"
 
+		if sys.platform == "linux":
+			self.addActionToMainMenu(self.actionOpenWindow)
+			self.addSeparatorToMainMenu()
+		
 		if self.app.isBackupEnable():
-			self._MainMenu.addAction(self.actionBackup)
-			self._MainMenu.addSeparator()
+			self.addActionToMainMenu(self.actionBackup)
+			self.addSeparatorToMainMenu()
 		
 		################################################################
-
-		self._MainMenu.addAction(self.actionSetting)
-		self._MainMenu.addAction(self.actionAbout)
-		self._MainMenu.addSeparator()
+		
+		self.addActionToMainMenu(self.actionSetting)
+		self.addActionToMainMenu(self.actionAbout)
+		self.addSeparatorToMainMenu()
 		
 		################################################################
 		
@@ -113,8 +128,8 @@ class DTMainSession(DTFrame.DTMainWindow):
 			self.actionSecure_Mode.setIcon(IconFromCurrentTheme("toggle-right.svg"))
 			self.actionSecure_Mode.setText(QCoreApplication.translate("Lobby", "Secure Mode - On"))
 
-		self._MainMenu.addAction(self.actionBoss_Key)
-		self._MainMenu.addAction(self.actionExit)
+		self.addActionToMainMenu(self.actionBoss_Key)
+		self.addActionToMainMenu(self.actionExit)
 		
 	def refresh(self):
 		""""改变颜色后，可能有些依赖于app.color_list的颜色要更新，在这里添加对所有窗体的刷新操作"
@@ -156,6 +171,9 @@ class DTMainSession(DTFrame.DTMainWindow):
 							# 恢复self._MainMenu里的其他action
 							for action in self._MainMenu.actions()[:-1]:
 								action.setVisible(True)
+							if sys.platform=="linux":
+								self.actionOpenWindow.triggered.disconnect()
+								self.actionOpenWindow.triggered.connect(self.show)
 							self.show()
 						
 						del self.ResurrectionDlg
@@ -181,7 +199,11 @@ class DTMainSession(DTFrame.DTMainWindow):
 		if self.app.isLoginEnable() and self.SecureMode:
 			# Boss键后只显示退出键，self._MainMenu里的其他action隐藏掉
 			for action in self._MainMenu.actions()[:-1]:
-				action.setVisible(False)
+				if sys.platform=="linux" and action.text()=="Open Window":
+					self.actionOpenWindow.triggered.disconnect()
+					self.actionOpenWindow.triggered.connect(lambda:self.windowResurrection(QSystemTrayIcon.Trigger))
+				else:
+					action.setVisible(False)
 	
 	def loadData(self):
 		"""这里请用self.app.DataDir获取Data的路径

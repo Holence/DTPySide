@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DTDialog</class>
- <widget class="QDialog" name="DTDialog">
+ <class>DTDialogLinux</class>
+ <widget class="QDialog" name="DTDialogLinux">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -32,16 +32,6 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
-    <widget class="DTTitleBar" name="TitleBar" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
    <item>
     <layout class="QHBoxLayout" name="centralWidget">
      <property name="leftMargin">
@@ -108,20 +98,12 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>DTTitleBar</class>
-   <extends>QWidget</extends>
-   <header>DTWidget.DTTitleBar</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>DTDialog</receiver>
+   <receiver>DTDialogLinux</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -137,7 +119,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>DTDialog</receiver>
+   <receiver>DTDialogLinux</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

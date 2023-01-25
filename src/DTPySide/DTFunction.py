@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
 from PySide2.QtCore import *
-import sys, os, shutil
+import sys, os, shutil, subprocess
 import re
 import copy
 import time
@@ -9,9 +9,6 @@ import pickle
 import json
 import pypinyin
 from functools import partial
-from win32.lib import win32con
-from win32 import win32gui, win32api
-from win32com.shell import shell,shellcon
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
@@ -23,13 +20,20 @@ import colour
 import bz2, blosc
 import typing
 
+if sys.platform == "win32":
+    from win32.lib import win32con
+    from win32 import win32gui, win32api
+    from win32com.shell import shell,shellcon
+
 def ShowUp(window:QWidget):
     if window.isFullScreen():
         window.showFullScreen()
-        window.TitleBar.hide()
+        if sys.platform == "win32":
+            window.TitleBar.hide()
     else:
         window.showNormal()
-        window.TitleBar.show()
+        if sys.platform == "win32":
+            window.TitleBar.show()
     
     window.activateWindow()
 
@@ -37,10 +41,19 @@ def MoveToCenterOfScreen(widget:QWidget):
     """在initializeWindow中，setCentralWidget之后调用
     """
     scale=float(os.environ["QT_SCALE_FACTOR"])
-    widget.move( 
-        int((win32api.GetSystemMetrics(0)-widget.width()*scale)/scale)//2 ,
-        int((win32api.GetSystemMetrics(1)-widget.height()*scale)/scale)//2
-    )
+    if sys.platform == "win32":
+        widget.move(
+            int((win32api.GetSystemMetrics(0)-widget.width()*scale)/scale)//2 ,
+            int((win32api.GetSystemMetrics(1)-widget.height()*scale)/scale)//2
+        )
+    elif sys.platform == "linux":
+        output = subprocess.Popen('xrandr | grep "\*" | cut -d" " -f4',shell=True, stdout=subprocess.PIPE).communicate()[0]
+        output = output.decode()
+        w, h = map(int, output[:-1].split("x"))
+        widget.move(
+            int((w-widget.width()*scale)/scale)//2 ,
+            int((h-widget.height()*scale)/scale)//2
+        )
     
 def IconFromCurrentTheme(name):
     return QIcon(":/icons/%s/%s"%(QIcon.themeName(),name))
@@ -250,7 +263,6 @@ def Symmetric_Encrypt_Save(password: str, data, file_path, mode=None, iteration=
         
         return True
     except Exception as e:
-        print(e)
         return False
 
 def Symmetric_Decrypt_Load(password: str, file_path, mode=None, iteration=48000):
@@ -419,8 +431,11 @@ def List_Symmetric_Difference_Full(a:list, b:list) -> list:
 
 def Delete_to_Recyclebin(dir):
     "删除成功返回True"
-    result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
-    return result[0]==0
+    if sys.platform == "win32":
+        result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
+        return result[0]==0
+    elif sys.platform == "linux":
+        pass
 
 def Win32_Shellcopy(src, dest):
     """
@@ -438,27 +453,30 @@ def Win32_Shellcopy(src, dest):
     .. seealso:
         `SHFileperation on MSDN <http://msdn.microsoft.com/en-us/library/windows/desktop/bb762164(v=vs.85).aspx>`
     """
-    if isinstance(src, str):
-        src = os.path.abspath(src)
-    else:  # iterable
-        src = '\0'.join(os.path.abspath(path) for path in src)
+    if sys.platform == "win32":
+        if isinstance(src, str):
+            src = os.path.abspath(src)
+        else:  # iterable
+            src = '\0'.join(os.path.abspath(path) for path in src)
 
-    result, aborted = shell.SHFileOperation((
-        0,
-        shellcon.FO_COPY,
-        src,
-        os.path.abspath(dest),
-        shellcon.FOF_NOCONFIRMMKDIR,  # flags
-        None,
-        None))
+        result, aborted = shell.SHFileOperation((
+            0,
+            shellcon.FO_COPY,
+            src,
+            os.path.abspath(dest),
+            shellcon.FOF_NOCONFIRMMKDIR,  # flags
+            None,
+            None))
 
-    if not aborted and result != 0:
-        # Note: raising a WindowsError with correct error code is quite
-        # difficult due to SHFileOperation historical idiosyncrasies.
-        # Therefore we simply pass a message.
-        raise WindowsError('SHFileOperation failed: 0x%08x' % result)
+        if not aborted and result != 0:
+            # Note: raising a WindowsError with correct error code is quite
+            # difficult due to SHFileOperation historical idiosyncrasies.
+            # Therefore we simply pass a message.
+            raise WindowsError('SHFileOperation failed: 0x%08x' % result)
 
-    return not aborted
+        return not aborted
+    elif sys.platform == "linux":
+        pass
 
 def Win32_Shellmove(src, dest):
     """
@@ -476,24 +494,27 @@ def Win32_Shellmove(src, dest):
     .. seealso:
         `SHFileperation on MSDN <http://msdn.microsoft.com/en-us/library/windows/desktop/bb762164(v=vs.85).aspx>`
     """
-    if isinstance(src, str):
-        src = os.path.abspath(src)
-    else:  # iterable
-        src = '\0'.join(os.path.abspath(path) for path in src)
+    if sys.platform == "win32":
+        if isinstance(src, str):
+            src = os.path.abspath(src)
+        else:  # iterable
+            src = '\0'.join(os.path.abspath(path) for path in src)
 
-    result, aborted = shell.SHFileOperation((
-        0,
-        shellcon.FO_MOVE,
-        src,
-        os.path.abspath(dest),
-        shellcon.FOF_NOCONFIRMMKDIR,  # flags
-        None,
-        None))
+        result, aborted = shell.SHFileOperation((
+            0,
+            shellcon.FO_MOVE,
+            src,
+            os.path.abspath(dest),
+            shellcon.FOF_NOCONFIRMMKDIR,  # flags
+            None,
+            None))
 
-    if not aborted and result != 0:
-        # Note: raising a WindowsError with correct error code is quite
-        # difficult due to SHFileOperation historical idiosyncrasies.
-        # Therefore we simply pass a message.
-        raise WindowsError('SHFileOperation failed: 0x%08x' % result)
+        if not aborted and result != 0:
+            # Note: raising a WindowsError with correct error code is quite
+            # difficult due to SHFileOperation historical idiosyncrasies.
+            # Therefore we simply pass a message.
+            raise WindowsError('SHFileOperation failed: 0x%08x' % result)
 
-    return not aborted
+        return not aborted
+    elif sys.platform == "linux":
+        pass
