@@ -440,6 +440,7 @@ def Delete_to_Recyclebin(dir):
 
 def Win32_Shellcopy(src, dest):
     """
+    无法返回覆盖还是跳过，请提前自行判断是否会有冲突！
     Copy files and directories using Windows shell.
 
     :param src: Path or a list of paths to copy. Filename portion of a path
@@ -481,6 +482,7 @@ def Win32_Shellcopy(src, dest):
 
 def Win32_Shellmove(src, dest):
     """
+    无法返回覆盖还是跳过，请提前自行判断是否会有冲突！
     Move files and directories using Windows shell.
 
     :param src: Path or a list of paths to move. Filename portion of a path

@@ -57,7 +57,7 @@ class DTStyleSheet(str):
 			border-radius: 2px;
 		}}
 
-		#DTMainWindow #statusBar{{
+		#DTMainWindowWin32 #statusBar, #DTMainWindowLinux #statusBar{{
 			background-color: {SOFTDARK};
 			font-family: "微软雅黑";
 			font-size: 9pt;
