@@ -438,7 +438,7 @@ def Delete_to_Recyclebin(dir):
     except:
         return False
 
-def Win32_Shellcopy(src, dest):
+def Shell_Copy_File(src, dest):
     """
     无法返回覆盖还是跳过，请提前自行判断是否会有冲突！
     Copy files and directories using Windows shell.
@@ -480,7 +480,7 @@ def Win32_Shellcopy(src, dest):
     elif sys.platform == "linux":
         pass
 
-def Win32_Shellmove(src, dest):
+def Shell_Move_File(src, dest):
     """
     无法返回覆盖还是跳过，请提前自行判断是否会有冲突！
     Move files and directories using Windows shell.
