@@ -435,6 +435,8 @@ def List_Symmetric_Difference_Full(a:list, b:list) -> list:
 
 def Delete_to_Recyclebin(dir):
     "删除成功返回True"
+    if sys.platform=="win32":
+        dir=dir.replace("/","\\")
     try:
         send2trash(dir)
         return True
