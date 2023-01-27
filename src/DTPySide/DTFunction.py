@@ -8,6 +8,7 @@ import time
 import pickle
 import json
 import pypinyin
+from send2trash import send2trash
 from functools import partial
 import base64
 from cryptography.fernet import Fernet
@@ -431,11 +432,11 @@ def List_Symmetric_Difference_Full(a:list, b:list) -> list:
 
 def Delete_to_Recyclebin(dir):
     "删除成功返回True"
-    if sys.platform == "win32":
-        result = shell.SHFileOperation((0,shellcon.FO_DELETE,dir,None, shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,None,None))  #删除文件到回收站
-        return result[0]==0
-    elif sys.platform == "linux":
-        pass
+    try:
+        send2trash(dir)
+        return True
+    except:
+        return False
 
 def Win32_Shellcopy(src, dest):
     """

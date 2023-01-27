@@ -217,6 +217,8 @@ class DTAPP(QApplication):
 	def WindowEffect(self):
 		if self.UserSetting().value("BasicInfo/WindowEffect") not in ["Normal","Aero","Acrylic"]:
 			self.setWindowEffect("Normal")
+		elif sys.platform!="win32":
+			self.setWindowEffect("Normal")
 		return self.UserSetting().value("BasicInfo/WindowEffect")
 	
 	def setWindowEffect(self, WindowEffect:str):

@@ -58,7 +58,13 @@ class DTSetting(Ui_DTSetting,QWidget):
 
 		# scale
 		self.spinBox_scale.setValue(self.app.Scale())
-		self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
+
+		# window effect
+		if sys.platform=="win32":
+			self.comboBox_window_effect.setCurrentIndex(["Normal","Aero","Acrylic"].index(self.app.WindowEffect()))
+		else:
+			self.label_window_effect.hide()
+			self.comboBox_window_effect.hide()
 		
 		# theme
 		self.comboBox_theme.addItems(self.app.ThemeList)
@@ -150,7 +156,10 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.pushButton_backup.clicked.connect(self.BackupSetting)
 		
 		self.pushButton_scale.clicked.connect(self.ScaleSetting)
-		self.comboBox_window_effect.currentIndexChanged.connect(self.WindowEffectSetting)
+		
+		if sys.platform=="win32":
+			self.comboBox_window_effect.currentIndexChanged.connect(self.WindowEffectSetting)
+		
 		self.comboBox_theme.currentIndexChanged.connect(self.ThemeSetting)
 		
 		self.pushButton_color.clicked.connect(self.ColorSetting)
