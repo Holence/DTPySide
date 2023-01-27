@@ -96,10 +96,6 @@ class DTMainSession(DTFrame.DTMainWindow):
 	
 	def initializeMenu(self):
 		"制定menu"
-
-		if sys.platform == "linux":
-			self.addActionToMainMenu(self.actionOpenWindow)
-			self.addSeparatorToMainMenu()
 		
 		if self.app.isBackupEnable():
 			self.addActionToMainMenu(self.actionBackup)
@@ -129,6 +125,10 @@ class DTMainSession(DTFrame.DTMainWindow):
 			self.actionSecure_Mode.setText(QCoreApplication.translate("Lobby", "Secure Mode - On"))
 
 		self.addActionToMainMenu(self.actionBoss_Key)
+		
+		self.addSeparatorToMainMenu()
+		if sys.platform == "linux":
+			self.addActionToMainMenu(self.actionOpenWindow)
 		self.addActionToMainMenu(self.actionExit)
 		
 	def refresh(self):
@@ -248,10 +248,10 @@ class DTMainSession(DTFrame.DTMainWindow):
 		elif not os.path.exists(backup_dst):
 			DTFrame.DTMessageBox(self,"Warning","Backup Dst %s does not exsit!"%backup_dst,DTIcon.Warning())
 		else:
-			new_folder_dst=os.path.join(backup_dst,WhatDayIsToday(1).toString("yyyyMMdd")).replace("/","\\")
+			new_folder_dst=os.path.join(backup_dst,WhatDayIsToday(1).toString("yyyyMMdd"))
 			self.backup_thread=BackUpThread(self, self.app.DataDir(), self.app.DataList())
 			self.backup_thread.finished.connect(self.backup_thread.deleteLater)
-			self.backup_thread.finished.connect(lambda:self.app.showMessage("Information", "Data backup completed.", DTIcon.Information(), clicked_slot=lambda:os.popen("explorer /select,\"%s\""%new_folder_dst)))
+			self.backup_thread.finished.connect(lambda:self.app.showMessage("Information", "Data backup completed.", DTIcon.Information(), clicked_slot=lambda: Open_Explorer(new_folder_dst, True)))
 			self.backup_thread.start()
 
 	def about(self):

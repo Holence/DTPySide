@@ -25,6 +25,9 @@ if sys.platform == "win32":
     from win32.lib import win32con
     from win32 import win32gui, win32api
     from win32com.shell import shell,shellcon
+    PATH_PREFIX_LEN=8
+if sys.platform=="linux":
+    PATH_PREFIX_LEN=7
 
 def ShowUp(window:QWidget):
     if window.isFullScreen():
@@ -478,7 +481,15 @@ def Shell_Copy_File(src, dest):
 
         return not aborted
     elif sys.platform == "linux":
-        pass
+        if not os.path.exists(os.path.join(dest, os.path.basename(src))):
+            src=src.replace("'","'\\''")
+            dest=dest.replace("'","'\\''")
+            os.system(f"cp -r '{src}' '{dest}'")
+        else:
+            src=src.replace("'","'\\''")
+            dest=dest.replace("'","'\\''")
+            cmd=f" cp -i -r '{src}' '{dest}' -v"
+            os.system("gnome-terminal -- %s"%cmd)
 
 def Shell_Move_File(src, dest):
     """
@@ -520,4 +531,30 @@ def Shell_Move_File(src, dest):
 
         return not aborted
     elif sys.platform == "linux":
-        pass
+        if not os.path.exists(os.path.join(dest, os.path.basename(src))):
+            src=src.replace("'","'\\''")
+            dest=dest.replace("'","'\\''")
+            os.system(f"mv '{src}' '{dest}'")
+        else:
+            src=src.replace("'","'\\''")
+            dest=dest.replace("'","'\\''")
+            cmd=f" mv -i '{src}' '{dest}' -v"
+            os.system("gnome-terminal -- %s"%cmd)
+
+def Open_Explorer(url, select: bool):
+    if sys.platform=="win32":
+        if select:
+            os.popen("explorer /select,\"%s\""%url.replace("/","\\"))
+        else:
+            os.startfile(url)
+    elif sys.platform=="linux":
+        if select:
+            os.popen("nautilus -s \"%s\""%url)
+        else:
+            os.popen("xdg-open \"%s\""%url)
+
+def Open_Website(url):
+    if sys.platform=="win32":
+        os.system("start explorer \"https://www.google.com/search?q=%s\""%url)
+    elif sys.platform=="linux":
+        os.system("xdg-open \"https://www.google.com/search?q=%s\""%url)

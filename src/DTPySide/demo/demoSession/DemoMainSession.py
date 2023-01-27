@@ -48,14 +48,13 @@ class DemoMainSession(DTSession.DTMainSession):
 		self.actionSummonMainWindow2.triggered.connect(self.summonMainWindow2)
 
 	def initializeMenu(self):
+
+		self.addActionToMainMenu(self.Widget.actionHello_World)
+		self.addActionToMainMenu(self.actionSummonMainWindow2)
+		self.addActionToMainMenu(self.actionSwitchDock)
+		self.addSeparatorToMainMenu()
+
 		super().initializeMenu()
-
-		self.insertSeparatorToMainMenu(self.actionExit)
-		self.insertActionToMainMenu(self.actionExit,self.Widget.actionHello_World)
-		self.insertActionToMainMenu(self.actionExit,self.actionSummonMainWindow2)
-		self.insertActionToMainMenu(self.actionExit,self.actionSwitchDock)
-		self.insertSeparatorToMainMenu(self.actionExit)
-
 
 	def summonMainWindow2(self):
 		self.MainWindow2=DemoMainSession2(self)
