@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9a2
+
+- Now supporting Linux
+
 ## 0.1.9a1
 
 - You can now set iteration for PBKDF2HMAC key generation in Setting

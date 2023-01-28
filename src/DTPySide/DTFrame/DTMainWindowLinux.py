@@ -38,7 +38,7 @@ class DTMainWindowLinux(Ui_DTMainWindowLinux,DTWidget.DTWindow):
 		"""
 		
 		def slot():
-			self._MainMenu.exec_(self.pos())
+			self._MainMenu.exec_(self.centralWidget.mapToGlobal(self.centralWidget.pos()))
 		self.actionShowMenu=QAction("Show Menu")
 		self.actionShowMenu.setShortcut("Ctrl+M")
 		self.actionShowMenu.triggered.connect(slot)

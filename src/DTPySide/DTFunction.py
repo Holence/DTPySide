@@ -39,7 +39,8 @@ def ShowUp(window:QWidget):
         if sys.platform == "win32":
             window.TitleBar.show()
     
-    window.activateWindow()
+    if sys.platform == "win32":
+        window.activateWindow()
 
 def MoveToCenterOfScreen(widget:QWidget):
     """在initializeWindow中，setCentralWidget之后调用
@@ -58,7 +59,7 @@ def MoveToCenterOfScreen(widget:QWidget):
             int((w-widget.width()*scale)/scale)//2 ,
             int((h-widget.height()*scale)/scale)//2
         )
-    
+
 def IconFromCurrentTheme(name):
     return QIcon(":/icons/%s/%s"%(QIcon.themeName(),name))
 

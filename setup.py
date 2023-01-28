@@ -39,7 +39,7 @@ setuptools.setup(
         "cryptography",
         "pypinyin",
         "PySide2",
-        "pywin32",
-        "blosc"
+        "send2trash",
+        "blosc",
     ]
 )
