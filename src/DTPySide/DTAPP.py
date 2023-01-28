@@ -313,6 +313,8 @@ class DTAPP(QApplication):
 
 	def setApplicationName(self, str):
 		super().setApplicationName(str)
+		super().setApplicationDisplayName(str) # for Ubuntu...
+		super().setDesktopFileName(str) # for Ubuntu...
 		self.UserSetting().setValue("MetaData/ApplicationName",self.applicationName())
 	
 	def setApplicationVersion(self, str):
