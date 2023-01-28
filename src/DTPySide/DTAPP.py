@@ -16,6 +16,9 @@ class DTAPP(QApplication):
 		
 		# 添加缩放大小的环境变量
 		os.environ["QT_SCALE_FACTOR"] = str(self.Scale())
+		
+		if sys.platform=="linux":
+			os.environ["QT_QPA_PLATFORM"] = "wayland"
 
 		# 设置图片缩放质量
 		self.setAttribute(Qt.AA_UseOpenGLES,True)
