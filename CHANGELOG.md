@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9a3
+
+- bug fixed
+
 ## 0.1.9a2
 
 - Now supporting Linux
