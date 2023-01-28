@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9a4
+
+- bug fixed
+
 ## 0.1.9a3
 
 - bug fixed
