@@ -29,6 +29,7 @@ class DTSetting(Ui_DTSetting,QWidget):
 			self.label_password.hide()
 			self.spinBox_iteration.hide()
 			self.label_iteration.hide()
+			self.pushButton_iteration.hide()
 		
 		if self.app.DataList()!=[]:
 			self.lineEdit_data_dir.setText(self.app.DataDir())
